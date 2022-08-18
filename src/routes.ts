@@ -7,6 +7,7 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
 import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
+import { authMiddleware } from "./middlewares/authMiddleware";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
@@ -45,6 +46,12 @@ routes.post('/auth/login', async (req, res) => {
     token
   });
 });
+
+routes.get('/private', authMiddleware, async (req, res) => {
+  res.json({
+    foo: 'bar'
+  })
+})
 
 routes.get('/', (req, res) => {
   res.status(200).json({ msg: "Bem vindo a nossa API" });
