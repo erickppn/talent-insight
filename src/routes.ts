@@ -23,11 +23,12 @@ routes.post('/auth/register', async (req, res) => {
     nodeMailerMailAdapter
   );
 
-  const user = await registerUserUseCase.execute({ name, email, password, confirmPassword, age });
+  const { user, token } = await registerUserUseCase.execute({ name, email, password, confirmPassword, age });
 
   return res.status(201).json({
     message: "Usuário criado com sucesso",
     user,
+    token
   });
 });
 
@@ -39,6 +40,7 @@ routes.post('/auth/login', async (req, res) => {
   const { user, token } = await authenticateUserUseCase.execute({ email, password });
 
   return res.status(200).json({
+    message: "Login feito com sucesso",
     user,
     token
   });

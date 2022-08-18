@@ -1,6 +1,6 @@
 import { UsersRepository } from "../../repositories/users-repositories";
 import { compare } from "bcrypt";
-import { generateToken } from "../../utils/generate-token-provider";
+import { generateToken } from "../../utils/generate-token";
 
 interface LoginUserUseCaseRequest {
   email: string,

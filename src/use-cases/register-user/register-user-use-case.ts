@@ -1,6 +1,7 @@
 import { hash } from "bcrypt";
 import { MailAdapter } from "../../adapters/mail-adapter";
 import { UsersRepository } from "../../repositories/users-repositories";
+import { generateToken } from "../../utils/generate-token";
 
 interface RegisterUserUseCaseRequest {
   name: string,
@@ -41,6 +42,9 @@ export class RegisterUserUseCase {
 
     delete newUser.password;
 
+    //create token
+    const token = await generateToken(newUser.id);
+
     //send confirmation email
     await this.mailAdapter.sendMail({
       to: email,
@@ -55,6 +59,9 @@ export class RegisterUserUseCase {
       ].join('\n')
     });
 
-    return newUser;
+    return {
+      user: newUser,
+      token
+    };
   }
 }
