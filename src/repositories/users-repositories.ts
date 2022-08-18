@@ -2,7 +2,10 @@ interface IUserResponseData {
   id: string,
   name: string,
   email: string,
-  age: number
+  artName: string | null,
+  aboutMe: string | null,
+  age: number,
+  avatarImgPath: string | null,
 }
 
 export interface UsersRepository {

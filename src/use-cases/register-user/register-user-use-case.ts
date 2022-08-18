@@ -1,4 +1,5 @@
 import { hash } from "bcrypt";
+import { MailAdapter } from "../../adapters/mail-adapter";
 import { UsersRepository } from "../../repositories/users-repositories";
 
 interface RegisterUserUseCaseRequest {
@@ -12,6 +13,7 @@ interface RegisterUserUseCaseRequest {
 export class RegisterUserUseCase {
   constructor(
     private userRepository: UsersRepository,
+    private mailAdapter: MailAdapter
   ) {}
 
   async execute(request: RegisterUserUseCaseRequest) {
@@ -36,6 +38,20 @@ export class RegisterUserUseCase {
     //create new user
     const passwordHash = await hash(password, 12);
     const newUser = await this.userRepository.registerUser(name, email, passwordHash, age);
+
+    //send confirmation email
+    await this.mailAdapter.sendMail({
+      to: email,
+      subject: 'Confirmação de Email',
+      body: [
+        `<div style="font-family: sans-serif; color: #111">`,
+        `<header style="text-align: center; background-color: #FF6347">`,
+        `<h1 style="color: #FFF">Talent Insight</h1><br />`,
+        `</header>`,
+        `<p>Confirme seu endereço de e-mail</p>`,
+        `</div>`
+      ].join('\n')
+    });
 
     return newUser;
   }

@@ -1,13 +1,15 @@
 import express from "express";
 
-//repositories imports
+//repositories and adapters imports
 import { PrismaUsersRepository } from "./repositories/prisma/prisma-users-repository";
+import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-adapter";
 
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
 
-//Repository instance
+//repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
+const nodeMailerMailAdapter = new NodeMailerMailAdapter();
 
 export const routes = express.Router();
 
@@ -15,9 +17,12 @@ export const routes = express.Router();
 routes.post('/auth/register', async (req, res) => {
   const { name, email, password, confirmPassword, age } = req.body;
 
-  const registerUserUseCase = new RegisterUserUseCase(prismaUsersRepository);
+  const registerUserUseCase = new RegisterUserUseCase(
+    prismaUsersRepository,
+    nodeMailerMailAdapter
+  );
 
-  const newUser = await registerUserUseCase.execute({
+  const user = await registerUserUseCase.execute({
     name, 
     email, 
     password, 
@@ -27,7 +32,7 @@ routes.post('/auth/register', async (req, res) => {
 
   return res.status(201).json({
     message: "Usuário criado com sucesso",
-    newUser,
+    user,
   });
 });
 
