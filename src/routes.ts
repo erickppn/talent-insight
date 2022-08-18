@@ -6,6 +6,7 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
+import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
@@ -22,13 +23,7 @@ routes.post('/auth/register', async (req, res) => {
     nodeMailerMailAdapter
   );
 
-  const user = await registerUserUseCase.execute({
-    name, 
-    email, 
-    password, 
-    confirmPassword, 
-    age
-  });
+  const user = await registerUserUseCase.execute({ name, email, password, confirmPassword, age });
 
   return res.status(201).json({
     message: "Usuário criado com sucesso",
@@ -36,6 +31,19 @@ routes.post('/auth/register', async (req, res) => {
   });
 });
 
+routes.post('/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  const authenticateUserUseCase = new AuthenticateUserUseCase(prismaUsersRepository);
+
+  const { user, token } = await authenticateUserUseCase.execute({ email, password });
+
+  return res.status(200).json({
+    user,
+    token
+  });
+});
+
 routes.get('/', (req, res) => {
-  res.status(200).json({msg: "Bem vindo a nossa API"});
+  res.status(200).json({ msg: "Bem vindo a nossa API" });
 });

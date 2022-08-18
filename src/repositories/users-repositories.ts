@@ -1,4 +1,4 @@
-interface IUserResponseData {
+type UserResponseInfo = {
   id: string,
   name: string,
   email: string,
@@ -6,9 +6,10 @@ interface IUserResponseData {
   aboutMe: string | null,
   age: number,
   avatarImgPath: string | null,
+  password?: string,
 }
 
 export interface UsersRepository {
-  registerUser: (name: string, email: string, password: string, age: number) => Promise<IUserResponseData>;
-  findUserByEmail: (email: string) => Promise<IUserResponseData | null>;
+  registerUser: (name: string, email: string, password: string, age: number) => Promise<UserResponseInfo>;
+  findUserByEmail: (email: string) => Promise<UserResponseInfo | null>;
 }

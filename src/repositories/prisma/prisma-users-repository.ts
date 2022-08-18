@@ -9,15 +9,6 @@ export class PrismaUsersRepository implements UsersRepository {
         email,
         password,
         age
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        artName: true,
-        aboutMe: true,
-        age: true,
-        avatarImgPath: true,
       }
     });
   }
@@ -26,7 +17,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return await prisma.user.findUnique({ 
       where: {
         email 
-      },
+      }
     });
   }
 }

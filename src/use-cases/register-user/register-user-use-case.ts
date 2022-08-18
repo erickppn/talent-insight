@@ -39,6 +39,8 @@ export class RegisterUserUseCase {
     const passwordHash = await hash(password, 12);
     const newUser = await this.userRepository.registerUser(name, email, passwordHash, age);
 
+    delete newUser.password;
+
     //send confirmation email
     await this.mailAdapter.sendMail({
       to: email,
