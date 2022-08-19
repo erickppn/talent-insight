@@ -3,6 +3,7 @@ import { verify } from "jsonwebtoken";
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authToken = req.headers["authorization"];
+  const secret = process.env.JWT_SECRET_KEY || 'secret';
 
   if (!authToken) {
     return res.status(401).json({ 
@@ -27,7 +28,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const secret = process.env.JWT_SECRET_KEY || 'secret';
     verify(token, secret)
 
     return next();

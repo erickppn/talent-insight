@@ -12,4 +12,5 @@ type UserResponseInfo = {
 export interface UsersRepository {
   registerUser: (name: string, email: string, password: string, age: number) => Promise<UserResponseInfo>;
   findUserByEmail: (email: string) => Promise<UserResponseInfo | null>;
+  findUserById: (id: string) => Promise<UserResponseInfo | null>;
 }

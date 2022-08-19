@@ -7,6 +7,7 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
 import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
+import { ValidateUserToken } from "./use-cases/validate-user-token/validate-user-token";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/authMiddleware";
@@ -39,7 +40,6 @@ routes.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;
 
   const authenticateUserUseCase = new AuthenticateUserUseCase(prismaUsersRepository);
-
   const { user, token } = await authenticateUserUseCase.execute({ email, password });
 
   return res.status(200).json({
@@ -48,6 +48,17 @@ routes.post('/auth/login', async (req, res) => {
     token
   });
 });
+
+routes.get('/auth/validate-token', async (req, res) => {
+  const authToken = req.headers["authorization"];
+
+  const validateUserToken = new ValidateUserToken(prismaUsersRepository);
+  const user = await validateUserToken.execute(authToken);
+  
+  return res.status(201).json({ user });
+});
+
+
 
 routes.get('/private', authMiddleware, async (req, res) => {
   res.json({
