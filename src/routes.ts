@@ -10,7 +10,7 @@ import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authentic
 import { ValidateUserToken } from "./use-cases/validate-user-token/validate-user-token";
 
 //middlewares imports
-import { authMiddleware } from "./middlewares/authMiddleware";
+import { authMiddleware } from "./middlewares/auth-middleware";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
