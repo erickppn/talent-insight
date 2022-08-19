@@ -7,6 +7,8 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
 import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
+
+//middlewares imports
 import { authMiddleware } from "./middlewares/authMiddleware";
 
 //repositories and adapters instances
