@@ -13,10 +13,22 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
+  async findUsersByNameOrEmail(name: string, email: string) {
+    return await prisma.user.findMany({
+      where: {
+        OR: [ { email }, { name } ]
+      },
+      select: {
+        name: true,
+        email: true
+      }
+    });
+  }
+
   async findUserByEmail(email: string) {
     return await prisma.user.findUnique({ 
       where: {
-        email 
+        email,
       }
     });
   }

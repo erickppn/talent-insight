@@ -26,15 +26,12 @@ export class RegisterUserUseCase {
     if (!password) throw new Error("A senha é obrigatória");
     if (!age) throw new Error("A idade está faltando");
 
-    if (password != confirmPassword) {
-      throw new Error("As senhas não conferem");
-    }
+    if (password != confirmPassword) throw new Error("As senhas não conferem");
 
     //check if user exists
-    const userAlredyExists = await this.userRepository.findUserByEmail(email);
+    const usersAlredyExists = await this.userRepository.findUsersByNameOrEmail(name, email);
 
-    if (userAlredyExists?.name === name) throw new Error("Um usuário com este nome já está cadastrado!");
-    if (userAlredyExists?.email === email) throw new Error("Por favor, utilize outro e-mail, este já está sendo utilizado!");
+    if (usersAlredyExists.length) throw new Error("Um usuário com este nome ou e-mail já está cadastrado");
 
     //create new user
     const passwordHash = await hash(password, 12);
