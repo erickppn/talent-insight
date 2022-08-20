@@ -1,7 +1,7 @@
 import { UsersRepository } from "../../repositories/users-repositories";
 import { validateToken } from "../../utils/validate-token";
 
-export class ValidateUserToken {
+export class ValidateUserTokenUseCase {
   constructor(
     private userRepository: UsersRepository,
   ) {}

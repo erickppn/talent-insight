@@ -7,11 +7,11 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 //use cases imports
 import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
 import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
-import { ValidateUserToken } from "./use-cases/validate-user-token/validate-user-token";
+import { ValidateUserTokenUseCase } from "./use-cases/validate-user-token/validate-user-token-use-case";
+import { DeleteUserUseCase } from "./use-cases/delete-user/delete-user-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
-import { DeleteUserUseCase } from "./use-cases/delete-user/delete-user-use-case";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
@@ -53,8 +53,8 @@ routes.post('/auth/login', async (req, res) => {
 routes.get('/auth/validate-token', async (req, res) => {
   const authToken = req.headers["authorization"];
 
-  const validateUserToken = new ValidateUserToken(prismaUsersRepository);
-  const user = await validateUserToken.execute(authToken);
+  const validateUserTokenUseCase = new ValidateUserTokenUseCase(prismaUsersRepository);
+  const user = await validateUserTokenUseCase.execute(authToken);
   
   return res.status(201).json({ user });
 });
@@ -62,14 +62,13 @@ routes.get('/auth/validate-token', async (req, res) => {
 routes.delete('/user', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
 
-  const deleteUserById = new DeleteUserUseCase(prismaUsersRepository);
-  await deleteUserById.execute(authToken);
+  const deleteUserUseCase = new DeleteUserUseCase(prismaUsersRepository);
+  await deleteUserUseCase.execute(authToken);
 
   return res.status(400).json({
     message: "Conta deletada com sucesso",
-  })
+  });
 });
-
 
 
 routes.get('/private', authMiddleware, async (req, res) => {
