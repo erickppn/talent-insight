@@ -1,4 +1,4 @@
-type UserResponseInfo = {
+type UserInfoResponse = {
   id: string,
   name: string,
   email: string,
@@ -10,8 +10,8 @@ type UserResponseInfo = {
 }
 
 export interface UsersRepository {
-  registerUser: (name: string, email: string, password: string, age: number) => Promise<UserResponseInfo>;
-  findUserByEmail: (email: string) => Promise<UserResponseInfo | null>;
-  findUserById: (id: string) => Promise<UserResponseInfo | null>;
+  registerUser: (name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;
+  findUserByEmail: (email: string) => Promise<UserInfoResponse | null>;
+  findUserById: (id: string) => Promise<UserInfoResponse | null>;
   deleteUserById: (id: string) => Promise<void>;
 }
