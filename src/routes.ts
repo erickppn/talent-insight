@@ -11,6 +11,7 @@ import { ValidateUserToken } from "./use-cases/validate-user-token/validate-user
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
+import { DeleteUserUseCase } from "./use-cases/delete-user/delete-user-use-case";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
@@ -56,6 +57,17 @@ routes.get('/auth/validate-token', async (req, res) => {
   const user = await validateUserToken.execute(authToken);
   
   return res.status(201).json({ user });
+});
+
+routes.delete('/user', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+
+  const deleteUserById = new DeleteUserUseCase(prismaUsersRepository);
+  await deleteUserById.execute(authToken);
+
+  return res.status(400).json({
+    message: "Conta deletada com sucesso",
+  })
 });
 
 

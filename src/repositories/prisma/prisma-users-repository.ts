@@ -28,4 +28,12 @@ export class PrismaUsersRepository implements UsersRepository {
       }
     });
   }
+
+  async deleteUserById(id: string) {
+    await prisma.user.delete({
+      where: {
+        id
+      }
+    });
+  }
 }
