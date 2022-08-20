@@ -61,13 +61,19 @@ routes.get('/auth/validate-token', async (req, res) => {
 
 routes.delete('/user', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
+  const { password } = req.body;
 
-  const deleteUserUseCase = new DeleteUserUseCase(prismaUsersRepository);
-  await deleteUserUseCase.execute(authToken);
+  const deleteUserUseCase = new DeleteUserUseCase(
+    prismaUsersRepository,
+    nodeMailerMailAdapter
+  );
+
+  await deleteUserUseCase.execute({ authToken, password });
 
   return res.status(400).json({
     message: "Conta deletada com sucesso",
   });
+
 });
 
 
