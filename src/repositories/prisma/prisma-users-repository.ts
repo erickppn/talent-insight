@@ -8,7 +8,11 @@ export class PrismaUsersRepository implements UsersRepository {
         name,
         email,
         password,
-        age
+        age,
+
+        profile: {
+          create: {},
+        }
       }
     });
   }

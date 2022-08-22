@@ -1,9 +1,11 @@
 import { UsersRepository } from "../../repositories/users-repositories";
+import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
 import { validateToken } from "../../utils/validate-token";
 
 export class ValidateUserTokenUseCase {
   constructor(
     private userRepository: UsersRepository,
+    private userProfileRepository: UserProfilesRepository
   ) {}
 
   async execute(authToken: string | undefined) {
@@ -19,6 +21,12 @@ export class ValidateUserTokenUseCase {
 
     delete user.password;
 
-    return user;
+    //get user profile info
+    const userProfile = await this.userProfileRepository.findProfileByUserId(user.id);
+
+    return {
+      user,
+      userProfile
+    };
   }
 }

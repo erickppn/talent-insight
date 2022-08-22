@@ -2,10 +2,7 @@ type UserInfoResponse = {
   id: string,
   name: string,
   email: string,
-  artName: string | null,
-  aboutMe: string | null,
   age: number,
-  avatarImgPath: string | null,
   password?: string,
 }
 

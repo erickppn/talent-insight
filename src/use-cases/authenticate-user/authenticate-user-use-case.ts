@@ -1,4 +1,5 @@
 import { UsersRepository } from "../../repositories/users-repositories";
+import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
 import { compare } from "bcrypt";
 import { generateToken } from "../../utils/generate-token";
 
@@ -10,6 +11,7 @@ interface LoginUserUseCaseRequest {
 export class AuthenticateUserUseCase {
   constructor(
     private userRepository: UsersRepository,
+    private userProfileRepository: UserProfilesRepository
   ) {}
 
   async execute(request: LoginUserUseCaseRequest) {
@@ -36,8 +38,12 @@ export class AuthenticateUserUseCase {
     //create token
     const token = await generateToken(userAlredyExists.id);
 
+    //get user profile info
+    const userProfile = await this.userProfileRepository.findProfileByUserId(userAlredyExists.id);
+
     return {
       user: userAlredyExists,
+      userProfile,
       token
     }
   }
