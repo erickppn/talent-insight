@@ -45,6 +45,21 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
+  async editUser(id: string, name: string, email: string, password: string, age: number) {
+    return await prisma.user.update({
+      where: {
+        id
+      },
+
+      data: {
+        name,
+        email,
+        password,
+        age
+      }
+    });
+  }
+
   async deleteUserById(id: string) {
     await prisma.user.delete({
       where: {

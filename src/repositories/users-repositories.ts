@@ -16,5 +16,6 @@ export interface UsersRepository {
   findUsersByNameOrEmail: (name: string, email: string) => Promise<UsersAlredyExistsResponse[]>;
   findUserByEmail: (email: string) => Promise<UserInfoResponse | null>;
   findUserById: (id: string) => Promise<UserInfoResponse | null>;
+  editUser: (id: string, name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;
   deleteUserById: (id: string) => Promise<void>;
 }

@@ -14,6 +14,7 @@ import { EditUserProfileUseCase } from "./use-cases/edit-user-profile/edit-user-
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
+import { EditUserAccountUseCase } from "./use-cases/edit-user-account/edit-user-account-use-case";
 
 //repositories and adapters instances
 const prismaUsersRepository = new PrismaUsersRepository();
@@ -71,6 +72,28 @@ routes.get('/auth/validate-token', async (req, res) => {
   return res.status(201).json({ 
     user,
     userProfile
+  });
+});
+
+routes.put('/user', async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { name, email, password, age } = req.body;
+
+  const editUserAccountUseCase = new EditUserAccountUseCase(
+    prismaUsersRepository,
+    nodeMailerMailAdapter
+  );
+
+  const newUserAccountInfo = await editUserAccountUseCase.execute({ 
+    authToken,
+    name, 
+    email, 
+    password, 
+    age
+  });
+
+  res.status(200).json({
+    newUserAccountInfo
   });
 });
 
