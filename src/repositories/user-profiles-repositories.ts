@@ -7,4 +7,5 @@ type UserProfileResponse = {
 export interface UserProfilesRepository {
   findProfileByUserId: (userId: string) => Promise<UserProfileResponse | null>;
   deleteProfileByUserId: (userId: string) => Promise<void>;
+  editProfile: (userId: string, artName: string | null, aboutMe: string | null) => Promise<UserProfileResponse>;
 }

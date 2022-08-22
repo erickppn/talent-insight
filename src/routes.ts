@@ -10,6 +10,7 @@ import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use
 import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
 import { ValidateUserTokenUseCase } from "./use-cases/validate-user-token/validate-user-token-use-case";
 import { DeleteUserUseCase } from "./use-cases/delete-user/delete-user-use-case";
+import { EditUserProfileUseCase } from "./use-cases/edit-user-profile/edit-user-profile-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
@@ -89,6 +90,23 @@ routes.delete('/user', authMiddleware, async (req, res) => {
     message: "Conta deletada com sucesso",
   });
 
+});
+
+routes.put('/user/profile', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { artName, aboutMe } = req.body;
+
+  const editUserProfileUseCase = new EditUserProfileUseCase(prismaUserProfilesRepository);
+
+  const newUserProfileInfo = await editUserProfileUseCase.execute({ 
+    authToken, 
+    artName, 
+    aboutMe 
+  });
+
+  res.status(200).json({
+    newUserProfileInfo
+  });
 });
 
 

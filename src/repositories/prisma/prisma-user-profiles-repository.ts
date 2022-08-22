@@ -16,11 +16,30 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
     });
   }
 
-  async deleteProfileByUserId(userId: String) {
+  async deleteProfileByUserId(userId: string) {
     await prisma.profile.delete({
       where: {
         userId
       }
     })
+  }
+
+  async editProfile(userId: string, artName: string | null, aboutMe: string | null) {
+    return prisma.profile.update({
+      where: {
+        userId,
+      },
+
+      data: {
+        artName,
+        aboutMe
+      },
+
+      select: {
+        artName: true,
+        aboutMe: true,
+        avatarImgPath: true,
+      }
+    });
   }
 }
