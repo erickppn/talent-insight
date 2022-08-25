@@ -7,6 +7,7 @@ type UserInfoResponse = {
 }
 
 type UsersAlredyExistsResponse = {
+  id: string,
   name: string,
   email: string
 }

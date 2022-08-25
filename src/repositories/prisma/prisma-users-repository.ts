@@ -17,12 +17,13 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
-  async findUsersByNameOrEmail(name: string, email: string) {
+  async findUsersByNameAndEmail(name: string, email: string) {
     return await prisma.user.findMany({
       where: {
         OR: [ { email }, { name } ]
       },
       select: {
+        id: true,
         name: true,
         email: true
       }

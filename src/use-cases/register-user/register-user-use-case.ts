@@ -26,10 +26,16 @@ export class RegisterUserUseCase {
     if (!password) throw new Error("A senha é obrigatória");
     if (!age) throw new Error("A idade está faltando");
 
+    if (password && password.length < 8) throw new Error("A senha deve conter pelo menos 8 digitos");
     if (password != confirmPassword) throw new Error("As senhas não conferem");
 
     //check if user exists
-    const usersAlredyExists = await this.userRepository.findUsersByNameOrEmail(name, email);
+    const usersAlredyExists = await this.userRepository.findUsersByNameAndEmail(name, email);
+
+    usersAlredyExists.forEach((existingUser) => {
+      if (existingUser.name === name) throw new Error("Este nome já está sendo utilizado");
+      if (existingUser.email === email) throw new Error("Este e-mail já pertence a uma conta");
+    });
 
     if (usersAlredyExists.length) throw new Error("Um usuário com este nome ou e-mail já está cadastrado");
 
