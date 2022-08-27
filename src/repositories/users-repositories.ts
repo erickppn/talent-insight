@@ -14,7 +14,7 @@ type UsersAlredyExistsResponse = {
 
 export interface UsersRepository {
   registerUser: (name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;
-  findUsersByNameOrEmail: (name: string, email: string) => Promise<UsersAlredyExistsResponse[]>;
+  findUsersByNameAndEmail: (name: string, email: string) => Promise<UsersAlredyExistsResponse[]>;
   findUserByEmail: (email: string) => Promise<UserInfoResponse | null>;
   findUserById: (id: string) => Promise<UserInfoResponse | null>;
   editUser: (id: string, name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;

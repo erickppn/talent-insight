@@ -1,7 +1,7 @@
-import { UsersRepository } from "../../repositories/users-repositories";
-import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
+import { UsersRepository } from "../../../repositories/users-repositories";
+import { UserProfilesRepository } from "../../../repositories/user-profiles-repositories";
 import { compare } from "bcrypt";
-import { generateToken } from "../../utils/generate-token";
+import { generateToken } from "../../../utils/generate-token";
 
 interface LoginUserUseCaseRequest {
   email: string,

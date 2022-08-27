@@ -6,26 +6,28 @@ import { PrismaUserProfilesRepository } from "./repositories/prisma/prisma-user-
 import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-adapter";
 
 //use cases imports
-import { RegisterUserUseCase } from "./use-cases/register-user/register-user-use-case";
-import { AuthenticateUserUseCase } from "./use-cases/authenticate-user/authenticate-user-use-case";
-import { ValidateUserTokenUseCase } from "./use-cases/validate-user-token/validate-user-token-use-case";
-import { DeleteUserUseCase } from "./use-cases/delete-user/delete-user-use-case";
-import { EditUserProfileUseCase } from "./use-cases/edit-user-profile/edit-user-profile-use-case";
+import { RegisterUserUseCase } from "./use-cases/user/register-user/register-user-use-case";
+import { AuthenticateUserUseCase } from "./use-cases/auth/authenticate-user/authenticate-user-use-case";
+import { ValidateUserTokenUseCase } from "./use-cases/auth/validate-user-token/validate-user-token-use-case";
+import { DeleteUserUseCase } from "./use-cases/user/delete-user/delete-user-use-case";
+import { EditUserProfileUseCase } from "./use-cases/user-profile/edit-user-profile/edit-user-profile-use-case";
+import { EditUserUseCase } from "./use-cases/user/edit-user/edit-user-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
-import { EditUserAccountUseCase } from "./use-cases/edit-user-account/edit-user-account-use-case";
-
-//repositories and adapters instances
-const prismaUsersRepository = new PrismaUsersRepository();
-const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
-const nodeMailerMailAdapter = new NodeMailerMailAdapter();
 
 export const routes = express.Router();
 
-//authentication routes
+routes.get('/', (req, res) => {
+  res.status(200).json({ msg: "Bem vindo(a) a nossa API" });
+});
+
+//user routes
 routes.post('/auth/register', async (req, res) => {
   const { name, email, password, confirmPassword, age } = req.body;
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const nodeMailerMailAdapter = new NodeMailerMailAdapter();
 
   const registerUserUseCase = new RegisterUserUseCase(
     prismaUsersRepository,
@@ -41,50 +43,19 @@ routes.post('/auth/register', async (req, res) => {
   });
 });
 
-routes.post('/auth/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  const authenticateUserUseCase = new AuthenticateUserUseCase(
-    prismaUsersRepository,
-    prismaUserProfilesRepository
-  );
-
-  const { user, userProfile, token } = await authenticateUserUseCase.execute({ email, password });
-
-  return res.status(200).json({
-    message: "Login feito com sucesso",
-    user,
-    userProfile,
-    token
-  });
-});
-
-routes.get('/auth/validate-token', async (req, res) => {
-  const authToken = req.headers["authorization"];
-
-  const validateUserTokenUseCase = new ValidateUserTokenUseCase(
-    prismaUsersRepository,
-    prismaUserProfilesRepository
-  );
-
-  const { user, userProfile } = await validateUserTokenUseCase.execute(authToken);
-  
-  return res.status(201).json({ 
-    user,
-    userProfile
-  });
-});
-
-routes.put('/user', async (req, res) => {
+routes.put('/user', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
   const { name, email, password, age } = req.body;
 
-  const editUserAccountUseCase = new EditUserAccountUseCase(
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const nodeMailerMailAdapter = new NodeMailerMailAdapter();
+
+  const editUserUseCase = new EditUserUseCase(
     prismaUsersRepository,
     nodeMailerMailAdapter
   );
 
-  const newUserAccountInfo = await editUserAccountUseCase.execute({ 
+  const newUserAccountInfo = await editUserUseCase.execute({ 
     authToken,
     name, 
     email, 
@@ -100,6 +71,10 @@ routes.put('/user', async (req, res) => {
 routes.delete('/user', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
   const { password } = req.body;
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
+  const nodeMailerMailAdapter = new NodeMailerMailAdapter();
 
   const deleteUserUseCase = new DeleteUserUseCase(
     prismaUsersRepository,
@@ -119,7 +94,11 @@ routes.put('/user/profile', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
   const { artName, aboutMe } = req.body;
 
-  const editUserProfileUseCase = new EditUserProfileUseCase(prismaUserProfilesRepository);
+  const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
+
+  const editUserProfileUseCase = new EditUserProfileUseCase(
+    prismaUserProfilesRepository
+  );
 
   const newUserProfileInfo = await editUserProfileUseCase.execute({ 
     authToken, 
@@ -132,13 +111,43 @@ routes.put('/user/profile', authMiddleware, async (req, res) => {
   });
 });
 
+//authentication routes
+routes.post('/auth/login', async (req, res) => {
+  const { email, password } = req.body;
 
-routes.get('/private', authMiddleware, async (req, res) => {
-  res.json({
-    foo: 'bar'
-  })
-})
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
 
-routes.get('/', (req, res) => {
-  res.status(200).json({ msg: "Bem vindo a nossa API" });
+  const authenticateUserUseCase = new AuthenticateUserUseCase(
+    prismaUsersRepository,
+    prismaUserProfilesRepository
+  );
+
+  const { user, userProfile, token } = await authenticateUserUseCase.execute({ email, password });
+
+  return res.status(200).json({
+    message: "Login feito com sucesso",
+    user,
+    userProfile,
+    token
+  });
+});
+
+routes.get('/auth/validate-token', async (req, res) => {
+  const authToken = req.headers["authorization"];
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
+
+  const validateUserTokenUseCase = new ValidateUserTokenUseCase(
+    prismaUsersRepository,
+    prismaUserProfilesRepository
+  );
+
+  const { user, userProfile } = await validateUserTokenUseCase.execute(authToken);
+  
+  return res.status(201).json({ 
+    user,
+    userProfile
+  });
 });

@@ -1,6 +1,6 @@
-import { UsersRepository } from "../../repositories/users-repositories";
-import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
-import { validateToken } from "../../utils/validate-token";
+import { UsersRepository } from "../../../repositories/users-repositories";
+import { UserProfilesRepository } from "../../../repositories/user-profiles-repositories";
+import { validateToken } from "../../../utils/validate-token";
 
 export class ValidateUserTokenUseCase {
   constructor(

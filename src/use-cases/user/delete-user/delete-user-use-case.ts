@@ -1,8 +1,8 @@
 import { compare } from "bcrypt";
-import { MailAdapter } from "../../adapters/mail-adapter";
-import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
-import { UsersRepository } from "../../repositories/users-repositories";
-import { validateToken } from "../../utils/validate-token";
+import { MailAdapter } from "../../../adapters/mail-adapter";
+import { UserProfilesRepository } from "../../../repositories/user-profiles-repositories";
+import { UsersRepository } from "../../../repositories/users-repositories";
+import { validateToken } from "../../../utils/validate-token";
 
 interface DeleteUserUseCaseRequest {
   authToken: string | undefined,

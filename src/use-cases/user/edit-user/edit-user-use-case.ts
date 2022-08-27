@@ -1,7 +1,7 @@
 import { hash } from "bcrypt";
-import { MailAdapter } from "../../adapters/mail-adapter";
-import { UsersRepository } from "../../repositories/users-repositories";
-import { validateToken } from "../../utils/validate-token";
+import { MailAdapter } from "../../../adapters/mail-adapter";
+import { UsersRepository } from "../../../repositories/users-repositories";
+import { validateToken } from "../../../utils/validate-token";
 
 interface EditUserAccountUseCaseRequest {
   authToken: string | undefined,
@@ -11,7 +11,7 @@ interface EditUserAccountUseCaseRequest {
   age: number,
 }
 
-export class EditUserAccountUseCase {
+export class EditUserUseCase {
   constructor (
     private userRepository: UsersRepository,
     private mailAdapter: MailAdapter
