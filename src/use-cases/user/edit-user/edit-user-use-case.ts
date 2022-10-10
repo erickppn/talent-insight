@@ -56,6 +56,8 @@ export class EditUserUseCase {
     //save new user account info
     const newUserAccountInfo = await this.userRepository.editUser(userId, name, email, newPassword!, age);
 
+    delete newUserAccountInfo.password;
+
     //send confirmation email
     if (newUserAccountInfo.email != user.email) {
       await this.mailAdapter.sendMail({
