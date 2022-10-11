@@ -11,7 +11,7 @@ export class PrismaUsersRepository implements UsersRepository {
         age,
 
         profile: {
-          create: {},
+          create: { }
         }
       }
     });

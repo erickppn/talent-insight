@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 
 //repositories and adapters imports
 import { PrismaUsersRepository } from "./repositories/prisma/prisma-users-repository";
@@ -15,6 +16,11 @@ import { EditUserUseCase } from "./use-cases/user/edit-user/edit-user-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
+
+//configs and other imports
+import { multerConfg } from "./config/multer";
+
+const upload = multer(multerConfg);
 
 export const routes = express.Router();
 
@@ -90,9 +96,12 @@ routes.delete('/user', authMiddleware, async (req, res) => {
 
 });
 
-routes.put('/user/profile', authMiddleware, async (req, res) => {
+routes.put('/user/profile/', authMiddleware, upload.single("avatar"), async (req, res) => {
   const authToken = req.headers["authorization"];
   const { artName, aboutMe } = req.body;
+  
+  if (!req.file) return console.log("Arquivo não fornecido");
+  const { filename: avatarKey } = req.file;
 
   const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
 
@@ -103,7 +112,8 @@ routes.put('/user/profile', authMiddleware, async (req, res) => {
   const newUserProfileInfo = await editUserProfileUseCase.execute({ 
     authToken, 
     artName, 
-    aboutMe 
+    aboutMe,
+    avatarKey
   });
 
   res.status(200).json({

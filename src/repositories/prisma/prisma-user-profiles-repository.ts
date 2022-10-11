@@ -11,7 +11,8 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
       select: {
         artName: true,
         aboutMe: true,
-        avatarImgPath: true,
+        avatarKey: true, 
+        avatarUrl: true,
       }
     });
   }
@@ -24,7 +25,7 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
     })
   }
 
-  async editProfile(userId: string, artName: string | null, aboutMe: string | null) {
+  async editProfile(userId: string, artName: string | null, aboutMe: string | null, avatarKey: string, avatarUrl: string) {
     return prisma.profile.update({
       where: {
         userId,
@@ -32,13 +33,16 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
 
       data: {
         artName,
-        aboutMe
+        aboutMe,
+        avatarKey,
+        avatarUrl,
       },
 
       select: {
         artName: true,
         aboutMe: true,
-        avatarImgPath: true,
+        avatarKey: true, 
+        avatarUrl: true,
       }
     });
   }

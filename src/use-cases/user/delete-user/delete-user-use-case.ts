@@ -1,4 +1,7 @@
 import { compare } from "bcrypt";
+import path from "path";
+import { unlink } from "fs/promises";
+
 import { MailAdapter } from "../../../adapters/mail-adapter";
 import { UserProfilesRepository } from "../../../repositories/user-profiles-repositories";
 import { UsersRepository } from "../../../repositories/users-repositories";
@@ -36,6 +39,12 @@ export class DeleteUserUseCase {
     if (!passwordMatch) throw new Error("Senha inválida");
 
     //delete user profile
+    const profile = await this.userProfileRepository.findProfileByUserId(userId);
+
+    if (profile?.avatarKey) {
+      await unlink(path.resolve(__dirname, "../../../../tmp/uploads", profile?.avatarKey));
+    }
+
     await this.userProfileRepository.deleteProfileByUserId(userId);
 
     //delete user
