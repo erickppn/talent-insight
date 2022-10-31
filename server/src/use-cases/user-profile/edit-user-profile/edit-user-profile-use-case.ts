@@ -8,7 +8,7 @@ interface EditUserProfileUseCaseRequest {
   authToken: string | undefined,
   artName: string | null,
   aboutMe: string | null,
-  avatarKey: string
+  avatarKey: string | undefined
 }
 
 export class EditUserProfileUseCase {
@@ -26,15 +26,18 @@ export class EditUserProfileUseCase {
     const userId = validateToken(authToken);
     if (!userId) throw new Error("Não foi possível validar o token");
 
-    const avatarUrl = `${process.env.APP_URL}/files/${avatarKey}`;
-
     //delete current avatar
     const currentProfileInfo = await this.userProfileRepository.findProfileByUserId(userId);
 
     //save new info profile
-    const newUserProfileInfo = await this.userProfileRepository.editProfile(userId, artName, aboutMe, avatarKey, avatarUrl);
+    const newAvatarKey = avatarKey || currentProfileInfo?.avatarKey!;
 
-    if (currentProfileInfo?.avatarKey) {
+    const avatarUrl = `${process.env.APP_URL}/files/${newAvatarKey}`;
+
+    const newUserProfileInfo = await this.userProfileRepository.editProfile(userId, artName, aboutMe, newAvatarKey, avatarUrl);
+
+    //remove old avatar
+    if (currentProfileInfo?.avatarKey && newAvatarKey != currentProfileInfo?.avatarKey) {
       await unlink(path.resolve(__dirname, "../../../../tmp/uploads", currentProfileInfo?.avatarKey));
     }
 

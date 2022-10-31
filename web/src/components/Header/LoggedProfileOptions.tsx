@@ -1,9 +1,15 @@
+import { useContext } from "react";
 import { PaperPlaneRight } from "phosphor-react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 
-import profilePic from "../../assets/floppa.png";
+import avatar from "../../assets/floppa.png";
 
 export function LoggedProfileOptions() {
+  const {profile} = useContext(AuthContext);
+
+  const profilePic = profile?.avatarUrl;
+
   return (
     <>
       <Link 
@@ -15,7 +21,7 @@ export function LoggedProfileOptions() {
       </Link>
 
       <Link to="/@me" className="h-8 w-8 rounded-md overflow-hidden">
-        <img src="https://cf.shopee.com.br/file/e25dcba6ab6160c16da99bdd7c12a728" alt="Minha foto de perfil" />
+        <img src={profilePic ? profilePic : avatar} alt="Minha foto de perfil" className="h-8 w-8 object-cover" />
       </Link>
     </>
   )

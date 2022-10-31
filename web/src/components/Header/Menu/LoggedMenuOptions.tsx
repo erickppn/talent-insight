@@ -29,7 +29,7 @@ export function LoggedMenuOptions() {
             className={classNames("flex justify-between items-center w-full px-3 py-1 text-sm rounded-md transition-colors active:bg-zinc-100 dark:active:bg-zinc-900", 
               active && "bg-zinc-50 dark:bg-zinc-700"
             )}
-            to="/@me/config"
+            to="/@me/configurations"
           >
             Configurações
           </Link>

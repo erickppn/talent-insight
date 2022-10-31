@@ -25,7 +25,7 @@ export function Sidebar() {
         </button>
       </header>
 
-      <div className="Aside flex-1 p-2">
+      <div className="flex-1 p-2">
         <span className={classNames("transition-opacity dark:text-zinc-300", isSidebarActive ? "opacity-100": "opacity-0")}>
           Perfis
         </span>

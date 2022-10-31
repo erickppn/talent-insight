@@ -24,4 +24,16 @@ export const useApi = () => ({
 
     return response.data;
   },
+
+  editUserProfile: async (data: FormData) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.put('/user/profile/', data, { 
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  },
 });

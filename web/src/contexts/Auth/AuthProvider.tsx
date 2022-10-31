@@ -56,11 +56,16 @@ export function AuthProvider({ children }: { children: JSX.Element }){
       const storageData = localStorage.getItem("ti-auth-token");
 
       if (storageData) {
-        const data = await api.validateUserToken(storageData);
+        try {
+          const data = await api.validateUserToken(storageData);
 
-        if (data.user && data.userProfile) {
           setUser(data.user);
           setProfile(data.userProfile);
+
+        } catch (e) {
+          setUser(null);
+          setProfile(null);
+          console.log(e);
         }
       }
     }
@@ -74,6 +79,7 @@ export function AuthProvider({ children }: { children: JSX.Element }){
       isSigned: !!user,
       profile,
       setUser,
+      setProfile,
       register,
       signin,
       signout

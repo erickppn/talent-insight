@@ -100,8 +100,10 @@ routes.put('/user/profile/', authMiddleware, upload.single("avatar"), async (req
   const authToken = req.headers["authorization"];
   const { artName, aboutMe } = req.body;
   
-  if (!req.file) return console.log("Arquivo não fornecido");
-  const { filename: avatarKey } = req.file;
+  /*if (!req.file) return console.log("Arquivo não fornecido");
+  const { filename: avatarKey } = req.file;*/
+
+  const avatarKey = req.file?.filename;
 
   const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
 

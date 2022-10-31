@@ -1,6 +1,8 @@
-import { useContext } from "react"
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../contexts/Auth/AuthContext"
+import { AuthContext } from "../contexts/Auth/AuthContext";
+
+import avatar from "../assets/floppa.png";
 
 export function Me() {
   const { user, profile } = useContext(AuthContext);
@@ -19,6 +21,11 @@ export function Me() {
         <h2 className="font-bold mb-2">Informações do perfil</h2>
         <div><span className="font-bold">Nome Artístico:</span> {profile?.artName}</div>
         <div className="flex flex-col"><span className="font-bold">Sobre Mim:</span> {profile?.aboutMe}</div>
+        <div className="flex flex-col"><span className="font-bold">Minha foto de perfil:</span>
+          <a className="block w-32" href={profile?.avatarUrl ? profile?.avatarUrl : "#"} target="_blank">
+            <img src={profile?.avatarUrl ? profile?.avatarUrl : avatar} />
+          </a>
+        </div>
       </div>
 
       <Link to="/" className="text-blue-400 underline">Voltar</Link>

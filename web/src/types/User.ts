@@ -9,5 +9,5 @@ export type User = {
 export type Profile = {
   artName: string | null, 
   aboutMe: string | null, 
-  avatarImgPath: string | null
+  avatarUrl: string | null
 }

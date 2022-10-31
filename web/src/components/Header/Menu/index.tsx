@@ -8,12 +8,16 @@ import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
 import { LoggedMenuOptions } from "./LoggedMenuOptions";
 
+import avatar from "../../../assets/floppa.png";
+
 export function Menu() {
   const { darkTheme, setDarkTheme } = useContext(ThemeContext);
   const { isSigned, user, profile } = useContext(AuthContext);
 
   const userFirstName = user?.name.split(" ")[0];
   const profileFirstName = profile?.artName && profile.artName.split(" ")[0];
+
+  const profilePic = profile?.avatarUrl;
 
   return (
     <HeadlessMenu as="div" className="relative">
@@ -34,7 +38,7 @@ export function Menu() {
           { user && 
             <div className="flex items-center mx-[14px] mt-3 mb-2 font-semibold">
               <div className="h-6 w-6 rounded-md overflow-hidden mr-2">
-                <img src="https://cf.shopee.com.br/file/e25dcba6ab6160c16da99bdd7c12a728" alt="Minha foto de perfil" />
+                <img src={profilePic ? profilePic : avatar} alt="Minha foto de perfil" className="h-6 w-6 object-cover" />
               </div>
 
               { profile?.artName ? profileFirstName : userFirstName }

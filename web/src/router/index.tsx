@@ -3,8 +3,8 @@ import { RequireAuth } from "./RequireAuth";
 
 //pages imports
 import { Me } from "../pages/Me";
-import { MyConfig } from "../pages/MyConfig";
 import { SendPost } from "../pages/SendPost";
+import { Configurations } from "../pages/Configurations";
 
 export function Router() {
   return (
@@ -30,9 +30,9 @@ export function Router() {
         </RequireAuth>
       }/>
 
-      <Route path="/@me/config" element={
+      <Route path="/@me/configurations" element={
         <RequireAuth>
-          <MyConfig />
+          <Configurations />
         </RequireAuth>
       }/>
 
