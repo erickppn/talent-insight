@@ -3,16 +3,31 @@ import { UploadSimple } from "phosphor-react";
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
 import defaultAvatar from "../../../assets/floppa.png";
+import { allowedMimes } from ".";
 
 interface ProfilePreviewProps {
   avatarUrl: string | null, 
   artName: string | null,
   aboutMe: string, 
-  handleChangeAvatar: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  setAvatarUrl: (url: string) => void,
+  setNewImageAvatar: (image: File) => void,
 }
 
-export function ProfilePreview({ avatarUrl, artName, aboutMe, handleChangeAvatar }: ProfilePreviewProps) {
+export function ProfilePreview({ avatarUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar }: ProfilePreviewProps) {
   const { user } = useContext(AuthContext);
+
+  function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = e.target.files;
+
+    if (!fileList) return;
+
+    const image = fileList[0];
+
+    if (allowedMimes.includes(image.type)) {
+      setNewImageAvatar(image);
+      setAvatarUrl(URL.createObjectURL(image));
+    }
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-[284px] h-fit bg-slate-50 rounded-md overflow-hidden">
@@ -38,7 +53,7 @@ export function ProfilePreview({ avatarUrl, artName, aboutMe, handleChangeAvatar
           <input 
             className="hidden"
             type="file" 
-            accept="image/*" 
+            accept={allowedMimes.join(", ")}
             name="avatar" 
             onChange={handleChangeAvatar}
           />
@@ -61,9 +76,11 @@ export function ProfilePreview({ avatarUrl, artName, aboutMe, handleChangeAvatar
         {
           aboutMe && (
             <div className="w-full mt-4 p-2 border-[1px] bg-slate-100 rounded-md">
-              <p className="text-sm text-zinc-600">
-                {aboutMe}
-              </p>
+              <div className="max-h-[140px] overflow-hidden">
+                <p className="text-sm text-zinc-600">
+                  {aboutMe}
+                </p>
+              </div>
             </div>
           )
         }

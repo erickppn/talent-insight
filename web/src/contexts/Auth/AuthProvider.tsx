@@ -6,7 +6,7 @@ import { useApi } from "../../hooks/useApi";
 
 export function AuthProvider({ children }: { children: JSX.Element }){
   const [user, setUser] = useState<User | null>(JSON.parse(localStorage.getItem("saved-user") || "null"));
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(JSON.parse(localStorage.getItem("saved-profile") || "null"));
 
   const api = useApi();
 
@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: JSX.Element }){
 
   useEffect(() => {
     localStorage.setItem("saved-user", JSON.stringify(user));
+    localStorage.setItem("saved-profile", JSON.stringify(profile));
   }, [user]);
 
   useEffect(() => {

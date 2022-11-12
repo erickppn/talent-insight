@@ -17,7 +17,7 @@ export function LoggedProfileOptions() {
         to="/@me/send"
       >
         Publicar
-        <PaperPlaneRight size={18} className="group-hover:animate-x-bounce transition-transform duration-1000" />
+        <PaperPlaneRight size={18} className="animate-x-bounce transition-transform duration-1000" />
       </Link>
 
       <Link to="/@me" className="h-8 w-8 rounded-md overflow-hidden">

@@ -39,7 +39,7 @@ export function Configurations() {
           Configurações
         </h1>
 
-        <ul className="flex flex-col">
+        <ul className="flex flex-col gap-[2px]">
           {menuOptions.map(option => (
             <li key={option.optionId}>
               <button 

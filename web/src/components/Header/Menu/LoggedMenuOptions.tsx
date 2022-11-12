@@ -36,7 +36,7 @@ export function LoggedMenuOptions() {
         )}
       </Menu.Item>
 
-      <hr className="my-[2px] border-t-[1px] w-[85%] m-auto border-red-400"/>
+      <hr className="border-t-[1px] w-[85%] m-auto border-red-400"/>
 
       <Menu.Item>
         {({ active }) => (

@@ -1,43 +1,33 @@
 import React, { FormEvent, useContext, useState } from "react";
+import classNames from "classnames";
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 import { useApi } from "../../../hooks/useApi";
+import { Loading } from "../../../components/Loading";
+import { ProfilePreview } from "./ProfilePreview";
 
-const allowedMimes = [
+import defaultAvatar from "../../../assets/floppa.png";
+
+export const allowedMimes = [
   "image/jpeg",
   "image/pjpeg",
   "image/png",
   "image/gif",
 ];
 
-import defaultAvatar from "../../../assets/floppa.png";
-import { Loading } from "../../../components/Loading";
-import { ProfilePreview } from "./ProfilePreview";
-
+const aboutMeCharacterLimit = 300;
+ 
 export function EditProfile() {
   const { profile, setProfile } = useContext(AuthContext);
 
   const [artName, setArtName] = useState(profile?.artName || "");
   const [aboutMe, setAboutMe] = useState(profile?.aboutMe || "");
-  const [avatarUrl, setavatarUrl] = useState(profile?.avatarUrl || null);
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || null);
 
   const [newImageAvatar, setNewImageAvatar] = useState<File | null>(null);
 
   const [isSavingInfo, setIsSavingInfo] = useState(false);
 
   const { editUserProfile } = useApi();
-
-  function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
-    const fileList = e.target.files;
-
-    if (!fileList) return;
-
-    const image = fileList[0];
-
-    if (allowedMimes.includes(image.type)) {
-      setNewImageAvatar(image);
-      setavatarUrl(URL.createObjectURL(image));
-    }
-  }
 
   async function handleEditProfile(e: FormEvent) {
     e.preventDefault();
@@ -69,10 +59,11 @@ export function EditProfile() {
               avatarUrl={avatarUrl}
               artName={artName}
               aboutMe={aboutMe} 
-              handleChangeAvatar={handleChangeAvatar}
+              setAvatarUrl={setAvatarUrl}
+              setNewImageAvatar={setNewImageAvatar}
             />
 
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col justify-between items-end">
               <div className="flex gap-4">
                 <div>
                   <div className="flex flex-col gap-3 bg-slate-50 p-4 rounded-md">
@@ -101,26 +92,26 @@ export function EditProfile() {
                       Sobre Mim
                     </label>
                     
-                    <span className="text-xs text-zinc-400">
-                      limite de caracteres {aboutMe.length}/190
+                    <span className={classNames("text-xs text-zinc-400", aboutMe.length > aboutMeCharacterLimit && "text-rose-400")}>
+                      limite de caracteres {aboutMe.length}/{aboutMeCharacterLimit}
                     </span>
 
                     <textarea 
-                      className="resize-none min-w-[400px] min-h-[152px] px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md" 
+                      className="resize-none min-w-[400px] min-h-[152px] px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md scrollbar-thumb-red-300 hover:scrollbar-thumb-red-200 active:scrollbar-thumb-red-400 scrollbar-track-transparent scrollbar-thin" 
                       name="aboutMe"
                       id="aboutMe"
                       placeholder="Fale um pouco sobre você..."
                       value={aboutMe} 
                       onChange={e => setAboutMe(e.target.value)}
-                      maxLength={190}
                     />
                   </div>
                 </div>
               </div>
 
               <button 
-                className="flex justify-center items-center w-24 mt-6 py-1 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer"
+                className="flex justify-center items-center w-full mt-6 py-1 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
                 type="submit" 
+                disabled={aboutMe.length > aboutMeCharacterLimit}
               >
                 {isSavingInfo ? <Loading /> : "Salvar"}
               </button>
