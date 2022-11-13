@@ -1,36 +1,32 @@
-import { useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import { PencilSimple, UserGear, Warning } from "phosphor-react";
 
-import { EditAccount } from "./EditAccount";
-import { EditProfile } from "./EditProfile";
-import { DangerArea } from "./DangerArea";
-
 const menuOptions = [
   {
-    optionId: 1,
     name: "Editar perfil",
-    icon: <PencilSimple size={20} weight="regular"/>
+    color: "text-zinc-700",
+    icon: <PencilSimple size={20} weight="regular"/>,
+    to: "profile"
   },
   {
-    optionId: 2,
     name: "Configurações da conta",
-    icon: <UserGear size={20} weight="regular"/> 
+    color: "text-zinc-700",
+    icon: <UserGear size={20} weight="regular"/> ,
+    to: "account"
   },
   {
-    optionId: 3,
     name: "Danger área",
+    color: "text-rose-500",
     icon: <Warning size={20} weight="regular"/>,
-    isDangerArea: true
+    to: "danger"
   },
-]
+];
 
 export function Configurations() {
-  const [linkIsActive, setLinkIsActive] = useState(1);
+  const location = useLocation();
 
-  function changeLinkIsActive(linkId: number) {
-    setLinkIsActive(linkId);
-  }
+  const [currentPath] = location.pathname.split("/").slice(-1);
 
   return (
     <div className="flex flex-1">
@@ -41,29 +37,21 @@ export function Configurations() {
 
         <ul className="flex flex-col gap-[2px]">
           {menuOptions.map(option => (
-            <li key={option.optionId}>
-              <button 
-                onClick={() => changeLinkIsActive(option.optionId)} 
-                className={ classNames("flex items-center gap-2 w-full rounded-xl p-3 text-zinc-700 text-sm hover:bg-slate-50 transition-colors", 
-                  linkIsActive == option.optionId && "text-zinc-900 bg-slate-50",
-                  option.isDangerArea && " text-rose-500"
+            <li key={option.name}>
+              <Link 
+                to={option.to}
+                className={ classNames("flex items-center gap-2 w-full rounded-xl p-3 text-sm hover:bg-slate-50 transition-colors", 
+                  option.color,
+                  currentPath === option.to && "text-zinc-900 bg-slate-50",
               )}>
                 {option.icon} {option.name}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
       </nav>
 
-      { 
-        linkIsActive === 1 ? (
-          <EditProfile />
-        ) : linkIsActive === 2 ? (
-          <EditAccount />
-        ) : (
-          <DangerArea />
-        )
-      }
+      <Outlet />
     </div>
   )
 }

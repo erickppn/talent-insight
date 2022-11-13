@@ -5,6 +5,9 @@ import { RequireAuth } from "./RequireAuth";
 import { Me } from "../pages/Me";
 import { SendPost } from "../pages/SendPost";
 import { Configurations } from "../pages/Configurations";
+import { EditProfile } from "../pages/Configurations/EditProfile";
+import { EditAccount } from "../pages/Configurations/EditAccount";
+import { DangerArea } from "../pages/Configurations/DangerArea";
 
 export function Router() {
   return (
@@ -30,11 +33,31 @@ export function Router() {
         </RequireAuth>
       }/>
 
-      <Route path="/@me/configurations" element={
-        <RequireAuth>
-          <Configurations />
-        </RequireAuth>
-      }/>
+      <Route path="configurations" element={<Configurations />}>
+        <Route index element={
+          <RequireAuth>
+            <EditProfile />
+          </RequireAuth>
+        }/>
+
+        <Route path="profile" element={
+          <RequireAuth>
+            <EditProfile />
+          </RequireAuth>
+        }/>
+
+        <Route path="account" element={
+          <RequireAuth>
+            <EditAccount />
+          </RequireAuth>
+        }/>
+
+        <Route path="danger" element={
+          <RequireAuth>
+            <DangerArea />
+          </RequireAuth>
+        }/>
+      </Route>
 
       <Route path="*" element={<h1>Página não encontrada</h1>}/>
     </Routes>
