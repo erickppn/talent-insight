@@ -3,7 +3,7 @@ import { AuthContext } from "../../../contexts/Auth/AuthContext";
 import { ModalContext } from "../../../contexts/Modal/ModalContext"
 import { Loading } from "../../Loading";
 
-import logo from "../../../assets/logo-only-img.png";
+import logo from "../../../assets/logo.png";
 
 export function RegisterUser() {
   //form inputs
@@ -35,14 +35,14 @@ export function RegisterUser() {
   }
   
   return (
-    <div className="w-[780px] flex justify-center items-center py-8">
-      <div className="w-[160px] bg-cover bg-center flex justify-center p-8">
+    <div className=" flex justify-center items-center p-8 pr-10">
+      <div className="w-32 bg-cover bg-center flex justify-center">
         <img src={logo} alt="Logo do site" />
       </div>
 
       <form
         onSubmit={handleRegister} 
-        className="flex-1 flex flex-col justify-center h-full gap-4"
+        className="flex-1 flex flex-col justify-center gap-4 h-full ml-6 pl-8 border-l-[1px]"
       >
         <div className="flex items-center mb-3">
           <span className="text-lg font-semibold">Fazer Cadastro</span>

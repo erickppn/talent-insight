@@ -52,7 +52,7 @@ export function EditProfile() {
         <h2 className="mb-6 text-xl font-medium">Perfil</h2>
 
         <form onSubmit={handleEditProfile} encType="mutipart/form-data">
-          <div className="flex justify-center items-center max-w-[756px] h-52 bg-rose-400 rounded-md">banner</div>
+          <div className="flex justify-center items-center max-w-[756px] h-52 bg-rose-400 rounded-md text-white">banner (em breve)</div>
 
           <div className="flex gap-10 mt-5">
             <ProfilePreview 
@@ -109,7 +109,7 @@ export function EditProfile() {
               </div>
 
               <button 
-                className="flex justify-center items-center w-full mt-6 py-1 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
+                className="flex justify-center items-center w-full mt-6 py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
                 type="submit" 
                 disabled={aboutMe.length > aboutMeCharacterLimit}
               >

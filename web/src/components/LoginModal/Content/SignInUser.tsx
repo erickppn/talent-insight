@@ -32,14 +32,14 @@ export function SignInUser() {
   }
 
   return (
-    <div className="w-[380px] flex flex-col px-8 py-8">
-      <div className="w-56 mb-4">
+    <div className=" flex justify-center items-center p-8 pr-10">
+      <div className="w-28 bg-cover bg-center flex justify-center">
         <img src={logo} alt="Logo do site" />
       </div>
 
       <form 
         onSubmit={handleLogin} 
-        className="flex-1 flex flex-col justify-center h-full gap-2"
+        className="flex-1 flex flex-col justify-center gap-4 h-full ml-6 pl-8 border-l-[1px]"
       >
         <div className="flex items-center">
           <span className="text-lg font-semibold">Fazer Login</span>
@@ -80,7 +80,7 @@ export function SignInUser() {
         <button 
           type="submit" 
           disabled={ email.length === 0 || password.length === 0 || isLoggingIn }
-          className="flex p-1 justify-center w-[120px] my-2 border-red-400 border-[1px] rounded text-red-400 hover:bg-red-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-red-400 transition-all duration-400"
+          className="flex justify-center w-[120px] my-2 p-1 border-red-400 border-[1px] rounded text-red-400 hover:bg-red-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-red-400 transition-all duration-400"
         >
           {isLoggingIn ? <Loading /> : 'Login'}
         </button>

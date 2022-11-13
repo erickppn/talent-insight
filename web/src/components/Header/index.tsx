@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="flex dark:bg-zinc-800 dark:text-white justify-between items-center w-full h-12 px-6 py-2 border-b-[1px] border-b-red-200 dark:border-b-red-700">
       <Link to="/">
-        <img src={darkTheme ? whiteLogo : logo} alt="Logo da Talent Insight" className="mt-1 w-48"/>
+        <img src={darkTheme ? whiteLogo : logo} alt="Logo da Talent Insight" className="w-48"/>
       </Link>
 
       <div className="flex items-center gap-3">

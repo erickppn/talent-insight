@@ -1,4 +1,6 @@
 import { FormEvent, useContext, useState } from "react"
+import classNames from "classnames";
+import { At, CalendarBlank, Key, User } from "phosphor-react";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { useApi } from "../../hooks/useApi";
 
@@ -32,7 +34,7 @@ export function EditAccount() {
       <div className="w-[756px]">
         <h2 className="mb-6 text-xl font-medium">Conta</h2>
 
-        <form onSubmit={handleEditUser} className="bg-[#f3f3f3] rounded-md">
+        <form onSubmit={handleEditUser}>
           <div className="flex flex-col gap-6 justify-between">
             <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
               <label 
@@ -42,34 +44,58 @@ export function EditAccount() {
                 Seu nome
               </label>
               
-              <input 
-                className="px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md"
-                type="text" 
-                name="userName" 
-                id="userName"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                required
-              />
+              <div className="flex items-center border-[1px] border-rose-400  rounded-md">
+                <User
+                  className="ml-3 mr-2 text-zinc-600" 
+                  size={24}
+                />
+                
+                <input 
+                  className="w-full p-3 bg-transparent border-l-[1px] border-rose-400 text-sm"
+                  type="text" 
+                  name="userName" 
+                  id="userName"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  required
+                />
+              </div>
+
             </div>
 
             <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
               <label 
-                className="text-zinc-600 font-medium"
+                className="flex items-center gap-2 text-zinc-600 font-medium"
                 htmlFor="userEmail"
               >
-                E-mail
+                E-mail    
+
+                <span 
+                  className={classNames("text-xs text-rose-600 transition-opacity", 
+                    email != user?.email ? "opacity-100": "opacity-0")
+                }>
+                  será necessário verificar seu novo e-mail
+                </span>
               </label>
+
+              <div className="flex items-center border-[1px] border-rose-400  rounded-md">
+                <At
+                  className="ml-3 mr-2 text-zinc-600" 
+                  size={24}
+                />
+
+                <input 
+                  className="w-full p-3 bg-transparent border-l-[1px] border-rose-400 text-sm"
+                  type="text" 
+                  name="userEmail" 
+                  id="userEmail"
+                  placeholder="exemplo@email.com" 
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
               
-              <input 
-                className="px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md"
-                type="text" 
-                name="userEmail" 
-                id="userEmail"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
             </div>
 
             <div className="flex gap-6">
@@ -80,18 +106,25 @@ export function EditAccount() {
                 >
                   Sua idade
                 </label>
-                
-                <input 
-                  className="w-28 px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md"
-                  type="number" 
-                  name="userAge" 
-                  id="userAge"
-                  min="1"
-                  max="100"
-                  value={age}
-                  onChange={e => setAge(e.target.valueAsNumber)}
-                  required
-                />
+
+                <div className="flex items-center border-[1px] border-rose-400 rounded-md">
+                  <CalendarBlank
+                    className="ml-3 mr-2 text-zinc-600" 
+                    size={22}
+                  />
+                  
+                  <input 
+                    className="w-14 p-3 bg-transparent border-l-[1px] border-rose-400 text-sm"
+                    type="number" 
+                    name="userAge" 
+                    id="userAge"
+                    min="1"
+                    max="100"
+                    value={age}
+                    onChange={e => setAge(e.target.valueAsNumber)}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col gap-3 flex-1 p-4 py-5 bg-slate-50 rounded-md">
@@ -101,21 +134,29 @@ export function EditAccount() {
                 >
                   Confirme sua senha para continuar
                 </label>
+
+                <div className="flex items-center border-[1px] border-rose-400  rounded-md">
+                  <Key
+                    className="ml-3 mr-2 text-zinc-600" 
+                    size={24}
+                  />
                 
-                <input 
-                  className="px-5 py-3 bg-transparent border-[1px] border-rose-400 text-sm rounded-md"
-                  type="password" 
-                  name="userPassword" 
-                  id="userPassword"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  required
-                />
+                  <input 
+                    className="w-full p-3 bg-transparent border-l-[1px] border-rose-400 text-sm"
+                    type="password" 
+                    name="userPassword" 
+                    id="userPassword" 
+                    placeholder="**********************" 
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
             </div>
 
             <button 
-              className="flex justify-center items-center w-36 mt-4 py-1 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
+              className="flex justify-center items-center w-32 mt-4 py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
               type="submit" 
             >
               {isSavingInfo ? <Loading /> : "Salvar"}

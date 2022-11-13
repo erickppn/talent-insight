@@ -1,6 +1,6 @@
 import { useState } from "react";
 import classNames from "classnames";
-import { PencilSimple, User, Warning } from "phosphor-react";
+import { PencilSimple, UserGear, Warning } from "phosphor-react";
 
 import { EditAccount } from "./EditAccount";
 import { EditProfile } from "./EditProfile";
@@ -15,7 +15,7 @@ const menuOptions = [
   {
     optionId: 2,
     name: "Configurações da conta",
-    icon: <User size={20} weight="regular"/> 
+    icon: <UserGear size={20} weight="regular"/> 
   },
   {
     optionId: 3,
