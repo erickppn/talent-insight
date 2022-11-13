@@ -37,10 +37,35 @@ export const useApi = () => ({
     return response.data;
   },
 
+  changeUserPassword: async (currentPassword: string, newPassword: string) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.put('/user/password', { currentPassword, newPassword }, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  },
+
   editUserProfile: async (data: FormData) => {
     const token = localStorage.getItem("ti-auth-token");
 
     const response = await api.put('/user/profile/', data, { 
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  },
+
+  deleteUserAccount: async (password: string) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.delete('/user', {
+      data: { password },
       headers: {
         'Authorization': 'Bearer ' + token,
       }

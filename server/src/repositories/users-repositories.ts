@@ -18,5 +18,6 @@ export interface UsersRepository {
   findUserByEmail: (email: string) => Promise<UserInfoResponse | null>;
   findUserById: (id: string) => Promise<UserInfoResponse | null>;
   editUser: (id: string, name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;
+  changeUserPassword: (id: string, newPassword: string) => Promise<UserInfoResponse>;
   deleteUserById: (id: string) => Promise<void>;
 }

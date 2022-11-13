@@ -46,7 +46,7 @@ export function EditAccount() {
               
               <div className="flex items-center border-[1px] border-rose-400  rounded-md">
                 <User
-                  className="ml-3 mr-2 text-zinc-600" 
+                  className="mx-3 text-zinc-600" 
                   size={24}
                 />
                 
@@ -60,7 +60,6 @@ export function EditAccount() {
                   required
                 />
               </div>
-
             </div>
 
             <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
@@ -80,7 +79,7 @@ export function EditAccount() {
 
               <div className="flex items-center border-[1px] border-rose-400  rounded-md">
                 <At
-                  className="ml-3 mr-2 text-zinc-600" 
+                  className="mx-3 text-zinc-600" 
                   size={24}
                 />
 
@@ -109,7 +108,7 @@ export function EditAccount() {
 
                 <div className="flex items-center border-[1px] border-rose-400 rounded-md">
                   <CalendarBlank
-                    className="ml-3 mr-2 text-zinc-600" 
+                    className="mx-3 text-zinc-600" 
                     size={22}
                   />
                   
@@ -137,7 +136,7 @@ export function EditAccount() {
 
                 <div className="flex items-center border-[1px] border-rose-400  rounded-md">
                   <Key
-                    className="ml-3 mr-2 text-zinc-600" 
+                    className="mx-3 text-zinc-600" 
                     size={24}
                   />
                 

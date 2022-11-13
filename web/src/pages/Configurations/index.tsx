@@ -16,7 +16,7 @@ const menuOptions = [
     to: "account"
   },
   {
-    name: "Danger área",
+    name: "Danger area",
     color: "text-rose-500",
     icon: <Warning size={20} weight="regular"/>,
     to: "danger"
@@ -42,7 +42,7 @@ export function Configurations() {
                 to={option.to}
                 className={ classNames("flex items-center gap-2 w-full rounded-xl p-3 text-sm hover:bg-slate-50 transition-colors", 
                   option.color,
-                  currentPath === option.to && "text-zinc-900 bg-slate-50",
+                  currentPath === option.to && "font-semibold bg-slate-50",
               )}>
                 {option.icon} {option.name}
               </Link>

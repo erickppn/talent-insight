@@ -10,6 +10,7 @@ import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-ada
 import { RegisterUserUseCase } from "./use-cases/user/register-user/register-user-use-case";
 import { AuthenticateUserUseCase } from "./use-cases/auth/authenticate-user/authenticate-user-use-case";
 import { ValidateUserTokenUseCase } from "./use-cases/auth/validate-user-token/validate-user-token-use-case";
+import { ChangeUserPasswordUseCase } from "./use-cases/user/change-password/change-password-use-case";
 import { DeleteUserUseCase } from "./use-cases/user/delete-user/delete-user-use-case";
 import { EditUserProfileUseCase } from "./use-cases/user-profile/edit-user-profile/edit-user-profile-use-case";
 import { EditUserUseCase } from "./use-cases/user/edit-user/edit-user-use-case";
@@ -74,6 +75,29 @@ routes.put('/user', authMiddleware, async (req, res) => {
   });
 });
 
+routes.put('/user/password', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { currentPassword, newPassword } = req.body;
+
+  const prismaUsersRepository = new PrismaUsersRepository;
+  const nodeMailerMailAdapter = new NodeMailerMailAdapter();
+
+  const changeUserPasswordUseCase = new ChangeUserPasswordUseCase(
+    prismaUsersRepository,
+    nodeMailerMailAdapter
+  );
+
+  await changeUserPasswordUseCase.execute({
+    authToken,
+    currentPassword,
+    newPassword
+  });
+
+  res.status(200).json({
+    error: false
+  });
+});
+
 routes.delete('/user', authMiddleware, async (req, res) => {
   const authToken = req.headers["authorization"];
   const { password } = req.body;
@@ -90,18 +114,14 @@ routes.delete('/user', authMiddleware, async (req, res) => {
 
   await deleteUserUseCase.execute({ authToken, password });
 
-  return res.status(400).json({
+  return res.json({
     message: "Conta deletada com sucesso",
   });
-
 });
 
 routes.put('/user/profile/', authMiddleware, upload.single("avatar"), async (req, res) => {
   const authToken = req.headers["authorization"];
   const { artName, aboutMe } = req.body;
-  
-  /*if (!req.file) return console.log("Arquivo não fornecido");
-  const { filename: avatarKey } = req.file;*/
 
   const avatarKey = req.file?.filename;
 
