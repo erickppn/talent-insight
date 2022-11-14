@@ -1,8 +1,8 @@
 import path from "path";
 import { unlink } from "fs/promises";
 
-import { UserProfilesRepository } from "../../../repositories/user-profiles-repositories";
-import { validateToken } from "../../../utils/validate-token";
+import { UserProfilesRepository } from "../../repositories/user-profiles-repositories";
+import { validateToken } from "../../utils/validate-token";
 
 interface EditUserProfileUseCaseRequest {
   authToken: string | undefined,
@@ -38,7 +38,7 @@ export class EditUserProfileUseCase {
 
     //remove old avatar
     if (currentProfileInfo?.avatarKey && newAvatarKey != currentProfileInfo?.avatarKey) {
-      await unlink(path.resolve(__dirname, "../../../../tmp/uploads", currentProfileInfo?.avatarKey));
+      await unlink(path.resolve(__dirname, "../../../tmp/uploads", currentProfileInfo?.avatarKey));
     }
 
     return newUserProfileInfo;

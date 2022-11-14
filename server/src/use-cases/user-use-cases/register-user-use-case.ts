@@ -1,7 +1,7 @@
 import { hash } from "bcrypt";
-import { MailAdapter } from "../../../adapters/mail-adapter";
-import { UsersRepository } from "../../../repositories/users-repositories";
-import { generateToken } from "../../../utils/generate-token";
+import { MailAdapter } from "../../adapters/mail-adapter";
+import { UsersRepository } from "../../repositories/users-repositories";
+import { generateToken } from "../../utils/generate-token";
 
 interface RegisterUserUseCaseRequest {
   name: string,

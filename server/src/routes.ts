@@ -7,13 +7,13 @@ import { PrismaUserProfilesRepository } from "./repositories/prisma/prisma-user-
 import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-adapter";
 
 //use cases imports
-import { RegisterUserUseCase } from "./use-cases/user/register-user/register-user-use-case";
-import { AuthenticateUserUseCase } from "./use-cases/auth/authenticate-user/authenticate-user-use-case";
-import { ValidateUserTokenUseCase } from "./use-cases/auth/validate-user-token/validate-user-token-use-case";
-import { ChangeUserPasswordUseCase } from "./use-cases/user/change-password/change-password-use-case";
-import { DeleteUserUseCase } from "./use-cases/user/delete-user/delete-user-use-case";
-import { EditUserProfileUseCase } from "./use-cases/user-profile/edit-user-profile/edit-user-profile-use-case";
-import { EditUserUseCase } from "./use-cases/user/edit-user/edit-user-use-case";
+import { RegisterUserUseCase } from "./use-cases/user-use-cases/register-user-use-case";
+import { AuthenticateUserUseCase } from "./use-cases/auth-use-cases/authenticate-user-use-case";
+import { ValidateUserTokenUseCase } from "./use-cases/auth-use-cases/validate-user-token-use-case";
+import { ChangeUserPasswordUseCase } from "./use-cases/user-use-cases/change-password-use-case";
+import { DeleteUserUseCase } from "./use-cases/user-use-cases/delete-user-use-case";
+import { EditUserProfileUseCase } from "./use-cases/profile-use-cases/edit-user-profile-use-case";
+import { EditUserUseCase } from "./use-cases/user-use-cases/edit-user-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
