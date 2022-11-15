@@ -7,13 +7,14 @@ import { allowedMimes } from ".";
 
 interface ProfilePreviewProps {
   avatarUrl: string | null, 
+  bannerUrl: string | null,
   artName: string | null,
   aboutMe: string, 
   setAvatarUrl: (url: string) => void,
   setNewImageAvatar: (image: File) => void,
 }
 
-export function ProfilePreview({ avatarUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar }: ProfilePreviewProps) {
+export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar }: ProfilePreviewProps) {
   const { user } = useContext(AuthContext);
 
   function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
@@ -30,15 +31,24 @@ export function ProfilePreview({ avatarUrl, artName, aboutMe, setAvatarUrl, setN
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-[284px] h-fit bg-slate-50 rounded-md overflow-hidden">
-      <div className="w-full h-28 bg-rose-400"/>
+    <div className="flex flex-col justify-center w-72 h-fit -mt-28 z-10 bg-slate-50 rounded-md shadow-md animate-f-bounce overflow-hidden">
+      <div className="w-full h-36 bg-rose-400">
+        {
+          bannerUrl && (
+            <img 
+              className="w-full h-full object-cover"
+              src={bannerUrl} alt="" 
+            />
+          )
+        }
+      </div>
 
-      <div className="h-32 w-32 -mt-16 rounded-full overflow-hidden">
+      <div className="h-28 w-28 -mt-16 ml-8 rounded-full overflow-hidden">
         <label 
-          className="group flex flex-col justify-center items-center relative h-32 w-32 rounded-md overflow-hidden cursor-pointer"
+          className="group flex flex-col justify-center items-center relative w-full h-full overflow-hidden cursor-pointer"
         >
           <UploadSimple 
-            className="absolute p-1 bg-black bg-opacity-50 rounded-full group-hover:scale-150 group-hover:bg-opacity-100 transition-all"
+            className="absolute p-1 bg-black bg-opacity-50 rounded-full group-hover:scale-110 group-hover:bg-opacity-80 transition-all"
             color='#FFF' 
             size={26} 
             weight="bold"
@@ -60,35 +70,33 @@ export function ProfilePreview({ avatarUrl, artName, aboutMe, setAvatarUrl, setN
         </label>
       </div>
 
-      <div className="flex flex-col w-full px-6">
-        <div className="flex flex-col w-full mt-4">
-          <span className="text-lg font-medium">
+      <div className="flex flex-col w-full px-6 py-2">
+        <div className="flex flex-col w-full">
+          <span className="text-xl font-medium truncate">
             {artName || user?.name}
           </span>
 
           {
             artName && (
-              <span>{user?.name}</span>
+              <span className="text-lg">{user?.name}</span>
             )
           }
         </div>
 
         {
           aboutMe && (
-            <div className="w-full mt-4 p-2 border-[1px] bg-slate-100 rounded-md">
-              <div className="max-h-[140px] overflow-hidden">
-                <p className="text-sm text-zinc-600">
-                  {aboutMe}
-                </p>
-              </div>
+            <div className="w-full min-h-[98px] max-h-[214px] mt-4 p-2 border-[1px] bg-slate-100 rounded-md overflow-hidden">
+              <p className="text-sm text-zinc-600">
+                {aboutMe}
+              </p>
             </div>
           )
         }
 
         <hr className="w-full mt-4 border-[1px]"/>
 
-        <span className="w-full my-4 text-zinc-600 text-xs">
-          Entrou em 10/2022
+        <span className="w-full mt-3 mb-2 text-zinc-600 text-xs">
+          Entrou em 11/2022
         </span>
       </div>
     </div>

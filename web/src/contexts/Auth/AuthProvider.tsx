@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { Profile, User } from "../../types/User";
+import { User } from "../../types/User";
+import { Profile } from "../../types/Profile";
 
 import { useApi } from "../../hooks/useApi";
 

@@ -6,6 +6,7 @@ import { Loading } from "../../../components/Loading";
 import { ProfilePreview } from "./ProfilePreview";
 
 import defaultAvatar from "../../../assets/floppa.png";
+import { BannerPreview } from "./BannerPreview";
 
 export const allowedMimes = [
   "image/jpeg",
@@ -18,16 +19,21 @@ const aboutMeCharacterLimit = 300;
  
 export function EditProfile() {
   const { profile, setProfile } = useContext(AuthContext);
+  const { editUserProfile } = useApi();
 
+  //text inputs
   const [artName, setArtName] = useState(profile?.artName || "");
   const [aboutMe, setAboutMe] = useState(profile?.aboutMe || "");
+
+  //images inputs
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || null);
+  const [bannerUrl, setBannerUrl] = useState(profile?.bannerUrl || null);
 
   const [newImageAvatar, setNewImageAvatar] = useState<File | null>(null);
+  const [newImageBanner, setNewImageBanner] = useState<File | null>(null);
 
+  //loader
   const [isSavingInfo, setIsSavingInfo] = useState(false);
-
-  const { editUserProfile } = useApi();
 
   async function handleEditProfile(e: FormEvent) {
     e.preventDefault();
@@ -36,6 +42,7 @@ export function EditProfile() {
     const formData = new FormData();
 
     formData.append("avatar", newImageAvatar || defaultAvatar);
+    formData.append("banner", newImageBanner || defaultAvatar);
 
     formData.append("artName", artName);
     formData.append("aboutMe", aboutMe);
@@ -44,6 +51,9 @@ export function EditProfile() {
 
     setProfile(newData.newUserProfileInfo);
     setIsSavingInfo(false);
+
+    setNewImageAvatar(null);
+    setNewImageBanner(null);
   }
 
   return (
@@ -52,18 +62,23 @@ export function EditProfile() {
         <h2 className="mb-6 text-xl font-medium">Perfil</h2>
 
         <form onSubmit={handleEditProfile} encType="mutipart/form-data">
-          <div className="flex justify-center items-center max-w-[756px] h-52 bg-rose-400 rounded-md text-white">banner (em breve)</div>
+          <BannerPreview 
+            bannerUrl={bannerUrl} 
+            setBannerUrl={setBannerUrl} 
+            setNewImageBanner={setNewImageBanner}
+          />
 
-          <div className="flex gap-10 mt-5">
+          <div className="flex justify-between mt-5 pl-4">
             <ProfilePreview 
-              avatarUrl={avatarUrl}
-              artName={artName}
+              avatarUrl={avatarUrl} 
+              bannerUrl={bannerUrl}
+              artName={artName} 
               aboutMe={aboutMe} 
-              setAvatarUrl={setAvatarUrl}
-              setNewImageAvatar={setNewImageAvatar}
+              setAvatarUrl={setAvatarUrl} 
+              setNewImageAvatar={setNewImageAvatar} 
             />
 
-            <div className="flex flex-col justify-between items-end">
+            <div className="flex flex-col items-end">
               <div className="flex gap-4">
                 <div>
                   <div className="flex flex-col gap-3 bg-slate-50 p-4 rounded-md">
@@ -109,7 +124,7 @@ export function EditProfile() {
               </div>
 
               <button 
-                className="flex justify-center items-center w-full mt-6 py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
+                className="flex justify-center items-center w-full mt-5 py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
                 type="submit" 
                 disabled={aboutMe.length > aboutMeCharacterLimit}
               >

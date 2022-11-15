@@ -115,15 +115,20 @@ routes.delete('/user', authMiddleware, async (req, res) => {
   await deleteUserUseCase.execute({ authToken, password });
 
   return res.json({
+    error: false,
     message: "Conta deletada com sucesso",
   });
 });
 
-routes.put('/user/profile/', authMiddleware, upload.single("avatar"), async (req, res) => {
+routes.put('/user/profile/', authMiddleware, upload.fields([{ name: "avatar", maxCount: 1 }, { name: "banner", maxCount: 1 }]), async (req, res) => {
   const authToken = req.headers["authorization"];
   const { artName, aboutMe } = req.body;
+  const files = req.files;
 
-  const avatarKey = req.file?.filename;
+  if(!files || Array.isArray(files)) throw new Error("error receiving files");
+
+  const avatarKey = files.avatar !== undefined ? files.avatar[0].filename : null;
+  const bannerKey = files.banner !== undefined ? files.banner[0].filename : null;
 
   const prismaUserProfilesRepository = new PrismaUserProfilesRepository();
 
@@ -135,7 +140,8 @@ routes.put('/user/profile/', authMiddleware, upload.single("avatar"), async (req
     authToken, 
     artName, 
     aboutMe,
-    avatarKey
+    avatarKey,
+    bannerKey
   });
 
   res.status(200).json({

@@ -11,11 +11,16 @@ module.exports = {
         xBounce: {
           '0%, 100%': { transform: 'none' },
           '50%': { transform: 'translateX(15%)' }
+        },
+        test: {
+          '0%': { opacity: "0%", transform: 'translateY(5%)'},
+          '100%': { opacity: "100%", transform: 'translateY(0%)'},
         }
       },
       animation: {
         'strong-pulse': 'strongPulse 2s ease-out infinite',
-        'x-bounce': 'xBounce .8s ease-in-out infinite'
+        'x-bounce': 'xBounce .8s ease-in-out infinite',
+        'f-bounce': 'test .8s ease',
       }
     },
   },

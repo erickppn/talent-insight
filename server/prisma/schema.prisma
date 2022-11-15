@@ -26,9 +26,11 @@ model User {
 model Profile {
   id        String  @id @default(uuid())
   artName   String?
-  aboutMe   String?
+  aboutMe   String? @db.VarChar(300)
   avatarKey String?
   avatarUrl String?
+  bannerKey String?
+  bannerUrl String?
   userId    String  @unique
   user      User    @relation(fields: [userId], references: [id])
 

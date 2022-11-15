@@ -34,14 +34,16 @@ export function Menu() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <HeadlessMenu.Items className="absolute right-0 mt-5 w-40 rounded-md bg-white dark:bg-zinc-800 before:w-4 before:h-4 before:bg-white dark:before:bg-zinc-800 before:transition-colors before:absolute before:rounded-sm before:rotate-45 before:-top-1 before:right-2">
+        <HeadlessMenu.Items className="absolute right-0 z-10 mt-5 w-40 rounded-md bg-white dark:bg-zinc-800 before:w-4 before:h-4 before:bg-white dark:before:bg-zinc-800 before:transition-colors before:absolute before:rounded-sm before:rotate-45 before:-top-1 before:right-2">
           { user && 
             <div className="flex items-center mx-[14px] mt-3 mb-2 font-semibold">
               <div className="h-6 w-6 rounded-md overflow-hidden mr-2">
                 <img src={profilePic ? profilePic : avatar} alt="Minha foto de perfil" className="h-6 w-6 object-cover" />
               </div>
 
-              { profile?.artName ? profileFirstName : userFirstName }
+              <span className="flex-1 truncate">
+                { profile?.artName ? profileFirstName : userFirstName }
+              </span>
             </div>
           }
 

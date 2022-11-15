@@ -5,9 +5,3 @@ export type User = {
   age: number,
   isActive: boolean,
 }
-
-export type Profile = {
-  artName: string | null, 
-  aboutMe: string | null, 
-  avatarUrl: string | null
-}
