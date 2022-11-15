@@ -36,13 +36,17 @@ export class DeleteUserUseCase {
     //check if password match
     const passwordMatch = await compare(password, user.password!);
 
-    if (!passwordMatch) throw new Error("Senha inválida");
+    if (!passwordMatch) throw new Error("Senha incorreta");
 
     //delete user profile
     const profile = await this.userProfileRepository.findProfileByUserId(userId);
 
     if (profile?.avatarKey) {
-      await unlink(path.resolve(__dirname, "../../../../tmp/uploads", profile?.avatarKey));
+      await unlink(path.resolve(__dirname, "../../../tmp/uploads", profile?.avatarKey));
+    }
+
+    if (profile?.bannerKey) {
+      await unlink(path.resolve(__dirname, "../../../tmp/uploads", profile?.bannerKey));
     }
 
     await this.userProfileRepository.deleteProfileByUserId(userId);

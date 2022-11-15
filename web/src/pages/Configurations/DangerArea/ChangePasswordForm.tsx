@@ -32,6 +32,7 @@ export function ChangePasswordForm({currentPassword, setCurrentPassword, handleC
 
     if (response.error) {
       setIsSavingInfo(false);
+      handleCurrentPasswordInputFocus();
       return setErrorMessage(response.message);
     }
 

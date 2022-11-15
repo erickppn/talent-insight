@@ -57,7 +57,8 @@ export function DangerArea() {
 
           <DeleteAccountForm 
             currentPassword={currentPassword} 
-            handleCurrentPasswordInputFocus={handleCurrentPasswordInputFocus}
+            handleCurrentPasswordInputFocus={handleCurrentPasswordInputFocus} 
+            setErrorMessage={setErrorMessage}
           /> 
         </div>
       </div>

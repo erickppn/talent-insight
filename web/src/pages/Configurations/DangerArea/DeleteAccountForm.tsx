@@ -6,10 +6,11 @@ import { Loading } from "../../../components/Loading";
 
 interface DeleteAccountFormProps {
   currentPassword: string,
-  handleCurrentPasswordInputFocus: () => void
+  handleCurrentPasswordInputFocus: () => void,
+  setErrorMessage: (message: string) => void,
 }
 
-export function DeleteAccountForm({currentPassword, handleCurrentPasswordInputFocus}: DeleteAccountFormProps) {
+export function DeleteAccountForm({currentPassword, handleCurrentPasswordInputFocus, setErrorMessage}: DeleteAccountFormProps) {
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const { deleteUserAccount } = useApi();
@@ -28,7 +29,12 @@ export function DeleteAccountForm({currentPassword, handleCurrentPasswordInputFo
 
     if (!response.error) {
       signout();
+    } else {
+      setErrorMessage(response.message);
+      handleCurrentPasswordInputFocus();
     }
+
+    setIsDeletingAccount(false);
   }
   
   return (

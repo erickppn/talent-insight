@@ -49,8 +49,8 @@ export function AuthProvider({ children }: { children: JSX.Element }){
   }
 
   useEffect(() => {
-    localStorage.setItem("saved-user", JSON.stringify(user));
-    localStorage.setItem("saved-profile", JSON.stringify(profile));
+    localStorage.setItem("saved-user", JSON.stringify(user) || "null");
+    localStorage.setItem("saved-profile", JSON.stringify(profile) || "null");
   }, [user]);
 
   useEffect(() => {
@@ -61,8 +61,14 @@ export function AuthProvider({ children }: { children: JSX.Element }){
         try {
           const data = await api.validateUserToken(storageData);
 
-          setUser(data.user);
-          setProfile(data.userProfile);
+          if (data.user) {
+            setUser(data.user);
+            setProfile(data.userProfile);
+          } else {
+            setUser(null);
+            setProfile(null);
+            setToken('');
+          }
 
         } catch (e) {
           setUser(null);
