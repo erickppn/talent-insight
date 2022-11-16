@@ -8,7 +8,7 @@ import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
 import { LoggedMenuOptions } from "./LoggedMenuOptions";
 
-import avatar from "../../../assets/floppa.png";
+import defaultAvatar from "../../../assets/default-avatar.png";
 
 export function Menu() {
   const { darkTheme, setDarkTheme } = useContext(ThemeContext);
@@ -38,7 +38,7 @@ export function Menu() {
           { user && 
             <div className="flex items-center mx-[14px] mt-3 mb-2 font-semibold">
               <div className="h-6 w-6 rounded-md overflow-hidden mr-2">
-                <img src={profilePic ? profilePic : avatar} alt="Minha foto de perfil" className="h-6 w-6 object-cover" />
+                <img src={profilePic ? profilePic : defaultAvatar} alt="Minha foto de perfil" className="h-6 w-6 object-cover" />
               </div>
 
               <span className="flex-1 truncate">

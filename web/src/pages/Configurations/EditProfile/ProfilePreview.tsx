@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { UploadSimple } from "phosphor-react";
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
-import defaultAvatar from "../../../assets/floppa.png";
+import defaultAvatar from "../../../assets/default-avatar.png";
 import { allowedMimes } from ".";
 
 interface ProfilePreviewProps {

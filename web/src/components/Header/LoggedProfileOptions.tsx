@@ -3,7 +3,7 @@ import { PaperPlaneRight } from "phosphor-react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 
-import avatar from "../../assets/floppa.png";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 export function LoggedProfileOptions() {
   const {profile} = useContext(AuthContext);
@@ -21,7 +21,7 @@ export function LoggedProfileOptions() {
       </Link>
 
       <Link to="/@me" className="h-8 w-8 rounded-md overflow-hidden">
-        <img src={profilePic ? profilePic : avatar} alt="Minha foto de perfil" className="h-8 w-8 object-cover" />
+        <img src={profilePic ? profilePic : defaultAvatar} alt="Minha foto de perfil" className="h-8 w-8 object-cover" />
       </Link>
     </>
   )

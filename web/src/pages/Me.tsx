@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/Auth/AuthContext";
 
-import avatar from "../assets/floppa.png";
+import defaultAvatar from "../assets/default-avatar.png";
 
 export function Me() {
   const { user, profile } = useContext(AuthContext);
@@ -23,7 +23,7 @@ export function Me() {
         <div className="flex flex-col"><span className="font-bold">Sobre Mim:</span> {profile?.aboutMe}</div>
         <div className="flex flex-col"><span className="font-bold">Minha foto de perfil:</span>
           <a className="block w-32" href={profile?.avatarUrl ? profile?.avatarUrl : "#"} target="_blank">
-            <img src={profile?.avatarUrl ? profile?.avatarUrl : avatar} />
+            <img src={profile?.avatarUrl ? profile?.avatarUrl : defaultAvatar} />
           </a>
         </div>
       </div>

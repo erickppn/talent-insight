@@ -1,12 +1,13 @@
-import React, { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import classNames from "classnames";
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 import { useApi } from "../../../hooks/useApi";
-import { Loading } from "../../../components/Loading";
-import { ProfilePreview } from "./ProfilePreview";
 
-import defaultAvatar from "../../../assets/floppa.png";
+import { ProfilePreview } from "./ProfilePreview";
 import { BannerPreview } from "./BannerPreview";
+import { Loading } from "../../../components/Loading";
+
+import defaultAvatar from "../../../assets/default-avatar.png";
 
 export const allowedMimes = [
   "image/jpeg",
