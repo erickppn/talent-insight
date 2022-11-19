@@ -4,6 +4,8 @@ import multer from "multer";
 //repositories and adapters imports
 import { PrismaUsersRepository } from "./repositories/prisma/prisma-users-repository";
 import { PrismaUserProfilesRepository } from "./repositories/prisma/prisma-user-profiles-repository";
+import { PrismaPostsRepository } from "./repositories/prisma/prisma-posts-repository";
+
 import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-adapter";
 
 //use cases imports
@@ -14,6 +16,7 @@ import { ChangeUserPasswordUseCase } from "./use-cases/user-use-cases/change-pas
 import { DeleteUserUseCase } from "./use-cases/user-use-cases/delete-user-use-case";
 import { EditUserProfileUseCase } from "./use-cases/profile-use-cases/edit-user-profile-use-case";
 import { EditUserUseCase } from "./use-cases/user-use-cases/edit-user-use-case";
+import { SendPostUseCase } from "./use-cases/posts-use-cases/send-post-use-case";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
@@ -187,5 +190,38 @@ routes.get('/auth/validate-token', async (req, res) => {
   return res.status(201).json({ 
     user,
     userProfile
+  });
+});
+
+//posts routes
+routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCount: 1 }, { name: "attachments", maxCount: 4 } ]),async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { title, description } = req.body;
+  const files = req.files;
+
+  if(!files || Array.isArray(files)) throw new Error("error receiving files");
+
+  const thumbnailKey = files.thumbnail !== undefined ? files.thumbnail[0].filename : null;
+  const { attachments } = files;
+
+  
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const prismaPostRespository = new PrismaPostsRepository();
+
+  const sendPostUseCase = new SendPostUseCase(
+    prismaUsersRepository,
+    prismaPostRespository,
+  );
+
+  const post = await sendPostUseCase.execute({
+    authToken,
+    title,
+    description,
+    thumbnailKey,
+    attachments
+  });
+
+  res.status(200).json({
+    post
   });
 });

@@ -19,6 +19,7 @@ model User {
   isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   profile   Profile?
+  posts     Post[]
 
   @@map("users")
 }
@@ -35,4 +36,29 @@ model Profile {
   user      User    @relation(fields: [userId], references: [id])
 
   @@map("user_profile")
+}
+
+model Post {
+  id           String       @id @default(uuid())
+  title        String
+  description  String?
+  thumbnailKey String?
+  thumbnailUrl String?
+  attachments  Attachment[] 
+  postedAt     DateTime     @default(now())
+  likes        Int          @default(0)
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@map("posts")
+}
+
+model Attachment {
+  id            String @id @default(uuid())
+  attachmentKey String
+  attachmentUrl String
+  postId        String
+  post          Post   @relation(fields: [postId], references: [id])
+
+  @@map("post_attachment")
 }
