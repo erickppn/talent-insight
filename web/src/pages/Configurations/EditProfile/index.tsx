@@ -60,7 +60,9 @@ export function EditProfile() {
   return (
     <div className="flex flex-col items-center w-full py-6">
       <div>
-        <h2 className="mb-6 text-xl font-medium">Perfil</h2>
+        <h2 className="mb-6 p-3 text-xl font-medium bg-rose-400 rounded-md text-white">
+          Perfil
+        </h2>
 
         <form onSubmit={handleEditProfile} encType="mutipart/form-data">
           <BannerPreview 
@@ -82,7 +84,7 @@ export function EditProfile() {
             <div className="flex flex-col items-end">
               <div className="flex gap-4">
                 <div>
-                  <div className="flex flex-col gap-3 bg-slate-50 p-4 rounded-md">
+                  <div className="flex flex-col gap-3 bg-slate-50 p-4 rounded-md shadow-md">
                     <label 
                       className="text-zinc-600 font-medium"
                       htmlFor="artName"
@@ -100,7 +102,7 @@ export function EditProfile() {
                     />
                   </div>
 
-                  <div className="flex flex-col gap-3 mt-6 bg-slate-50 p-4 rounded-md">
+                  <div className="flex flex-col gap-3 mt-6 bg-slate-50 p-4 rounded-md shadow-md">
                     <label 
                     className="text-zinc-600 font-medium"
                       htmlFor="aboutMe"

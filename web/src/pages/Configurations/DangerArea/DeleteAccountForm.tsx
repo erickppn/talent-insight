@@ -40,7 +40,7 @@ export function DeleteAccountForm({currentPassword, handleCurrentPasswordInputFo
   return (
     <form 
       onSubmit={hadleDeleteAccount}
-      className="flex flex-col rounded-md overflow-hidden"
+      className="flex flex-col rounded-md overflow-hidden shadow-md"
     >
       <div className="flex flex-col justify-center items-center gap-3 py-10 bg-zinc-50 border-b-[1px] border-b-zinc-400 text-red-500">
         <Warning size={46} weight="thin" />

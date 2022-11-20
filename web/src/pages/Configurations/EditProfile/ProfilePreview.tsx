@@ -83,15 +83,11 @@ export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvat
           }
         </div>
 
-        {
-          aboutMe && (
-            <div className="w-full min-h-[98px] max-h-[214px] mt-4 p-2 border-[1px] bg-slate-100 rounded-md overflow-hidden">
-              <p className="text-sm text-zinc-600">
-                {aboutMe}
-              </p>
-            </div>
-          )
-        }
+        <div className="w-full h-[222px] mt-4 p-2 border-[1px] bg-slate-100 rounded-md overflow-hidden">
+          <p className="text-sm text-zinc-600">
+            {aboutMe}
+          </p>
+        </div>
 
         <hr className="w-full mt-4 border-[1px]"/>
 

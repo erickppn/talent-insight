@@ -15,10 +15,12 @@ export function DangerArea() {
   return (
     <div className="flex flex-col items-center w-full py-6">
       <div className="w-[756px]">
-        <h2 className="mb-6 text-xl text-rose-500 font-medium">Danger Area</h2>
+        <h2 className="mb-6 p-3 text-xl font-medium bg-rose-400 rounded-md text-white shadow-md">
+          Cuidado
+        </h2>
 
         <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-3 flex-1 p-4 py-5 bg-slate-50 rounded-md">
+          <div className="flex flex-col gap-3 flex-1 p-4 py-5 bg-slate-50 rounded-md shadow-md">
             <label 
               className="flex items-center gap-2 text-zinc-600 font-medium"
               htmlFor="userPassword"
@@ -28,7 +30,7 @@ export function DangerArea() {
               {errorMessage && <span className="text-xs text-rose-400">{errorMessage}</span> }
             </label>
 
-            <div className="flex items-center border-[1px] border-rose-400  rounded-md">
+            <div className="flex items-center border-[1px] border-rose-400 rounded-md">
               <Key
                 className="mx-3 text-zinc-600" 
                 size={24}

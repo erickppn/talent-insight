@@ -73,4 +73,16 @@ export const useApi = () => ({
 
     return response.data;
   },
+
+  sendPost: async (data: FormData) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.post('/send', data, { 
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  },
 });

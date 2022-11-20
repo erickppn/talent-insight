@@ -3,7 +3,7 @@ import { ModalContext } from "./ModalContext";
 
 export function ModalProvider({ children }: { children: JSX.Element }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<'signInUser' | 'registerUser'>(null!);
+  const [modalContent, setModalContent] = useState<'signInUser' | 'registerUser' | 'sendPost'>(null!);
 
   function openLogin() {
     setModalContent("signInUser");
@@ -12,6 +12,11 @@ export function ModalProvider({ children }: { children: JSX.Element }) {
 
   function openRegister() {
     setModalContent("registerUser");
+    setIsOpen(true);
+  }
+
+  function openSendPost() {
+    setModalContent("sendPost")
     setIsOpen(true);
   }
   
@@ -24,6 +29,7 @@ export function ModalProvider({ children }: { children: JSX.Element }) {
       isOpen,
       openLogin,
       openRegister,
+      openSendPost, 
       closeModal,
       modalContent,
     }}>

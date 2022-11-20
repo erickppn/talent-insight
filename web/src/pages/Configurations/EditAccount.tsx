@@ -32,11 +32,13 @@ export function EditAccount() {
   return (
     <div className="flex flex-col items-center w-full py-6">
       <div className="w-[756px]">
-        <h2 className="mb-6 text-xl font-medium">Conta</h2>
+        <h2 className="mb-6 p-3 text-xl font-medium bg-rose-400 rounded-md text-white shadow-md">
+          Conta
+        </h2>
 
         <form onSubmit={handleEditUser}>
           <div className="flex flex-col gap-6 justify-between">
-            <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
+            <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md shadow-md">
               <label 
                 className="text-zinc-600 font-medium"
                 htmlFor="userName"
@@ -44,7 +46,7 @@ export function EditAccount() {
                 Seu nome
               </label>
               
-              <div className="flex items-center border-[1px] border-rose-400  rounded-md">
+              <div className="flex items-center border-[1px] border-rose-400 rounded-md">
                 <User
                   className="mx-3 text-zinc-600" 
                   size={24}
@@ -62,7 +64,7 @@ export function EditAccount() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
+            <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md shadow-md">
               <label 
                 className="flex items-center gap-2 text-zinc-600 font-medium"
                 htmlFor="userEmail"
@@ -94,11 +96,10 @@ export function EditAccount() {
                   required
                 />
               </div>
-              
             </div>
 
             <div className="flex gap-6">
-              <div className="flex flex-col gap-3 w-fit p-4 py-5 bg-slate-50 rounded-md">
+              <div className="flex flex-col gap-3 w-fit p-4 py-5 bg-slate-50 rounded-md shadow-md">
                 <label 
                   className="text-zinc-600 font-medium"
                   htmlFor="userAge"
@@ -126,7 +127,7 @@ export function EditAccount() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 flex-1 p-4 py-5 bg-slate-50 rounded-md">
+              <div className="flex flex-col gap-3 flex-1 p-4 py-5 bg-slate-50 rounded-md shadow-md">
                 <label 
                   className="text-zinc-600 font-medium"
                   htmlFor="userPassword"

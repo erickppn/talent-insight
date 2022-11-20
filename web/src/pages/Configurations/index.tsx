@@ -16,7 +16,7 @@ const menuOptions = [
     to: "account"
   },
   {
-    name: "Danger area",
+    name: "Cuidado",
     color: "text-rose-500",
     icon: <Warning size={20} weight="regular"/>,
     to: "danger"

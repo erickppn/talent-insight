@@ -24,7 +24,7 @@ export function BannerPreview({ bannerUrl, setBannerUrl, setNewImageBanner }: Ba
   }
 
   return (
-    <label className="flex justify-center items-center w-[756px] h-96 border-[2px] border-rose-400 rounded-md overflow-hidden cursor-pointer">
+    <label className="flex justify-center items-center w-[756px] h-96 border-[2px] border-dashed border-rose-400 rounded-md overflow-hidden cursor-pointer">
       <div 
         className="group flex flex-col justify-center items-center w-full h-full relative"
       >

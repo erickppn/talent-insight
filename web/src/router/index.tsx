@@ -3,7 +3,6 @@ import { RequireAuth } from "./RequireAuth";
 
 //pages imports
 import { Me } from "../pages/Me";
-import { SendPost } from "../pages/SendPost";
 import { Configurations } from "../pages/Configurations";
 import { EditProfile } from "../pages/Configurations/EditProfile";
 import { EditAccount } from "../pages/Configurations/EditAccount";
@@ -24,12 +23,6 @@ export function Router() {
       <Route path="@me" element={
         <RequireAuth>
           <Me />
-        </RequireAuth>
-      }/>
-
-      <Route path="/@me/send" element={
-        <RequireAuth>
-          <SendPost />
         </RequireAuth>
       }/>
 

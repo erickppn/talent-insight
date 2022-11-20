@@ -49,7 +49,7 @@ export function ChangePasswordForm({currentPassword, setCurrentPassword, handleC
       className="flex flex-col gap-6"
       onSubmit={handleChangePassword}
     >
-      <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md">
+      <div className="flex flex-col gap-3 p-4 py-5 bg-slate-50 rounded-md shadow-md">
         <label 
           className="flex items-center gap-2 text-zinc-600 font-medium"
           htmlFor="newPassword"

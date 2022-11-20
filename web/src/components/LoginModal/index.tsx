@@ -1,12 +1,13 @@
 import { Fragment, useContext } from "react";
 import { Transition, Dialog } from "@headlessui/react";
+import classNames from "classnames";
 
 import { ThemeContext } from "../../contexts/Theme/ThemeContext";
 import { ModalContext } from "../../contexts/Modal/ModalContext";
 
 import { SignInUser } from "./Content/SignInUser";
 import { RegisterUser } from "./Content/RegisterUser";
-import classNames from "classnames";
+import { SendPost } from "./Content/SendPost";
 
 export function Modal() {
   const { darkTheme } = useContext(ThemeContext);
@@ -27,12 +28,16 @@ export function Modal() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="dark:bg-zinc-800 bg-white rounded-lg shadow-lg">
+            <Dialog.Panel className="dark:bg-zinc-800 bg-white rounded-lg shadow-lg z-20">
               { 
                 modalContent == "signInUser" ? (
                   <SignInUser />
                 ) : (
-                  <RegisterUser />
+                  modalContent == "registerUser" ? (
+                    <RegisterUser />
+                  ) : (
+                    <SendPost />
+                  )
                 )
               }
             </Dialog.Panel>
