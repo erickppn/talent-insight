@@ -7,7 +7,7 @@ import { ModalContext } from "./contexts/Modal/ModalContext";
 import { Header } from "./components/Header";
 import { Router } from "./router";
 import { Sidebar } from "./components/Sidebar";
-import { Modal } from "./components/LoginModal";
+import { Modal } from "./components/Modal";
 
 export function App() {
   const { darkTheme } = useContext(ThemeContext);
