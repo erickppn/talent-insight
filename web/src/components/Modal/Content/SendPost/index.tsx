@@ -4,6 +4,7 @@ import { PaperPlaneTilt } from "phosphor-react";
 
 import { ImagesForm } from "./ImagesForm";
 import classNames from "classnames";
+import { VideoForm } from "./VideoForm";
 
 export function SendPost() {
   const [title, setTitle] = useState("");
@@ -25,7 +26,7 @@ export function SendPost() {
           <Tab.List className="flex justify-between">
             <Tab as={Fragment}>
               {({selected}) => (
-                <button className={classNames("flex-1 p-3 pt-0 border-b-2 text-lg font-semibold uppercase", selected && "text-sky-600 border-b border-b-sky-600")}>
+                <button className={classNames("flex-1 p-3 pt-0 border-b-2 text-sm font-semibold uppercase", selected && "text-sky-600 border-b border-b-sky-600")}>
                   Imagens
                 </button>
               )}
@@ -33,7 +34,7 @@ export function SendPost() {
 
             <Tab as={Fragment}>
               {({selected}) => (
-                <button className={classNames("flex-1 p-3 pt-0 border-b-2 text-lg font-semibold uppercase", selected && "text-sky-600 border-b border-b-sky-600")}>
+                <button className={classNames("flex-1 p-3 pt-0 border-b-2 text-sm font-semibold uppercase", selected && "text-sky-600 border-b border-b-sky-600")}>
                   Vídeo
                 </button>
               )}
@@ -49,7 +50,10 @@ export function SendPost() {
             </Tab.Panel>
             
             <Tab.Panel>
-              Content 2
+              <VideoForm 
+                postTitle={title} 
+                setPostTitle={setTitle}
+              />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

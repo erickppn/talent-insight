@@ -1,9 +1,8 @@
-import { useState, useContext, FormEvent } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Image, Plus } from "phosphor-react";
+import { Image, Plus, VideoCamera } from "phosphor-react";
 import { ModalContext } from "../../../../../contexts/Modal/ModalContext";
 import { useApi } from "../../../../../hooks/useApi";
-import { AttachmentsListPreview } from "./AttachmentsListPreview";
 
 const allowedImagesMimes = [
   "image/jpeg",
@@ -12,18 +11,35 @@ const allowedImagesMimes = [
   "image/gif",
 ];
 
-export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, setPostTitle: (title: string) => void }) {
+const allowedVideosMimes = [
+  "video/mp4",
+]
+
+export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, setPostTitle: (title: string) => void }) {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-
   const [description, setDescripion] = useState("");
-
-  const [attachments, setAttachments] = useState<FileList | null>(null);
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [videoInput, setVideoInput] = useState<File | null>(null);
+  
+  const [videoUrl , setVideoUrl] = useState<string>("");
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
 
   const { closeModal } = useContext(ModalContext)
   const { sendPost } = useApi();
   const navigate = useNavigate();
 
+  function handleAddVideo(e: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = e.target.files;
+
+    if (!fileList) return;
+
+    const video = fileList[0];
+
+    if (allowedVideosMimes.includes(video.type)) {
+      setVideoInput(video);
+      setVideoUrl(URL.createObjectURL(video));
+    }
+  }
+  
   function handleAddThumbnail(e: React.ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
 
@@ -42,10 +58,8 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
 
     const formData = new FormData();
 
-    if (attachments) {
-      for (let i = 0; i < attachments.length; i++) {
-        formData.append("attachments", attachments[i]);
-      }
+    if (videoInput) {
+      formData.append("attachments", videoInput);
     }
 
     if (thumbnail) {
@@ -62,18 +76,18 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
       navigate(`/post/${response.id}`);
     }
   }
-
+  
   return (
     <form 
       className="p-6"
       onSubmit={handleSendPost}
     >
-      <h3 className="flex items-center gap-2 font-semibold mb-5">
-        <Image size={30} /> Thumbnail
-      </h3>
-      
       <div>
-        <label htmlFor="thumbnail">
+        <label className="flex flex-col" htmlFor="thumbnail">
+          <h3 className="flex items-center gap-2 font-semibold mb-5">
+            <Image size={30} /> Thumbnail
+          </h3>
+
           <div className="flex justify-center items-center w-full h-72 border-dashed border border-rose-400 overflow-hidden rounded-md hover:bg-slate-200 active:bg-slate-300 transition-colors cursor-pointer">
             {
               thumbnail ? (
@@ -91,9 +105,10 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
           name="thumbnail" 
           id="thumbnail" 
           onChange={handleAddThumbnail}
+          required
         />
       </div>
-      
+
       <h3 className="text-lg font-semibold mt-4 mb-5">Detalhes</h3>
 
       <div className="flex flex-col gap-3">
@@ -135,9 +150,46 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
         />
       </div>
 
-      <AttachmentsListPreview 
-        setAttachments={setAttachments}
-      />
+      <div className="mt-8">
+        {
+          videoUrl ? (
+            <div className="flex flex-col gap-4">
+              <label htmlFor="video" className="flex items-center gap-2 text-zinc-700 whitespace-nowrap">
+                <VideoCamera size={30} />
+
+                anexe seu vídeo aqui
+              </label>
+
+              <video 
+                className="max-w-full max-h-80 bg-black rounded-md"
+                src={videoUrl}
+                controls={true}
+                poster={thumbnailUrl || ""}
+              />
+            </div>
+          ) : (
+            <label className="flex flex-col gap-4" htmlFor="video">
+              <div className="flex items-center gap-2 text-zinc-700 whitespace-nowrap">
+                <VideoCamera size={30} />
+    
+                anexe seu vídeo aqui
+              </div>
+    
+              <div className="flex justify-center items-center w-full h-80 border-dashed border border-rose-400 overflow-hidden rounded-md hover:bg-slate-200 active:bg-slate-300 transition-colors cursor-pointer">
+                <Plus className="text-rose-400" size={38} />
+              </div>
+            </label>
+          )
+        }
+
+        <input 
+          className="hidden"
+          type="file" 
+          name="video" 
+          id="video" 
+          onChange={handleAddVideo}
+        />
+      </div>
 
       <div className="flex justify-between gap-8 mt-7">
         <button

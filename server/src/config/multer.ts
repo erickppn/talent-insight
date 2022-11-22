@@ -13,6 +13,7 @@ const allowedMimes = [
   "video/webm",
   "video/ogg",
   "video/mpeg",
+  "video/mp4"
 ];
 
 export const multerConfg: Options = {
