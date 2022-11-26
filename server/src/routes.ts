@@ -23,6 +23,7 @@ import { authMiddleware } from "./middlewares/auth-middleware";
 
 //configs and other imports
 import { multerConfg } from "./config/multer";
+import { GetPostByIdUseCase } from "./use-cases/posts-use-cases/get-post-by-id-use-case";
 
 const upload = multer(multerConfg);
 
@@ -194,9 +195,9 @@ routes.get('/auth/validate-token', async (req, res) => {
 });
 
 //posts routes
-routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCount: 1 }, { name: "attachments", maxCount: 4 } ]),async (req, res) => {
+routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCount: 1 }, { name: "attachments", maxCount: 4 } ]), async (req, res) => {
   const authToken = req.headers["authorization"];
-  const { title, description } = req.body;
+  const { title, description, type } = req.body;
   const files = req.files;
 
   if(!files || Array.isArray(files)) throw new Error("error receiving files");
@@ -213,15 +214,28 @@ routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCou
     prismaPostRespository,
   );
 
-  const post = await sendPostUseCase.execute({
+  const postId = await sendPostUseCase.execute({
     authToken,
     title,
     description,
+    type,
     thumbnailKey,
     attachments
   });
 
-  res.status(200).json({
-    post
-  });
+  res.status(200).json(postId);
+});
+
+routes.get('/post/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const prismaPostsRepository = new PrismaPostsRepository();
+
+  const getPostByIdUseCase = new GetPostByIdUseCase(
+    prismaPostsRepository,
+  );
+
+  const post = await getPostByIdUseCase.execute(id);
+
+  res.json(post);
 });

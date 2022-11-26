@@ -1,6 +1,13 @@
 import { Image, Plus } from "phosphor-react";
 import { useState } from "react";
 
+const allowedImagesMimes = [
+  "image/jpeg",
+  "image/pjpeg",
+  "image/png",
+  "image/gif",
+];
+
 export function AttachmentsListPreview({setAttachments}: {setAttachments: (att: FileList | null) => void}) {
   const [attachmentsList, seAttachmentsList] = useState<File[] | null>();
 
@@ -35,6 +42,7 @@ export function AttachmentsListPreview({setAttachments}: {setAttachments: (att: 
           id="attachments" 
           multiple max={4} 
           maxLength={4}
+          accept={allowedImagesMimes.join(", ")}
           onChange={handleAddAttachments}
         />
       </div>

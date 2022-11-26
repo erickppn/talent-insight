@@ -54,12 +54,13 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
 
     formData.append("title", postTitle);
     formData.append("description", description);
+    formData.append("type", "images");
 
     const response = await sendPost(formData);
 
     if (!response.error) {
       closeModal();
-      navigate(`/post/${response.id}`);
+      navigate(`/post/${response}`);
     }
   }
 
@@ -90,6 +91,7 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
           type="file" 
           name="thumbnail" 
           id="thumbnail" 
+          accept={allowedImagesMimes.join(", ")}
           onChange={handleAddThumbnail}
         />
       </div>

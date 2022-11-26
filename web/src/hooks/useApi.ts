@@ -85,4 +85,10 @@ export const useApi = () => ({
 
     return response.data;
   },
+
+  getPostById: async (postId: string | undefined) => {
+    const response = await api.get(`/post/${postId}`);
+
+    return response.data;
+  },
 });

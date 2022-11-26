@@ -8,9 +8,12 @@ export interface PostsRepository {
     userId: string,
     title: string, 
     description: string | null,
+    type: string,
     thumbnailKey: string | null,
     thumbnailUrl: string | null,
     
     postAttachments: Attachment[]
-  ) => Promise<any>
+  ) => Promise<any>;
+
+  getPostById: (postId: string) => Promise<any>;
 }

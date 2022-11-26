@@ -4,7 +4,7 @@ import { PostsRepository } from "../posts-repositories";
 import { Attachment } from "../posts-repositories";
 
 export class PrismaPostsRepository implements PostsRepository {
-  async sendPost(userId: string, title: string, description: string | null, thumbnailKey: string | null, thumbnailUrl: string | null, postAttachments: Attachment[]) {
+  async sendPost(userId: string, title: string, description: string | null, type: string, thumbnailKey: string | null, thumbnailUrl: string | null, postAttachments: Attachment[]) {
     const includeAttachments = postAttachments ? true : false;
 
     let postData: Prisma.PostCreateInput = {
@@ -16,6 +16,7 @@ export class PrismaPostsRepository implements PostsRepository {
 
       title,
       description,
+      type,
       thumbnailKey,
       thumbnailUrl,
     }
@@ -32,12 +33,40 @@ export class PrismaPostsRepository implements PostsRepository {
       };
     }
 
-    return await prisma.post.create({
+    const post = await prisma.post.create({
       data: postData,
 
       include: {
         attachments: true,
       }
+    });
+
+    return post.id;
+  }
+
+  async getPostById(postId: string) {
+    return await prisma.post.findUnique({
+      where: { 
+        id: postId 
+      },
+
+      include: {
+        attachments: true,
+
+        user: {
+          select: {
+            name: true,
+            profile: {
+              select: {
+                artName: true,
+                avatarUrl: true,
+                aboutMe: true,
+              }
+            }
+          }
+        }
+      },
+
     });
   }
 }

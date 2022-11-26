@@ -7,6 +7,7 @@ import { Configurations } from "../pages/Configurations";
 import { EditProfile } from "../pages/Configurations/EditProfile";
 import { EditAccount } from "../pages/Configurations/EditAccount";
 import { DangerArea } from "../pages/Configurations/DangerArea";
+import { Post } from "../pages/Post";
 
 export function Router() {
   return (
@@ -51,6 +52,8 @@ export function Router() {
           </RequireAuth>
         }/>
       </Route>
+
+      <Route path="post/:id" element={<Post />} />
 
       <Route path="*" element={<h1>Página não encontrada</h1>}/>
     </Routes>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Image, Plus, VideoCamera } from "phosphor-react";
 import { ModalContext } from "../../../../../contexts/Modal/ModalContext";
 import { useApi } from "../../../../../hooks/useApi";
+import { VideoPlayer } from "../../../../VideoPlayer";
 
 const allowedImagesMimes = [
   "image/jpeg",
@@ -12,7 +13,10 @@ const allowedImagesMimes = [
 ];
 
 const allowedVideosMimes = [
-  "video/mp4",
+  "video/webm",
+  "video/ogg",
+  "video/mpeg",
+  "video/mp4"
 ]
 
 export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, setPostTitle: (title: string) => void }) {
@@ -68,12 +72,13 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
 
     formData.append("title", postTitle);
     formData.append("description", description);
+    formData.append("type", "video");
 
     const response = await sendPost(formData);
 
     if (!response.error) {
       closeModal();
-      navigate(`/post/${response.id}`);
+      navigate(`/post/${response}`);
     }
   }
   
@@ -105,7 +110,7 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
           name="thumbnail" 
           id="thumbnail" 
           onChange={handleAddThumbnail}
-          required
+          accept={allowedImagesMimes.join(", ")}
         />
       </div>
 
@@ -160,12 +165,12 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
                 anexe seu vídeo aqui
               </label>
 
-              <video 
-                className="max-w-full max-h-80 bg-black rounded-md"
-                src={videoUrl}
-                controls={true}
-                poster={thumbnailUrl || ""}
-              />
+              <div className="w-full h-72 rounded-md overflow-hidden">
+                <VideoPlayer 
+                  url={videoUrl} 
+                  thumbnail={thumbnailUrl}
+                />
+              </div>
             </div>
           ) : (
             <label className="flex flex-col gap-4" htmlFor="video">
@@ -187,7 +192,9 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
           type="file" 
           name="video" 
           id="video" 
+          accept={allowedVideosMimes.join(", ")}
           onChange={handleAddVideo}
+          required
         />
       </div>
 

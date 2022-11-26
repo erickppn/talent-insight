@@ -6,6 +6,7 @@ interface SendPostUseCaseRequest {
   authToken: string | undefined,
   title: string,
   description: string | null,
+  type: string,
   thumbnailKey: string | null,
   attachments: Express.Multer.File[]
 }
@@ -17,7 +18,7 @@ export class SendPostUseCase {
   ) {}
 
   async execute(request: SendPostUseCaseRequest) {
-    const { authToken, title, description, thumbnailKey, attachments } = request;
+    const { authToken, title, description, type, thumbnailKey, attachments } = request;
 
     //validations
     if (!authToken) throw new Error("Token de autenticação não fornecido");
@@ -41,15 +42,16 @@ export class SendPostUseCase {
       attachmentUrl: `${process.env.APP_URL}/files/${attachment.filename}`
     }));
 
-    const post = await this.postRepository.sendPost(
+    const postId = await this.postRepository.sendPost(
       userId,
       title,
       description,
+      type,
       thumbnailKey,
       thumbnailUrl,
       attachmentsInfo
     );
 
-    return post;
+    return postId;
   }
 }
