@@ -8,6 +8,7 @@ import defaultAvatar from "../assets/default-avatar.png";
 import { SlideShow } from "../components/SlideShow";
 
 import { post } from "../types/Post";
+import { Comments } from "../components/Comments";
 
 export function Post() {
   const [post, setPost] = useState<post | null>(null);
@@ -38,11 +39,11 @@ export function Post() {
   }
 
   return (
-    <main className="flex p-10">
+    <main className="flex flex-col 2xl:flex-row 2xl:gap-8 p-10">
       <div className="flex flex-col flex-1 gap-20">
         <div className="flex-1">
           <div className="flex justify-center">
-            <div className="h-full w-full max-w-[1100px] max-h-[70vh] rounded-lg overflow-hidden aspect-video">
+            <div className="h-full w-full max-w-4xl 2xl:max-w-[1100px] 2xl:max-h-[70vh] rounded-lg overflow-hidden aspect-video">
               {
                 post?.type === "video" ? (
                   <VideoPlayer 
@@ -58,7 +59,7 @@ export function Post() {
             </div>
           </div>
 
-          <div className="py-8 max-w-[1100px] mx-auto">
+          <div className="py-8 max-w-4xl 2xl:max-w-[1100px] mx-auto">
             <div className="flex items-start gap-20">
               <div className="flex-1">
                 <div className="flex items-center gap-4">
@@ -72,9 +73,9 @@ export function Post() {
                       {post?.user.profile.artName ? post.user.profile.artName : post?.user.name}
                     </strong>
 
-                    <span className="text-gray-900 text-sm block">
+                    <p className="text-gray-900 text-sm block">
                       {post?.user.profile.aboutMe}
-                    </span>
+                    </p>
                   </div>
                 </div>
 
@@ -101,8 +102,8 @@ export function Post() {
         </div>
       </div>
 
-      <aside className="w-[418px] p-6">
-
+      <aside className="mx-auto max-w-4xl 2xl:max-w-[418px] w-full">
+        <Comments />
       </aside>
     </main>
   )

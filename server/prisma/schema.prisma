@@ -20,6 +20,7 @@ model User {
   createdAt DateTime @default(now())
   profile   Profile?
   posts     Post[]
+  comments  Comment[]
 
   @@map("users")
 }
@@ -50,6 +51,7 @@ model Post {
   likes        Int          @default(0)
   userId       String
   user         User         @relation(fields: [userId], references: [id])
+  comments     Comment[]
 
   @@map("posts")
 }
@@ -62,4 +64,16 @@ model Attachment {
   post          Post   @relation(fields: [postId], references: [id])
 
   @@map("post_attachment")
+}
+
+model Comment {
+  id       String @id @default(uuid())
+  content  String
+  postedAt DateTime @default(now())
+  userId   String
+  user     User @relation(fields: [userId], references: [id])
+  postId   String
+  post     Post @relation(fields: [postId], references: [id])
+
+  @@map("comments")
 }

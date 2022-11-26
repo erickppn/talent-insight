@@ -24,6 +24,10 @@ import { authMiddleware } from "./middlewares/auth-middleware";
 //configs and other imports
 import { multerConfg } from "./config/multer";
 import { GetPostByIdUseCase } from "./use-cases/posts-use-cases/get-post-by-id-use-case";
+import { PrismaCommentsRepository } from "./repositories/prisma/prisma-comments-repository";
+import { SendCommentUseCase } from "./use-cases/comments-use-cases/send-comment-use-case";
+import { GetCommentsUseCase } from "./use-cases/comments-use-cases/get-comments-use-case";
+import { DeleteCommentUseCase } from "./use-cases/comments-use-cases/delete-comment-use-case";
 
 const upload = multer(multerConfg);
 
@@ -238,4 +242,54 @@ routes.get('/post/:id', async (req, res) => {
   const post = await getPostByIdUseCase.execute(id);
 
   res.json(post);
+});
+
+//comments routes
+routes.post('/post/:id/comment', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { id } = req.params;
+  const { content } = req.body;
+
+  const prismaCommentsRepository = new PrismaCommentsRepository();
+  const prismaPostRespository = new PrismaPostsRepository();
+
+  const sendCommentUseCase = new SendCommentUseCase(
+    prismaCommentsRepository,
+    prismaPostRespository
+  );
+
+  const comment = await sendCommentUseCase.execute({ authToken, postId: id, content });
+
+  res.status(200).json(comment);
+});
+
+routes.get('/post/:id/comments', async (req, res) => {
+  const { id: postId } = req.params;
+
+  const prismaCommentsRepository = new PrismaCommentsRepository();
+  const prismaPostRespository = new PrismaPostsRepository();
+
+  const getCommentsUseCase = new GetCommentsUseCase(
+    prismaCommentsRepository,
+    prismaPostRespository
+  );
+
+  const comments = await getCommentsUseCase.execute(postId);
+
+  res.status(200).json(comments);
+});
+
+routes.delete('/post/:id/comment', async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { commentId } = req.body;
+
+  const prismaCommentsRepository = new PrismaCommentsRepository();
+
+  const deleteCommentUseCase = new DeleteCommentUseCase(
+    prismaCommentsRepository,
+  );
+
+  await deleteCommentUseCase.execute({authToken, commentId});
+
+  res.status(200).json();
 });

@@ -91,4 +91,35 @@ export const useApi = () => ({
 
     return response.data;
   },
+
+  sendComment: async (postId: string | undefined, content: string) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.post(`/post/${postId}/comment`, { content }, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  },
+
+  getComments: async (postId: string | undefined) => {
+    const response = await api.get(`/post/${postId}/comments`);
+
+    return response.data;
+  },
+
+  deleteComment: async (postId: string | undefined, commentId: string) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.delete(`/post/${postId}/comment`, {
+      data: { commentId }, 
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+
+    return response.data;
+  }
 });
