@@ -4,4 +4,5 @@ export type User = {
   email: string,
   age: number,
   isActive: boolean,
+  createdAt: string,
 }

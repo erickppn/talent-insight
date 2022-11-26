@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import { format } from "date-fns";
+import ptBR from 'date-fns/locale/pt-BR';
 import { UploadSimple } from "phosphor-react";
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
@@ -16,6 +18,12 @@ interface ProfilePreviewProps {
 
 export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar }: ProfilePreviewProps) {
   const { user } = useContext(AuthContext);
+
+  const date = new Date(user?.createdAt!);
+
+  const dateFormatted = format(date, " d' de 'MMMM'", {
+    locale: ptBR,
+  });
 
   function handleChangeAvatar(e: React.ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
@@ -92,7 +100,7 @@ export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvat
         <hr className="w-full mt-4 border-[1px]"/>
 
         <span className="w-full mt-3 mb-2 text-zinc-600 text-xs">
-          Entrou em 11/2022
+          Entrou em {dateFormatted}
         </span>
       </div>
     </div>

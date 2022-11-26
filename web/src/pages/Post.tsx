@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
-import { CircleNotch, Heart, UserPlus } from "phosphor-react";
-import { useApi } from "../hooks/useApi";
 import { useParams } from "react-router-dom";
+import { format } from "date-fns";
+import ptBR from 'date-fns/locale/pt-BR';
+import { CircleNotch, Heart, UserPlus } from "phosphor-react";
+
+import { useApi } from "../hooks/useApi";
 import { VideoPlayer } from "../components/VideoPlayer";
+import { SlideShow } from "../components/SlideShow";
+import { Comments } from "../components/Comments";
 
 import defaultAvatar from "../assets/default-avatar.png";
-import { SlideShow } from "../components/SlideShow";
 
 import { post } from "../types/Post";
-import { Comments } from "../components/Comments";
 
 export function Post() {
   const [post, setPost] = useState<post | null>(null);
   const [isLoadingPost, setIsLoadingPost] = useState(true);
+
+  const date = new Date(post?.postedAt!);
+
+  const dateFormatted = format(date, "d' de 'MMMM'", {
+    locale: ptBR,
+  });
 
   const { id } = useParams();
   const api = useApi();
@@ -79,9 +88,11 @@ export function Post() {
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold mt-10">
+                <h2 className="flex items-center text-2xl font-bold mt-10">
                   {post?.title}
                 </h2>
+
+                <span className="ml-3 text-sm text-zinc-500">• postado em {dateFormatted}</span>
 
                 <p className="mt-4 text-gray-900 leading-relaxed">
                   {post?.description}
