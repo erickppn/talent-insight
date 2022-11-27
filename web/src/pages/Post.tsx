@@ -12,12 +12,13 @@ import { Comments } from "../components/Comments";
 import defaultAvatar from "../assets/default-avatar.png";
 
 import { post } from "../types/Post";
+import { RelatedPosts } from "../components/RelatedPosts";
 
 export function Post() {
   const [post, setPost] = useState<post | null>(null);
   const [isLoadingPost, setIsLoadingPost] = useState(true);
 
-  const date = new Date(post?.postedAt!);
+  const date = new Date(post?.postedAt || Date.now());
 
   const dateFormatted = format(date, "d' de 'MMMM'", {
     locale: ptBR,
@@ -26,14 +27,20 @@ export function Post() {
   const { id } = useParams();
   const api = useApi();
 
-  useEffect(() => {
-    async function getPostById() {
-      const post = await api.getPostById(id);
-      
-      setPost(post);
-      setIsLoadingPost(false);
-    }
+  async function getPostById() {
+    const post = await api.getPostById(id);
+    
+    setPost(post);
+    setIsLoadingPost(false);
+  }
 
+  console.log('a')
+
+  useEffect(() => {
+    getPostById();
+  }, [id]);
+
+  useEffect(() => {
     getPostById();
   }, []);
 
@@ -109,6 +116,10 @@ export function Post() {
                 </button>
               </div>
             </div>
+          </div>
+
+          <div className="max-w-4xl 2xl:max-w-[1100px] mx-auto">
+            <RelatedPosts userId={post?.userId} />
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@ export function Comments() {
     }
 
     getComments();
-  }, []);
+  }, [id]);
 
   return (
     <div className="w-full">

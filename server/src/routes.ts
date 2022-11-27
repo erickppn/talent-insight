@@ -28,6 +28,7 @@ import { PrismaCommentsRepository } from "./repositories/prisma/prisma-comments-
 import { SendCommentUseCase } from "./use-cases/comments-use-cases/send-comment-use-case";
 import { GetCommentsUseCase } from "./use-cases/comments-use-cases/get-comments-use-case";
 import { DeleteCommentUseCase } from "./use-cases/comments-use-cases/delete-comment-use-case";
+import { GetUserRelatedPostsUseCase } from "./use-cases/posts-use-cases/get-user-related-posts-use-case";
 
 const upload = multer(multerConfg);
 
@@ -242,6 +243,20 @@ routes.get('/post/:id', async (req, res) => {
   const post = await getPostByIdUseCase.execute(id);
 
   res.json(post);
+});
+
+routes.get('/post/:id/related', async (req, res) => {
+  const { userId } = req.body;
+
+  const prismaPostRespository = new PrismaPostsRepository();
+
+  const getUserRelatedPostsUseCase = new GetUserRelatedPostsUseCase(
+    prismaPostRespository,
+  );
+
+  const relatedPosts = await getUserRelatedPostsUseCase.execute(userId);
+
+  res.status(200).json(relatedPosts);
 });
 
 //comments routes

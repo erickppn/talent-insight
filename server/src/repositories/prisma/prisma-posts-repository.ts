@@ -66,7 +66,26 @@ export class PrismaPostsRepository implements PostsRepository {
           }
         }
       },
+    });
+  }
 
+  async getUserRelatedPosts(userId: string) {
+    return prisma.post.findMany({
+      where: {
+        userId,
+      },
+
+      select: {
+        id: true,
+        title: true,
+        thumbnailUrl: true,
+        postedAt: true,
+      },
+
+      take: 5,
+      orderBy: { 
+        postedAt: "desc"
+       }
     });
   }
 }

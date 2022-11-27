@@ -16,4 +16,5 @@ export interface PostsRepository {
   ) => Promise<any>;
 
   getPostById: (postId: string) => Promise<any>;
+  getUserRelatedPosts: (userId: string) => Promise<any>;
 }

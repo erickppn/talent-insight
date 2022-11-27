@@ -92,6 +92,14 @@ export const useApi = () => ({
     return response.data;
   },
 
+  getUserRelatedPosts: async (postId: string | undefined, userId: string | undefined) => {
+    const response = await api.get(`/post/${postId}/related`, { 
+      data: { userId } 
+    });
+
+    return response.data;
+  },
+
   sendComment: async (postId: string | undefined, content: string) => {
     const token = localStorage.getItem("ti-auth-token");
 
