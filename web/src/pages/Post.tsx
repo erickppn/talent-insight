@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import ptBR from 'date-fns/locale/pt-BR';
 import { CircleNotch, Heart, UserPlus } from "phosphor-react";
@@ -9,10 +9,10 @@ import { VideoPlayer } from "../components/VideoPlayer";
 import { SlideShow } from "../components/SlideShow";
 import { Comments } from "../components/Comments";
 
-import defaultAvatar from "../assets/default-avatar.png";
-
 import { post } from "../types/Post";
 import { RelatedPosts } from "../components/RelatedPosts";
+
+import defaultAvatar from "../assets/default-avatar.png";
 
 export function Post() {
   const [post, setPost] = useState<post | null>(null);
@@ -34,8 +34,6 @@ export function Post() {
     setIsLoadingPost(false);
   }
 
-  console.log('a')
-
   useEffect(() => {
     getPostById();
   }, [id]);
@@ -55,7 +53,7 @@ export function Post() {
   }
 
   return (
-    <main className="flex flex-col 2xl:flex-row 2xl:gap-8 p-10">
+    <main className="flex flex-col gap-10 2xl:flex-row 2xl:gap-8 p-10">
       <div className="flex flex-col flex-1 gap-20">
         <div className="flex-1">
           <div className="flex justify-center">
@@ -78,32 +76,48 @@ export function Post() {
           <div className="py-8 max-w-4xl 2xl:max-w-[1100px] mx-auto">
             <div className="flex items-start gap-20">
               <div className="flex-1">
-                <div className="flex items-center gap-4">
-                  <img 
-                    className="h-16 w-16 rounded-md object-cover"
-                    src={post?.user.profile.avatarUrl || defaultAvatar}  
-                  />
-
-                  <div className="leading-relaxed">
-                    <strong className="font-bold text-2xl block">
-                      {post?.user.profile.artName ? post.user.profile.artName : post?.user.name}
-                    </strong>
-
-                    <p className="text-gray-900 text-sm block">
-                      {post?.user.profile.aboutMe}
-                    </p>
-                  </div>
-                </div>
-
-                <h2 className="flex items-center text-2xl font-bold mt-10">
+                <h2 className="flex items-center text-2xl font-bold">
                   {post?.title}
                 </h2>
 
                 <span className="ml-3 text-sm text-zinc-500">• postado em {dateFormatted}</span>
 
-                <p className="mt-4 text-gray-900 leading-relaxed">
-                  {post?.description}
+                <div className="flex gap-2 items-center flex-wrap w-full my-4">
+                  <span className="font-semibold">
+                    Categorias:
+                  </span>
+                  {
+                    post?.categories.map(category => (
+                      <div className="flex items-center px-2 bg-rose-400 rounded-md text-lg text-white">
+                        {category.category.name}
+                      </div>
+                    ))
+                  }
+                </div>
+
+                <p className="mt-4 mb-4 text-gray-900 leading-relaxed">
+                  {post?.description} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident assumenda facilis fugiat alias, deserunt ad id nihil, maxime mollitia eveniet repellat tempore odit molestias obcaecati incidunt nemo vel molestiae. Blanditiis.
                 </p>
+
+                <Link 
+                  to={`/user/${post?.userId}`}
+                  className="flex items-start gap-4 max-h-20 overflow-hidden p-2 pt-1 rounded-lg hover:bg-slate-300 transition-colors duration-300"
+                >
+                  <img 
+                    className="h-16 w-16 mt-1 rounded-md object-cover"
+                    src={post?.user.profile.avatarUrl || defaultAvatar}  
+                  />
+
+                  <div className="leading-relaxed">
+                    <strong className="font-bold text-xl block">
+                      {post?.user.profile.artName || post?.user.name}
+                    </strong>
+
+                    <p className="mt-[3px] text-gray-900 text-sm block">
+                      {post?.user.profile.aboutMe}
+                    </p>
+                  </div>
+                </Link>
               </div>
 
               <div className="flex gap-4">

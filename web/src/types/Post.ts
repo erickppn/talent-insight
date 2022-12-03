@@ -17,6 +17,7 @@ export type post = {
 	userId: string,
 
   attachments: attachment[],
+  categories: { category: { name: string } }[],
 
   user: {
     name: string,

@@ -4,7 +4,7 @@ import { PostsRepository } from "../posts-repositories";
 import { Attachment } from "../posts-repositories";
 
 export class PrismaPostsRepository implements PostsRepository {
-  async sendPost(userId: string, title: string, description: string | null, type: string, thumbnailKey: string | null, thumbnailUrl: string | null, postAttachments: Attachment[]) {
+  async sendPost(userId: string, title: string, description: string | null, type: string, thumbnailKey: string | null, thumbnailUrl: string | null, postAttachments: Attachment[], categoriesList: string[]) {
     const includeAttachments = postAttachments ? true : false;
 
     let postData: Prisma.PostCreateInput = {
@@ -33,6 +33,31 @@ export class PrismaPostsRepository implements PostsRepository {
       };
     }
 
+    const categories = categoriesList.map(category => {
+      return {
+        category: {
+          connectOrCreate: {
+            create: {
+              name: category,
+            },
+            where: {
+              name: category
+            }
+          }
+        }
+      }
+    });
+
+    if (categoriesList.length !== 0) {
+      postData = {
+        ...postData,
+
+        categories: {
+          create: categories
+        }
+      }
+    }
+
     const post = await prisma.post.create({
       data: postData,
 
@@ -52,6 +77,15 @@ export class PrismaPostsRepository implements PostsRepository {
 
       include: {
         attachments: true,
+        categories: {
+          select: {
+            category: {
+              select: {
+                name: true
+              }
+            }
+          }
+        },
 
         user: {
           select: {
@@ -86,6 +120,47 @@ export class PrismaPostsRepository implements PostsRepository {
       orderBy: { 
         postedAt: "desc"
        }
+    });
+  }
+
+  async findPostsByCategories(categories: string[]) {
+    return await prisma.post.findMany({
+      where: {
+        categories: {
+          some: {
+            category: {
+              name: {
+                in: categories
+              }
+            }
+          }
+        }
+      },
+
+      select: { 
+        id: true,
+        title: true,
+        thumbnailUrl: true,
+        postedAt: true,
+        likes: true,
+        attachments: {
+          take: 1
+        },
+        
+        user: {
+          select: {
+            id: true,
+            name: true,
+            profile: {
+              select: {
+                artName: true,
+                avatarUrl: true,
+                bannerUrl: true,
+              }
+            }
+          }
+        }
+      }
     });
   }
 }

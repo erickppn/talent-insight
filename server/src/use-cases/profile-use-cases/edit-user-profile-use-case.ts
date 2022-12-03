@@ -10,6 +10,7 @@ interface EditUserProfileUseCaseRequest {
   aboutMe: string | null,
   avatarKey: string | null,
   bannerKey: string | null,
+  categories: string
 }
 
 export class EditUserProfileUseCase {
@@ -18,7 +19,7 @@ export class EditUserProfileUseCase {
   ) {}
   
   async execute(request: EditUserProfileUseCaseRequest) {
-    const { authToken, artName, aboutMe, avatarKey, bannerKey } = request;
+    const { authToken, artName, aboutMe, avatarKey, bannerKey, categories } = request;
 
     //validations
     if (!authToken) throw new Error("Token de autenticação não fornecido");
@@ -29,6 +30,7 @@ export class EditUserProfileUseCase {
 
     //delete current avatar
     const currentProfileInfo = await this.userProfileRepository.findProfileByUserId(userId);
+    if (!currentProfileInfo) throw new Error("Não foi possível coletar as informações do perfil");
 
     //save new info profile
     const newAvatarKey = avatarKey || currentProfileInfo?.avatarKey!;
@@ -37,6 +39,12 @@ export class EditUserProfileUseCase {
     const avatarUrl = `${process.env.APP_URL}/files/${newAvatarKey}`;
     const bannerUrl = `${process.env.APP_URL}/files/${newBannerKey}`;
 
+    //create array with the tags
+    const newCategoriesList = categories ? categories.split(";") : [];
+    
+    //delete all categories relations
+    await this.userProfileRepository.deleteAllProfileCategories(currentProfileInfo.id);
+
     const newUserProfileInfo = await this.userProfileRepository.editProfile(
       userId, 
       artName, 
@@ -44,7 +52,8 @@ export class EditUserProfileUseCase {
       newAvatarKey, 
       avatarUrl,
       newBannerKey,
-      bannerUrl
+      bannerUrl,
+      newCategoriesList
     );
 
     //remove old avatar

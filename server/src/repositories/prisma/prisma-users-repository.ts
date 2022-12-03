@@ -80,4 +80,47 @@ export class PrismaUsersRepository implements UsersRepository {
       }
     });
   }
+
+  async findUsersByCategories(categories: string[]) {
+    return await prisma.user.findMany({
+      where: {
+        profile: {
+          categories: {
+            some: {
+              category: {
+                name: {
+                  in: categories
+                }
+              }
+            }
+          }
+        }
+      },
+
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+
+        profile: {
+          select: {
+            artName: true,
+            aboutMe: true,
+            avatarUrl: true,
+            bannerUrl: true,
+
+            categories: {
+              select: {
+                category: {
+                  select: {
+                    name: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+    });
+  }
 }

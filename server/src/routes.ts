@@ -5,6 +5,7 @@ import multer from "multer";
 import { PrismaUsersRepository } from "./repositories/prisma/prisma-users-repository";
 import { PrismaUserProfilesRepository } from "./repositories/prisma/prisma-user-profiles-repository";
 import { PrismaPostsRepository } from "./repositories/prisma/prisma-posts-repository";
+import { PrismaCommentsRepository } from "./repositories/prisma/prisma-comments-repository";
 
 import { NodeMailerMailAdapter } from "./adapters/nodemailer/nodemailer-mail-adapter";
 
@@ -17,18 +18,18 @@ import { DeleteUserUseCase } from "./use-cases/user-use-cases/delete-user-use-ca
 import { EditUserProfileUseCase } from "./use-cases/profile-use-cases/edit-user-profile-use-case";
 import { EditUserUseCase } from "./use-cases/user-use-cases/edit-user-use-case";
 import { SendPostUseCase } from "./use-cases/posts-use-cases/send-post-use-case";
+import { GetPostByIdUseCase } from "./use-cases/posts-use-cases/get-post-by-id-use-case";
+import { SendCommentUseCase } from "./use-cases/comments-use-cases/send-comment-use-case";
+import { GetCommentsUseCase } from "./use-cases/comments-use-cases/get-comments-use-case";
+import { DeleteCommentUseCase } from "./use-cases/comments-use-cases/delete-comment-use-case";
+import { GetUserRelatedPostsUseCase } from "./use-cases/posts-use-cases/get-user-related-posts-use-case";
+import { GetPostsAndUsersByCategories } from "./use-cases/categories-use-cases/get-posts-and-profiles-by-categories";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
 
 //configs and other imports
 import { multerConfg } from "./config/multer";
-import { GetPostByIdUseCase } from "./use-cases/posts-use-cases/get-post-by-id-use-case";
-import { PrismaCommentsRepository } from "./repositories/prisma/prisma-comments-repository";
-import { SendCommentUseCase } from "./use-cases/comments-use-cases/send-comment-use-case";
-import { GetCommentsUseCase } from "./use-cases/comments-use-cases/get-comments-use-case";
-import { DeleteCommentUseCase } from "./use-cases/comments-use-cases/delete-comment-use-case";
-import { GetUserRelatedPostsUseCase } from "./use-cases/posts-use-cases/get-user-related-posts-use-case";
 
 const upload = multer(multerConfg);
 
@@ -131,7 +132,7 @@ routes.delete('/user', authMiddleware, async (req, res) => {
 
 routes.put('/user/profile/', authMiddleware, upload.fields([{ name: "avatar", maxCount: 1 }, { name: "banner", maxCount: 1 }]), async (req, res) => {
   const authToken = req.headers["authorization"];
-  const { artName, aboutMe } = req.body;
+  const { artName, aboutMe, categories } = req.body;
   const files = req.files;
 
   if(!files || Array.isArray(files)) throw new Error("error receiving files");
@@ -150,7 +151,8 @@ routes.put('/user/profile/', authMiddleware, upload.fields([{ name: "avatar", ma
     artName, 
     aboutMe,
     avatarKey,
-    bannerKey
+    bannerKey,
+    categories
   });
 
   res.status(200).json({
@@ -202,7 +204,7 @@ routes.get('/auth/validate-token', async (req, res) => {
 //posts routes
 routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCount: 1 }, { name: "attachments", maxCount: 4 } ]), async (req, res) => {
   const authToken = req.headers["authorization"];
-  const { title, description, type } = req.body;
+  const { title, description, type, categories } = req.body;
   const files = req.files;
 
   if(!files || Array.isArray(files)) throw new Error("error receiving files");
@@ -225,7 +227,8 @@ routes.post('/send', authMiddleware, upload.fields([ { name: "thumbnail", maxCou
     description,
     type,
     thumbnailKey,
-    attachments
+    attachments,
+    categories
   });
 
   res.status(200).json(postId);
@@ -257,6 +260,22 @@ routes.get('/post/:id/related', async (req, res) => {
   const relatedPosts = await getUserRelatedPostsUseCase.execute(userId);
 
   res.status(200).json(relatedPosts);
+});
+
+routes.get('/search=:categoriesInUrl', async (req, res) => {
+  const { categoriesInUrl } = req.params;
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+  const prismaPostRespository = new PrismaPostsRepository();
+
+  const getPostsAndProfilesByCategories = new GetPostsAndUsersByCategories(
+    prismaUsersRepository,
+    prismaPostRespository
+  );
+
+  const postsAndProfiles = await getPostsAndProfilesByCategories.execute(categoriesInUrl);
+
+  res.status(200).json(postsAndProfiles);
 });
 
 //comments routes

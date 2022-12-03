@@ -11,13 +11,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  email     String   @unique
+  id        String    @id @default(uuid())
+  name      String    @unique
+  email     String    @unique
   password  String
-  age       Int      @default(0)
-  isActive  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  age       Int       @default(0)
+  isActive  Boolean   @default(false)
+  createdAt DateTime  @default(now())
   profile   Profile?
   posts     Post[]
   comments  Comment[]
@@ -26,31 +26,33 @@ model User {
 }
 
 model Profile {
-  id        String  @id @default(uuid())
-  artName   String?
-  aboutMe   String? @db.VarChar(300)
-  avatarKey String?
-  avatarUrl String?
-  bannerKey String?
-  bannerUrl String?
-  userId    String  @unique
-  user      User    @relation(fields: [userId], references: [id])
+  id         String                  @id @default(uuid())
+  artName    String?
+  aboutMe    String?                 @db.VarChar(300)
+  avatarKey  String?
+  avatarUrl  String?
+  bannerKey  String?
+  bannerUrl  String?
+  userId     String                   @unique
+  user       User                     @relation(fields: [userId], references: [id])
+  categories ProfileCategories[]
 
   @@map("user_profile")
 }
 
 model Post {
-  id           String       @id @default(uuid())
+  id           String          @id @default(uuid())
   title        String
   description  String?
   type         String
   thumbnailKey String?
   thumbnailUrl String?
   attachments  Attachment[] 
-  postedAt     DateTime     @default(now())
-  likes        Int          @default(0)
+  postedAt     DateTime         @default(now())
+  likes        Int              @default(0)
   userId       String
-  user         User         @relation(fields: [userId], references: [id])
+  user         User             @relation(fields: [userId], references: [id])
+  categories   PostCategories[]
   comments     Comment[]
 
   @@map("posts")
@@ -66,14 +68,41 @@ model Attachment {
   @@map("post_attachment")
 }
 
+model Category {
+  id       Int                     @id @default(autoincrement())
+  name     String                  @unique
+  posts    PostCategories[]
+  profiles ProfileCategories[]
+
+  @@map("categories")
+}
+
+model PostCategories {
+  postId     String
+  post       Post     @relation(fields: [postId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([postId, categoryId])
+}
+
+model ProfileCategories {
+  profileId  String
+  profile    Profile  @relation(fields: [profileId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([profileId, categoryId])
+}
+
 model Comment {
-  id       String @id @default(uuid())
+  id       String   @id @default(uuid())
   content  String
   postedAt DateTime @default(now())
   userId   String
-  user     User @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
   postId   String
-  post     Post @relation(fields: [postId], references: [id])
+  post     Post     @relation(fields: [postId], references: [id])
 
   @@map("comments")
 }

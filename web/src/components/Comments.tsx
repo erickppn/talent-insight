@@ -12,6 +12,7 @@ import { comment } from "../types/Comment";
 
 export function Comments() {
   const [comments, setComments] = useState<comment[]>([]);
+  const [isLoadingComments, setIsLoadingComments] = useState(true);
 
   const [comment, setComent] = useState("");
   const [isSendingComment, setIsSendingComment] = useState(false);
@@ -42,8 +43,10 @@ export function Comments() {
 
   useEffect(() => {
     async function getComments() {
+      setIsLoadingComments(true);
       const comments = await api.getComments(id);
       setComments(comments);
+      setIsLoadingComments(false);
     }
 
     getComments();
@@ -86,6 +89,11 @@ export function Comments() {
 
       <main className="mt-10">
         {
+          isLoadingComments ? (
+            <div className="flex flex-col gap-3 items-center w-full mt-12 text-zinc-700">
+              <Loading />
+            </div>
+          ) : 
           comments.length > 0 ? (
             <div className="flex flex-col gap-8">
               {

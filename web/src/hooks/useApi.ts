@@ -100,6 +100,12 @@ export const useApi = () => ({
     return response.data;
   },
 
+  getUsersAndPostsByCategories: async (categoriesInUrl: string) => {
+    const response = await api.get(`/search=${categoriesInUrl}`);
+
+    return response.data;
+  },
+
   sendComment: async (postId: string | undefined, content: string) => {
     const token = localStorage.getItem("ti-auth-token");
 

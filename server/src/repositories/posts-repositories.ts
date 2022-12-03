@@ -12,9 +12,11 @@ export interface PostsRepository {
     thumbnailKey: string | null,
     thumbnailUrl: string | null,
     
-    postAttachments: Attachment[]
+    postAttachments: Attachment[],
+    categoriesList: string[]
   ) => Promise<any>;
 
   getPostById: (postId: string) => Promise<any>;
   getUserRelatedPosts: (userId: string) => Promise<any>;
+  findPostsByCategories: (categories: string[]) => Promise<any>;
 }

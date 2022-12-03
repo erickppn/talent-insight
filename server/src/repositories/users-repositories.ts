@@ -20,4 +20,5 @@ export interface UsersRepository {
   editUser: (id: string, name: string, email: string, password: string, age: number) => Promise<UserInfoResponse>;
   changeUserPassword: (id: string, newPassword: string) => Promise<UserInfoResponse>;
   deleteUserById: (id: string) => Promise<void>;
+  findUsersByCategories: (category: string[]) => Promise<any>;
 }

@@ -8,13 +8,16 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
         userId,
       },
 
-      select: {
-        artName: true,
-        aboutMe: true,
-        avatarKey: true, 
-        avatarUrl: true,
-        bannerKey: true,
-        bannerUrl: true,
+      include: {
+        categories: {
+          select: {
+            category: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -27,7 +30,30 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
     })
   }
 
-  async editProfile(userId: string, artName: string | null, aboutMe: string | null, avatarKey: string, avatarUrl: string, bannerKey: string, bannerUrl: string) {
+  async deleteAllProfileCategories(profileId: string) {
+    await prisma.profileCategories.deleteMany({
+      where: {
+        profileId: profileId
+      }
+    })
+  }
+
+  async editProfile(userId: string, artName: string | null, aboutMe: string | null, avatarKey: string, avatarUrl: string, bannerKey: string, bannerUrl: string, categoriesList: string[]) {
+    const categories = categoriesList.map(category => {
+      return {
+        category: {
+          connectOrCreate: {
+            create: {
+              name: category,
+            },
+            where: {
+              name: category
+            }
+          }
+        }
+      }
+    });
+    
     return prisma.profile.update({
       where: {
         userId,
@@ -39,16 +65,27 @@ export class PrismaUserProfilesRepository implements UserProfilesRepository {
         avatarKey,
         avatarUrl,
         bannerKey,
-        bannerUrl
+        bannerUrl,
+
+        categories: {
+          deleteMany: [
+            {categoryId: 2, profileId: ''}
+          ],
+          
+          create: categories
+        }
       },
 
-      select: {
-        artName: true,
-        aboutMe: true,
-        avatarKey: true, 
-        avatarUrl: true,
-        bannerKey: true,
-        bannerUrl: true,
+      include: {
+        categories: {
+          select: {
+            category: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
       }
     });
   }

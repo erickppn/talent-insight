@@ -1,9 +1,14 @@
 import { FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Tag } from "react-tag-input";
 import { Image, Plus, VideoCamera } from "phosphor-react";
+
 import { ModalContext } from "../../../../../contexts/Modal/ModalContext";
 import { useApi } from "../../../../../hooks/useApi";
+
 import { VideoPlayer } from "../../../../VideoPlayer";
+import { SelectCategories } from "../../../../SelectCategories";
+import { Loading } from "../../../../Loading";
 
 const allowedImagesMimes = [
   "image/jpeg",
@@ -17,15 +22,27 @@ const allowedVideosMimes = [
   "video/ogg",
   "video/mpeg",
   "video/mp4"
-]
+];
+
+const ReactTagsClassNames =  {
+  tagInput: "w-full h-full relative border-b-2",
+  tagInputField: "w-full p-1 bg-transparent focus:ring-0 focus:outline-none",
+  selected: "flex gap-1 mt-4 [&>*]:flex [&>*]:gap-2 [&>span>*]:font-bold [&>span]:text-white flex-wrap",
+  tag: "flex items-center px-2 bg-rose-300 rounded-md",
+  suggestions: "flex min-w-[210px] absolute p-2 bg-white rounded-md mt-9 z-10 [&>ul]:w-full [&>ul>*]:py-2 [&>ul>*]:w-full [&>ul>*]:px-2 [&>ul>*]:rounded-md cursor-pointer before:w-4 before:h-4 before:bg-white dark:before:bg-zinc-800 before:transition-colors before:absolute before:rounded-sm before:rotate-45 before:-top-1 before:left-2",
+  activeSuggestion: "bg-zinc-50"
+};
 
 export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, setPostTitle: (title: string) => void }) {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [description, setDescripion] = useState("");
   const [videoInput, setVideoInput] = useState<File | null>(null);
+  const [categories, setCategories] = useState<Tag[]>([]);
   
   const [videoUrl , setVideoUrl] = useState<string>("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
+
+  const [isSendingPost, setIsSendingPost] = useState(false);
 
   const { closeModal } = useContext(ModalContext)
   const { sendPost } = useApi();
@@ -59,6 +76,7 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
 
   async function handleSendPost(e: FormEvent) {
     e.preventDefault();
+    setIsSendingPost(true);
 
     const formData = new FormData();
 
@@ -70,9 +88,16 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
       formData.append("thumbnail", thumbnail);
     }
 
+    const formatedTags = categories.map(category => {
+      return category.text;
+    });
+
+    const categoriesList = formatedTags.join(";");
+
     formData.append("title", postTitle);
     formData.append("description", description);
     formData.append("type", "video");
+    formData.append("categories", categoriesList);
 
     const response = await sendPost(formData);
 
@@ -155,7 +180,7 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
         />
       </div>
 
-      <div className="mt-8">
+      <div className="my-8">
         {
           videoUrl ? (
             <div className="flex flex-col gap-4">
@@ -198,6 +223,17 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
         />
       </div>
 
+      <div>
+        <h3 className="text-lg font-semibold mb-5">Categorias</h3>
+
+        <SelectCategories 
+          categories={categories}
+          setCategories={setCategories} 
+          inputFieldPosition="top"
+          reactTagsClassNames={ReactTagsClassNames}
+        />
+      </div>
+
       <div className="flex justify-between gap-8 mt-7">
         <button
           className="flex justify-center items-center w-full py-2 rounded-md border-[1px] border-rose-500 bg-rose-500 text-white  hover:bg-rose-400 hover:border-rose-400 active:bg-rose-600 active:border-rose-600 transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-red-500 disabled:cursor-not-allowed"
@@ -207,7 +243,7 @@ export function VideoForm({ postTitle, setPostTitle } : { postTitle: string, set
         </button>
 
         <button type="submit" className="flex justify-center items-center w-full py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed">
-          Salvar
+          { isSendingPost ? <Loading /> : "Salvar" }
         </button>
       </div>
     </form>

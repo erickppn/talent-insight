@@ -8,6 +8,7 @@ import { EditProfile } from "../pages/Configurations/EditProfile";
 import { EditAccount } from "../pages/Configurations/EditAccount";
 import { DangerArea } from "../pages/Configurations/DangerArea";
 import { Post } from "../pages/Post";
+import { Results } from "../pages/Results";
 
 export function Router() {
   return (
@@ -52,6 +53,8 @@ export function Router() {
           </RequireAuth>
         }/>
       </Route>
+
+      <Route path="search=:categoriesInUrl" element={<Results /> }/>
 
       <Route path="post/:id" element={<Post />} />
 

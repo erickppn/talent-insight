@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { format } from "date-fns";
 import ptBR from 'date-fns/locale/pt-BR';
 import { UploadSimple } from "phosphor-react";
+import { Tag } from "react-tag-input";
+
 import { AuthContext } from "../../../contexts/Auth/AuthContext";
 
 import defaultAvatar from "../../../assets/default-avatar.png";
@@ -14,9 +16,10 @@ interface ProfilePreviewProps {
   aboutMe: string, 
   setAvatarUrl: (url: string) => void,
   setNewImageAvatar: (image: File) => void,
+  categories: Tag[]
 }
 
-export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar }: ProfilePreviewProps) {
+export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvatarUrl, setNewImageAvatar, categories }: ProfilePreviewProps) {
   const { user } = useContext(AuthContext);
 
   const date = new Date(user?.createdAt!);
@@ -91,10 +94,20 @@ export function ProfilePreview({ avatarUrl, bannerUrl, artName, aboutMe, setAvat
           }
         </div>
 
-        <div className="w-full h-[222px] mt-4 p-2 border-[1px] bg-slate-100 rounded-md overflow-hidden">
+        <div className="w-full min-h-[38px] max-h-[222px] mt-4 p-2 border-[1px] bg-slate-100 rounded-md overflow-y-auto">
           <p className="text-sm text-zinc-600">
             {aboutMe}
           </p>
+        </div>
+
+        <div className="flex gap-1 flex-wrap w-full mt-3">
+          {
+            categories.map(category => (
+              <div className="flex items-center px-2 bg-rose-300 rounded-md text-white">
+                {category.text}
+              </div>
+            ))
+          }
         </div>
 
         <hr className="w-full mt-4 border-[1px]"/>
