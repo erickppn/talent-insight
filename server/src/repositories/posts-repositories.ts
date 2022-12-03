@@ -17,6 +17,7 @@ export interface PostsRepository {
   ) => Promise<any>;
 
   getPostById: (postId: string) => Promise<any>;
+  getPostAuthor: (postId: string) => Promise<string | undefined>;
   getUserRelatedPosts: (userId: string) => Promise<any>;
   findPostsByCategories: (categories: string[]) => Promise<any>;
 }

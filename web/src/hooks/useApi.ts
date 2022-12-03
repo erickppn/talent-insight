@@ -92,10 +92,8 @@ export const useApi = () => ({
     return response.data;
   },
 
-  getUserRelatedPosts: async (postId: string | undefined, userId: string | undefined) => {
-    const response = await api.get(`/post/${postId}/related`, { 
-      data: { userId } 
-    });
+  getUserRelatedPosts: async (postId: string | undefined) => {
+    const response = await api.get(`/post/${postId}/related`);
 
     return response.data;
   },

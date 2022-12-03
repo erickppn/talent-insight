@@ -133,7 +133,7 @@ export function Post() {
           </div>
 
           <div className="max-w-4xl 2xl:max-w-[1100px] mx-auto">
-            <RelatedPosts userId={post?.userId} />
+            <RelatedPosts />
           </div>
         </div>
       </div>

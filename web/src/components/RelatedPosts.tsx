@@ -12,7 +12,7 @@ type RelatedPost = {
   postedAt: string,
 }
 
-export function RelatedPosts({ userId }: { userId: string | undefined }) {
+export function RelatedPosts() {
   const [relatedPosts, setRelatedPosts] = useState<RelatedPost[]>([]);
 
   const { id } = useParams();
@@ -20,7 +20,7 @@ export function RelatedPosts({ userId }: { userId: string | undefined }) {
 
   useEffect(() => {
     async function getRelatedPosts() {
-      const response = await api.getUserRelatedPosts(id, userId);
+      const response = await api.getUserRelatedPosts(id);
 
       if (response.error) return console.log(response.message);
 
@@ -31,7 +31,7 @@ export function RelatedPosts({ userId }: { userId: string | undefined }) {
   }, []);
 
   return (
-    <div className="">
+    <div>
       <h3 className="text-xl font-bold">Mais posts deste usuário</h3>
 
       <div className="flex gap-4 mt-6">

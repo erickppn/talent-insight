@@ -103,6 +103,20 @@ export class PrismaPostsRepository implements PostsRepository {
     });
   }
 
+  async getPostAuthor(postId: string) {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: postId,
+      },
+
+      select: {
+        userId: true
+      }
+    });
+
+    return post?.userId;
+  }
+
   async getUserRelatedPosts(userId: string) {
     return prisma.post.findMany({
       where: {

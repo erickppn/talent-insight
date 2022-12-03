@@ -5,7 +5,13 @@ export class GetUserRelatedPostsUseCase {
     private postRepository: PostsRepository
   ) {}
 
-  async execute(userId: string) {
+  async execute(id: string) {
+    //get author post by postId
+    const userId = await this.postRepository.getPostAuthor(id);
+
+    if (!userId) throw new Error("Não foi possível encontrar este usuário");
+
+    //get related posts by user id
     const relatedPosts = await this.postRepository.getUserRelatedPosts(userId);
 
     return relatedPosts;

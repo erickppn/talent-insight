@@ -249,7 +249,7 @@ routes.get('/post/:id', async (req, res) => {
 });
 
 routes.get('/post/:id/related', async (req, res) => {
-  const { userId } = req.body;
+  const { id } = req.params;
 
   const prismaPostRespository = new PrismaPostsRepository();
 
@@ -257,7 +257,7 @@ routes.get('/post/:id/related', async (req, res) => {
     prismaPostRespository,
   );
 
-  const relatedPosts = await getUserRelatedPostsUseCase.execute(userId);
+  const relatedPosts = await getUserRelatedPostsUseCase.execute(id);
 
   res.status(200).json(relatedPosts);
 });
