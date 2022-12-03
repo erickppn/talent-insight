@@ -9,7 +9,15 @@ type RelatedPost = {
   id: string,
   title: string,
   thumbnailUrl: string,
+  type: string,
   postedAt: string,
+
+  attachments: [{
+    attachmentKey: string,
+    attachmentUrl: string
+    id: string
+    postId: string
+  }]
 }
 
 export function RelatedPosts() {
@@ -18,15 +26,19 @@ export function RelatedPosts() {
   const { id } = useParams();
   const api = useApi();
 
+  async function getRelatedPosts() {
+    const response = await api.getUserRelatedPosts(id);
+
+    if (response.error) return console.log(response.message);
+
+    setRelatedPosts(response);
+  }
+
   useEffect(() => {
-    async function getRelatedPosts() {
-      const response = await api.getUserRelatedPosts(id);
+    getRelatedPosts();
+  }, [id]);
 
-      if (response.error) return console.log(response.message);
-
-      setRelatedPosts(response);
-    }
-
+  useEffect(() => {
     getRelatedPosts();
   }, []);
 
@@ -42,7 +54,9 @@ export function RelatedPosts() {
             id={post.id}
             thumbnailUrl={post.thumbnailUrl}
             title={post.title}
+            type={post.type}
             postedAt={post.postedAt}
+            attachments={post.attachments}
           />
         ))
       }
@@ -51,12 +65,14 @@ export function RelatedPosts() {
   )
 }
 
-function RelatedPost({ id, thumbnailUrl, title, postedAt }: RelatedPost) {
+function RelatedPost({ id, thumbnailUrl, title, type, postedAt, attachments }: RelatedPost) {
   const date = new Date(postedAt || Date.now());
 
   const dateFormatted = format(date, "d' de 'MMMM'", {
     locale: ptBR,
   });
+
+  const thumbnail = type === "images" ? (thumbnailUrl || attachments[0].attachmentUrl) : (thumbnailUrl || "https://media.istockphoto.com/vectors/media-player-design-modern-video-player-design-template-for-web-and-vector-id1128432423?k=20&m=1128432423&s=170667a&w=0&h=MFOXY-vttjUa5tkKY3oPOJNm7QN3sPlqjYoAoTb--78=");
 
   return (
     <Link 
@@ -66,7 +82,7 @@ function RelatedPost({ id, thumbnailUrl, title, postedAt }: RelatedPost) {
     >
       <img 
         className="h-28 object-center object-cover rounded-md overflow-hidden group-hover:-translate-y-2 transition-all"
-        src={thumbnailUrl || "https://media.istockphoto.com/vectors/media-player-design-modern-video-player-design-template-for-web-and-vector-id1128432423?k=20&m=1128432423&s=170667a&w=0&h=MFOXY-vttjUa5tkKY3oPOJNm7QN3sPlqjYoAoTb--78="} 
+        src={thumbnail} 
       />
 
       <div>  

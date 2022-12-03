@@ -28,7 +28,15 @@ type postResponse = {
   title: string,
   thumbnailUrl: string,
   postedAt: string,
+  type: string,
   likes: number,
+
+  attachments: [{
+    attachmentKey: string,
+    attachmentUrl: string
+    id: string
+    postId: string
+  }]
 
   user: {
     id: string,
@@ -99,7 +107,7 @@ export function Results() {
             users && users.map((user, index) => (
               <ProfileLink 
                 index={index}
-                key={user.id}
+                key={user.profile.artName}
                 userId={user.id}
                 avatarUrl={user.profile.avatarUrl}
                 bannerUrl={user.profile.bannerUrl}
@@ -119,21 +127,25 @@ export function Results() {
 
         <div className="flex gap-6 flex-wrap">
           {
-            posts && posts.map((post, index) => (
-              <PostLink 
-                key={post.id}
-                index={index}
-                postId={post.id}
-                postTitle={post.title}
-                postThumbnailUrl={post.thumbnailUrl}
-                postLikes={post.likes}
-                postPostedAt={post.postedAt}
-                userId={post.user.id}
-                userName={post.user.name}
-                userArtName={post.user.profile.artName}
-                userAvatarUrl={post.user.profile.avatarUrl}
-              />
-            ))
+            posts && posts.map((post, index) => {
+              const thumbnail = post.type === "images" ? (post.thumbnailUrl || post.attachments[0].attachmentUrl) : (post.thumbnailUrl || "https://media.istockphoto.com/vectors/media-player-design-modern-video-player-design-template-for-web-and-vector-id1128432423?k=20&m=1128432423&s=170667a&w=0&h=MFOXY-vttjUa5tkKY3oPOJNm7QN3sPlqjYoAoTb--78=");
+
+              return (
+                <PostLink 
+                  key={post.id}
+                  index={index}
+                  postId={post.id}
+                  postTitle={post.title}
+                  postThumbnailUrl={thumbnail}
+                  postLikes={post.likes}
+                  postPostedAt={post.postedAt}
+                  userId={post.user.id}
+                  userName={post.user.name}
+                  userArtName={post.user.profile.artName}
+                  userAvatarUrl={post.user.profile.avatarUrl}
+                />
+              )
+            })
           }
         </div>
       </div>

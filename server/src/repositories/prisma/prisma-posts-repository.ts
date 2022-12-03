@@ -117,10 +117,13 @@ export class PrismaPostsRepository implements PostsRepository {
     return post?.userId;
   }
 
-  async getUserRelatedPosts(userId: string) {
+  async getUserRelatedPosts(userId: string, id: string) {
     return prisma.post.findMany({
       where: {
         userId,
+        NOT: {
+          id,
+        }
       },
 
       select: {
@@ -128,12 +131,17 @@ export class PrismaPostsRepository implements PostsRepository {
         title: true,
         thumbnailUrl: true,
         postedAt: true,
+        type: true,
+
+        attachments: {
+          take: 1
+        },
       },
 
       take: 5,
       orderBy: { 
         postedAt: "desc"
-       }
+      },
     });
   }
 
@@ -157,6 +165,7 @@ export class PrismaPostsRepository implements PostsRepository {
         thumbnailUrl: true,
         postedAt: true,
         likes: true,
+        type: true,
         attachments: {
           take: 1
         },

@@ -12,7 +12,8 @@ export class GetUserRelatedPostsUseCase {
     if (!userId) throw new Error("Não foi possível encontrar este usuário");
 
     //get related posts by user id
-    const relatedPosts = await this.postRepository.getUserRelatedPosts(userId);
+    const relatedPosts = await this.postRepository.getUserRelatedPosts(userId, id);
+    
 
     return relatedPosts;
   }

@@ -183,7 +183,11 @@ export function ImagesForm({ postTitle, setPostTitle } : { postTitle: string, se
           Cancelar
         </button>
 
-        <button type="submit" className="flex justify-center items-center w-full py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed">
+        <button 
+          type="submit" 
+          className="flex justify-center items-center w-full py-2 rounded-md border-[1px] border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-emerald-500 disabled:cursor-not-allowed"
+
+        >
           { isSendingPost ? <Loading /> : "Salvar" }
         </button>
       </div>

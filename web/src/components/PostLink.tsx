@@ -43,11 +43,11 @@ export function PostLink(props: PostLinkProps) {
       to={`/post/${props.postId}`}
       style={{ animationDelay: `${(animationDelayBase * (props.index || 0))}ms` }}
       className={
-        classNames("max-w-lg w-full mb-6 block animate-f-bounce transition-all hover:-translate-y-3",
+        classNames("max-w-[334px] 2xl:max-w-[380px] w-full mb-6 block animate-f-bounce transition-all hover:-translate-y-3",
           fade ? 'opacity-1' : 'opacity-0',
       )}>
       <img
-        className="w-full max-h-[270px] object-cover h-auto rounded-lg" 
+        className="w-full max-h-44 2xl:max-h-52 object-cover h-auto rounded-lg" 
         src={props.postThumbnailUrl} 
       />
 
