@@ -21,4 +21,7 @@ export interface UsersRepository {
   changeUserPassword: (id: string, newPassword: string) => Promise<UserInfoResponse>;
   deleteUserById: (id: string) => Promise<void>;
   findUsersByCategories: (category: string[]) => Promise<any>;
+  createUserFollowRelation: (followedById: string, followingId: string) => Promise<any>;
+  getAllFollows: (userId: string) => Promise<any>;
+  deleteUserFollowRelation: (followedById: string, followingId: string) => Promise<any>;
 }

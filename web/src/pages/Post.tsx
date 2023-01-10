@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import ptBR from 'date-fns/locale/pt-BR';
-import { CircleNotch, Heart, UserPlus } from "phosphor-react";
+import { CircleNotch, Heart } from "phosphor-react";
 
 import { useApi } from "../hooks/useApi";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { SlideShow } from "../components/SlideShow";
 import { Comments } from "../components/Comments";
 
-import { post } from "../types/Post";
 import { RelatedPosts } from "../components/RelatedPosts";
+import { FollowButton } from "../components/FollowButton";
+
+import { post } from "../types/Post";
 
 import defaultAvatar from "../assets/default-avatar.png";
 
@@ -125,9 +127,9 @@ export function Post() {
                   <Heart size={24} />
                 </button>
                 
-                <button className="px-5 py-3 text-sm text-white bg-rose-400 flex items-center rounded font-bold uppercase gap-2 justify-center hover:bg-rose-300 transition-colors">
-                  <UserPlus size={24} /> Seguir Usuário
-                </button>
+                <FollowButton 
+                  userToFollow={post?.userId}
+                />
               </div>
             </div>
           </div>

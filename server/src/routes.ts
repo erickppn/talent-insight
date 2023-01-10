@@ -24,6 +24,8 @@ import { GetCommentsUseCase } from "./use-cases/comments-use-cases/get-comments-
 import { DeleteCommentUseCase } from "./use-cases/comments-use-cases/delete-comment-use-case";
 import { GetUserRelatedPostsUseCase } from "./use-cases/posts-use-cases/get-user-related-posts-use-case";
 import { GetPostsAndUsersByCategories } from "./use-cases/categories-use-cases/get-posts-and-profiles-by-categories";
+import { FollowUser } from "./use-cases/user-use-cases/follow-user";
+import { UnfollowUser } from "./use-cases/user-use-cases/unfollow-user";
 
 //middlewares imports
 import { authMiddleware } from "./middlewares/auth-middleware";
@@ -160,6 +162,37 @@ routes.put('/user/profile/', authMiddleware, upload.fields([{ name: "avatar", ma
   });
 });
 
+routes.post('/user/:id/follow', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { id: followingId } = req.params;
+  
+  const prismaUsersRepository = new PrismaUsersRepository();
+
+  const followUserUseCase = new FollowUser(
+    prismaUsersRepository
+  );
+
+  const newFollows = await followUserUseCase.execute({authToken, followingId});
+
+  res.status(200).json(newFollows);
+});
+
+
+routes.delete('/user/:id/unfollow', authMiddleware, async (req, res) => {
+  const authToken = req.headers["authorization"];
+  const { id: followingId } = req.params;
+
+  const prismaUsersRepository = new PrismaUsersRepository();
+
+  const unfollowUserUseCase = new UnfollowUser(
+    prismaUsersRepository
+  );
+
+  const success = await unfollowUserUseCase.execute({authToken, followingId});
+
+  res.status(200).json(success);
+});
+
 //authentication routes
 routes.post('/auth/login', async (req, res) => {
   const { email, password } = req.body;
@@ -172,12 +205,13 @@ routes.post('/auth/login', async (req, res) => {
     prismaUserProfilesRepository
   );
 
-  const { user, userProfile, token } = await authenticateUserUseCase.execute({ email, password });
+  const { user, userProfile, follows, token } = await authenticateUserUseCase.execute({ email, password });
 
   return res.status(200).json({
     message: "Login feito com sucesso",
     user,
     userProfile,
+    follows,
     token
   });
 });
@@ -193,11 +227,12 @@ routes.get('/auth/validate-token', async (req, res) => {
     prismaUserProfilesRepository
   );
 
-  const { user, userProfile } = await validateUserTokenUseCase.execute(authToken);
+  const { user, userProfile, follows } = await validateUserTokenUseCase.execute(authToken);
   
   return res.status(201).json({ 
     user,
-    userProfile
+    userProfile,
+    follows
   });
 });
 

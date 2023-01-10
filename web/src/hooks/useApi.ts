@@ -74,6 +74,30 @@ export const useApi = () => ({
     return response.data;
   },
 
+  followUser: async (userId: string | undefined) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.post(`/user/${userId}/follow`, {}, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    });
+
+    return response.data;
+  },
+
+  unfollowUser: async (userId: string | undefined) => {
+    const token = localStorage.getItem("ti-auth-token");
+
+    const response = await api.delete(`/user/${userId}/unfollow`, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    });
+
+    return response.data;
+  },
+
   sendPost: async (data: FormData) => {
     const token = localStorage.getItem("ti-auth-token");
 

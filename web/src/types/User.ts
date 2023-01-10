@@ -6,3 +6,13 @@ export type User = {
   isActive: boolean,
   createdAt: string,
 }
+
+export type PublicUserInfo = {
+  id: string,
+  name: string,
+
+  profile: {
+    artName: string | null,
+    avatarUrl: string | null,
+  }
+}

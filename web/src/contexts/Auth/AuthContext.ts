@@ -1,14 +1,16 @@
 import { createContext } from "react";
-import { User } from "../../types/User";
+import { User, PublicUserInfo } from "../../types/User";
 import { Profile } from "../../types/Profile";
 
 type AuthContextType = {
   user: User | null,
   profile: Profile | null,
+  following: PublicUserInfo[],
   isSigned: boolean,
   setUser: (user: User) => void,
   setProfile: (profile: Profile) => void,
   register: (name: string, email: string, password: string, confirmPassword: string, age: number) => Promise<void | string>,
+  setFollowing: (follows: PublicUserInfo[]) => void,
   signin: (email: string, password: string) => Promise<void | string>,
   signout: () => Promise<void>,
 }

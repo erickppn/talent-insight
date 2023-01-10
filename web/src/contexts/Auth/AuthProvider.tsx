@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { User } from "../../types/User";
+import { User, PublicUserInfo } from "../../types/User";
 import { Profile } from "../../types/Profile";
 
 import { useApi } from "../../hooks/useApi";
@@ -8,6 +8,7 @@ import { useApi } from "../../hooks/useApi";
 export function AuthProvider({ children }: { children: JSX.Element }){
   const [user, setUser] = useState<User | null>(JSON.parse(localStorage.getItem("saved-user") || "null"));
   const [profile, setProfile] = useState<Profile | null>(JSON.parse(localStorage.getItem("saved-profile") || "null"));
+  const [following, setFollowing] = useState<PublicUserInfo[]>([]);
 
   const api = useApi();
 
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: JSX.Element }){
     if (data.user && data.token) {
       setUser(data.user);
       setProfile(data.userProfile);
+      setFollowing(data.follows);
       setToken(data.token);
     }
   }
@@ -41,6 +43,7 @@ export function AuthProvider({ children }: { children: JSX.Element }){
   async function signout() {
     setUser(null);
     setProfile(null);
+    setFollowing([]);
     setToken('');
   }
 
@@ -64,15 +67,15 @@ export function AuthProvider({ children }: { children: JSX.Element }){
           if (data.user) {
             setUser(data.user);
             setProfile(data.userProfile);
+            setFollowing(data.follows);
           } else {
-            setUser(null);
-            setProfile(null);
-            setToken('');
+            await signout();
           }
 
         } catch (e) {
           setUser(null);
           setProfile(null);
+          setFollowing([]);
           console.log(e);
         }
       }
@@ -86,8 +89,10 @@ export function AuthProvider({ children }: { children: JSX.Element }){
       user,
       isSigned: !!user,
       profile,
+      following,
       setUser,
       setProfile,
+      setFollowing,
       register,
       signin,
       signout

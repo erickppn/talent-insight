@@ -24,9 +24,13 @@ export class ValidateUserTokenUseCase {
     //get user profile info
     const userProfile = await this.userProfileRepository.findProfileByUserId(user.id);
 
+    //get follows user
+    const follows = await this.userRepository.getAllFollows(userId);
+
     return {
       user,
-      userProfile
+      userProfile,
+      follows
     };
   }
 }

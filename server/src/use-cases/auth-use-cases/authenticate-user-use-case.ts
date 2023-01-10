@@ -41,9 +41,13 @@ export class AuthenticateUserUseCase {
     //get user profile info
     const userProfile = await this.userProfileRepository.findProfileByUserId(userAlredyExists.id);
 
+    //get follows user
+    const follows = await this.userRepository.getAllFollows(userAlredyExists.id);
+
     return {
       user: userAlredyExists,
       userProfile,
+      follows,
       token
     }
   }
