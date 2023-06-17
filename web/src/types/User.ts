@@ -10,9 +10,14 @@ export type User = {
 export type PublicUserInfo = {
   id: string,
   name: string,
+  createdAt: string,
 
   profile: {
-    artName: string | null,
+    artName: string | null, 
+    aboutMe: string | null, 
     avatarUrl: string | null,
+    bannerUrl: string | null,
+
+    categories: { category: { name: string } }[]
   }
 }

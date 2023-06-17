@@ -74,6 +74,18 @@ export const useApi = () => ({
     return response.data;
   },
 
+  getPublicUserInfo: async (userId: string) => {
+    const response = await api.get(`/users/${userId}`);
+
+    return response.data;
+  },
+
+  getUsersByRating: async () => {
+    const response = await api.get('/users/top');
+
+    return response.data;
+  },
+
   followUser: async (userId: string | undefined) => {
     const token = localStorage.getItem("ti-auth-token");
 
