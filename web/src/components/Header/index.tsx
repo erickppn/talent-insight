@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Switch } from "@headlessui/react";
+import * as Switch from '@radix-ui/react-switch';
+
 import { Moon, SunDim } from "phosphor-react";
 
 import { AuthContext } from "../../contexts/Auth/AuthContext";
@@ -30,21 +31,21 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-5">
-        <Switch
-          checked={darkTheme}
-          onChange={setDarkTheme} 
+        <Switch.Root 
+          checked={darkTheme} 
+          onCheckedChange={setDarkTheme} 
           className={`${darkTheme ? 'bg-black' : 'bg-gray-200 text-blue-900'}
             relative inline-flex w-[50px] shrink-0 cursor-pointer rounded-md border-2 border-transparent`}
+          id="airplane-mode"
         >
           <span className="sr-only">Alterar tema</span>
-          <span
-            aria-hidden="true"
+          <Switch.Thumb 
             className={`${darkTheme ? 'translate-x-6' : 'translate-x-0'}
-              pointer-events-none inline-flex justify-center items-center h-[22px] w-[22px] transform rounded-md bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out`}
+            pointer-events-none inline-flex justify-center items-center h-[22px] w-[22px] transform rounded-md bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out`}
           >
             { darkTheme ? <Moon weight="fill" /> : <SunDim weight="fill" /> }
-          </span>
-        </Switch>
+          </Switch.Thumb>
+        </Switch.Root>
 
         { isSigned 
           ? <Menu /> 
