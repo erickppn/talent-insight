@@ -7,10 +7,8 @@ import { CircleNotch, Heart } from "phosphor-react";
 import { useApi } from "../hooks/useApi";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { SlideShow } from "../components/SlideShow";
-import { Comments } from "../components/Comments";
 
 import { RelatedPosts } from "../components/RelatedPosts";
-import { FollowButton } from "../components/FollowButton";
 
 import { post } from "../types/Post";
 
@@ -127,9 +125,7 @@ export function Post() {
                   <Heart size={24} />
                 </button>
                 
-                <FollowButton 
-                  userToFollow={post?.userId}
-                />
+
               </div>
             </div>
           </div>
@@ -141,7 +137,7 @@ export function Post() {
       </div>
 
       <aside className="mx-auto max-w-4xl 2xl:max-w-[418px] w-full">
-        <Comments />
+        
       </aside>
     </main>
   )
