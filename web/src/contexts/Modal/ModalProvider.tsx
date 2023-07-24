@@ -2,36 +2,24 @@ import { useState } from "react";
 import { ModalContext } from "./ModalContext";
 
 export function ModalProvider({ children }: { children: JSX.Element }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<'signInUser' | 'registerUser' | 'sendPost'>(null!);
+  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
+  const [isOpenRegisterModal, setIsOpenRegisterModal] = useState(false);
 
-  function openLogin() {
-    setModalContent("signInUser");
-    setIsOpen(true);
+  function toggleLoginModal() {
+    setIsOpenLoginModal(!isOpenLoginModal);
   }
 
-  function openRegister() {
-    setModalContent("registerUser");
-    setIsOpen(true);
-  }
-
-  function openSendPost() {
-    setModalContent("sendPost")
-    setIsOpen(true);
-  }
-  
-  function closeModal() {
-    setIsOpen(false);
+  function toggleRegisterModal() {
+    setIsOpenRegisterModal(!isOpenRegisterModal);
   }
 
   return (
     <ModalContext.Provider value={{
-      isOpen,
-      openLogin,
-      openRegister,
-      openSendPost, 
-      closeModal,
-      modalContent,
+      isOpenLoginModal,
+      toggleLoginModal, 
+      isOpenRegisterModal,
+      toggleRegisterModal,
+      isAnyOpenModal: isOpenLoginModal || isOpenRegisterModal
     }}>
       {children}
     </ModalContext.Provider>

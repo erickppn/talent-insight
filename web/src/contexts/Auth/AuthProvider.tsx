@@ -12,8 +12,8 @@ export function AuthProvider({ children }: { children: JSX.Element }){
 
   const api = useApi();
 
-  async function register(name: string, email: string, password: string, confirmPassword: string, age: number) {
-    const data = await api.registerUser(name, email, password, confirmPassword, age);
+  async function register(name: string, email: string, password: string, confirmPassword: string, birthDate: Date) {
+    const data = await api.registerUser(name, email, password, confirmPassword, birthDate);
 
     if (data.error) {
       return data.message;

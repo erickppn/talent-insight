@@ -1,9 +1,10 @@
 import { CircleNotch } from 'phosphor-react';
+interface LoadingProps {
+  size?: number,
+}
  
-export function Loading() {
+export function Loading({ size }: LoadingProps) {
   return (
-    <div className="w-6 h-6 flex items-center justify-center overflow-hidden">
-      <CircleNotch weight="bold" className="w-4 h-4 animate-spin" />
-    </div>
+    <CircleNotch size={size || 24} weight="bold" className="animate-spin" />
   )
 }

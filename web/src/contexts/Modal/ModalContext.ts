@@ -1,12 +1,11 @@
 import { createContext } from "react";
 
 export type ModalContextType = {
-  isOpen: boolean,
-  openLogin: () => void,
-  openRegister: () => void,
-  openSendPost: () => void, 
-  closeModal: () => void,
-  modalContent: 'signInUser' | 'registerUser' | 'sendPost',
+  isOpenLoginModal: boolean, 
+  toggleLoginModal: () => void,
+  isOpenRegisterModal: boolean,
+  toggleRegisterModal: () => void,
+  isAnyOpenModal: boolean
 }
 
 export const ModalContext = createContext<ModalContextType>(null!);

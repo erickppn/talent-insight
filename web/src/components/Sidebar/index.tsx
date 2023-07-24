@@ -18,7 +18,7 @@ export function Sidebar() {
   const [topRatedUsers, setTopRatedUsers] = useState<PublicUserInfo[]>([]);
 
   const { user, following } = useContext(AuthContext);
-  const { openLogin } = useContext(ModalContext);
+  const { toggleLoginModal } = useContext(ModalContext);
 
   const { getUsersByRating } = useApi();
 
@@ -112,7 +112,7 @@ return (
               </div>
             ) : (
               <button
-                onClick={openLogin}
+                onClick={toggleLoginModal}
                 className="flex flex-col items-center gap-1 w-full text-blue-900"
               >
                 <SignIn size={26} />

@@ -7,14 +7,13 @@ import { ModalContext } from "./contexts/Modal/ModalContext";
 import { Header } from "./components/Header";
 import { Router } from "./router";
 import { Sidebar } from "./components/Sidebar";
-import { Modal } from "./components/Modal";
 
 export function App() {
   const { darkTheme } = useContext(ThemeContext);
-  const { isOpen } = useContext(ModalContext);
+  const { isAnyOpenModal } = useContext(ModalContext);
   
   return (
-    <div  className={classNames("flex flex-col h-screen", { "dark": darkTheme, "blur-[1px]": isOpen } )}>
+    <div  className={classNames("flex flex-col h-screen", { "dark": darkTheme, "blur-[1px]": isAnyOpenModal } )}>
       <Header />
 
       <div className="flex flex-1 overflow-auto dark:bg-zinc-900">
@@ -28,8 +27,6 @@ export function App() {
           </footer>
         </div>
       </div>
-
-      <Modal />
     </div>
   )
 }
