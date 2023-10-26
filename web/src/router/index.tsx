@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { RequireAuth } from "./RequireAuth";
 
 //pages imports
+import { Home } from "../pages/Home";
 import { Me } from "../pages/Me";
 import { Configurations } from "../pages/Configurations";
 import { EditProfile } from "../pages/Configurations/EditProfile";
@@ -13,15 +14,8 @@ import { Results } from "../pages/Results";
 export function Router() {
   return (
     <Routes>
-      <Route path="/" element={
-        <div className="p-3">
-          <div className="flex justify-between flex-col h-[3000px] dark:text-zinc-100 border-2">
-            <header>Começo da página</header>
-            <footer>Fim da página</footer>
-          </div>
-        </div>
-      }/>
-      
+      <Route path="/" element={<Home />}/>
+
       <Route path="@me" element={
         <RequireAuth>
           <Me />

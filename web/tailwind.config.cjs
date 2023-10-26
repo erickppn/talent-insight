@@ -43,6 +43,6 @@ module.exports = {
   darkMode: 'class',
   plugins: [
     require('tailwind-scrollbar'),
-    require('@vidstack/player/tailwind.cjs'),
+    require('vidstack/tailwind.cjs'),
   ],
 }
