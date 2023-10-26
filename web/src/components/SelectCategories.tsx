@@ -1,48 +1,51 @@
-import { Tag, WithContext as ReactTags } from "react-tag-input";
+import { Tag, WithContext as ReactTags, ReactTagsProps } from "react-tag-input";
 
-const KeyCodes = [
-  {code: 188},
-  {code: 13},
-  {code: 9},
-  {code: 32}
-];
+const KeyCodes = {
+  TAB: 9,
+  ENTER: 13,
+  COMMA: 188,
+};
 
-const delimiters = KeyCodes.map(keycode => { return keycode.code });
+type SelectCategoriesProps = Omit<ReactTagsProps, 'handleAddition' | 'handleDelete'> & {
+  tags: Tag[]; 
+  setTags: (categories: Tag[]) => void; 
+  reactTagsClassNames: any;
+}
 
-export function SelectCategories({ categories, setCategories, inputFieldPosition, reactTagsClassNames }: { categories: Tag[], setCategories: (categories: Tag[]) => void, inputFieldPosition: "bottom" | "top" | "inline", reactTagsClassNames: any }) {
+export function SelectCategories({tags, setTags, reactTagsClassNames, ...rest}: SelectCategoriesProps) {
   function handleDelete(i: number) {
-    setCategories(categories.filter((tag, index) => index !== i));
+    setTags(tags.filter((tag, index) => index !== i));
   };
 
   function handleAddition(tag: Tag) {
-    const formatedText = tag.text.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z ]/g, "");
+    const formatedText = tag.text.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z ]/g, "");
 
     const text = { id: tag.id, text: formatedText };
-    setCategories([...categories, text]);
+    setTags([...tags, text]);
   };
 
   function handleDrag(tag: Tag, currPos: number, newPos: number) {
-    const newCategoriesUrl = categories.slice();
+    const newCategoriesUrl = tags.slice();
 
     newCategoriesUrl.splice(currPos, 1);
     newCategoriesUrl.splice(newPos, 0, tag);
 
-    setCategories(newCategoriesUrl);
+    setTags(newCategoriesUrl);
   };
 
   return (
     <ReactTags
       classNames={reactTagsClassNames}
-      tags={categories}
-      suggestions={[ { id: "Test", text: "Test" } ]}
-      delimiters={delimiters}
+      tags={tags}
+      delimiters={[
+        KeyCodes.TAB,
+        KeyCodes.ENTER,
+        KeyCodes.COMMA
+      ]}
       handleDelete={handleDelete}
       handleAddition={handleAddition}
-      handleDrag={handleDrag}
-      inputFieldPosition={inputFieldPosition}
-      autocomplete
-      autofocus={false}
-      placeholder={categories.length === 0 ? "Música, desenho, artísta etc." : ""}
+      handleDrag={handleDrag} 
+      {...rest}
     />
   )
 }

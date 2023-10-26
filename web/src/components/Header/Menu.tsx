@@ -22,13 +22,17 @@ export function Menu() {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <div className="flex items-center overflow-hidden cursor-pointer">
-          <div className="h-8 w-8 rounded-md overflow-hidden mr-3">
+          <div className="h-8 w-8 rounded-md overflow-hidden mr-4">
             <img src={profilePic ? profilePic : defaultAvatar} alt="Minha foto de perfil" className="h-8 w-8 object-cover" />
           </div>
 
-          <span className="text-sky-900 dark:text-white text-[15px] font-medium truncate mr-4">
-            {profile?.artName ? profileFirstName : userFirstName}
-          </span>
+          <div className="flex flex-col text-right mr-2">
+            <span className="text-sky-900 dark:text-white text-[15px] font-medium truncate leading-4">
+              {profile?.artName ? profileFirstName : userFirstName}
+            </span>
+
+            {profile?.artName && <small className="text-zinc-500 font-medium leading-4">@{user?.name}</small>}
+          </div>
 
           <CaretDown size={18} weight="bold" className="text-sky-900 dark:text-white" />
         </div>

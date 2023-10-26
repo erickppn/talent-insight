@@ -32,7 +32,6 @@ export function ProfilePreview({ userId }: ProfilePreviewProps) {
     loadUserInfo();
   }, []);
 
-
   if (isLoadingPreview || !userInfo) {
     return (
       <div className="flex justify-center items-center p-3 bg-white rounded-md text-rose-500">
@@ -85,10 +84,10 @@ export function ProfilePreview({ userId }: ProfilePreviewProps) {
 
         {userInfo.profile.categories.length > 0 && (
           <div className="flex flex-wrap gap-1 w-full my-3">
-            {userInfo.profile.categories.map(category => (
+            {userInfo.profile.categories.map((category, i) => (
               <Link 
-                key={userInfo.id}
-                to={`/search=${category.category.name}`}
+                key={userInfo.profile.categories[i].category.name}
+                to={`/search?tag=${category.category.name}`}
                 className="flex justify-center items-center gap-1 px-3 bg-rose-400 rounded-sm text-white text-sm font-semibold uppercase hover:scale-105 transition-transform"
               >
                 <Tag weight="bold" />

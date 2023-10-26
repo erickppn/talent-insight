@@ -5,7 +5,6 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { CircleNotch, Heart } from "phosphor-react";
 
 import { useApi } from "../hooks/useApi";
-import { VideoPlayer } from "../components/VideoPlayer";
 import { SlideShow } from "../components/SlideShow";
 
 import { RelatedPosts } from "../components/RelatedPosts";
@@ -29,6 +28,9 @@ export function Post() {
 
   async function getPostById() {
     const post = await api.getPostById(id);
+
+    console.log(post);
+    
     
     setPost(post);
     setIsLoadingPost(false);
@@ -58,18 +60,12 @@ export function Post() {
         <div className="flex-1">
           <div className="flex justify-center">
             <div className="h-full w-full max-w-4xl 2xl:max-w-[1100px] 2xl:max-h-[70vh] rounded-lg overflow-hidden aspect-video">
-              {
-                post?.type === "video" ? (
-                  <VideoPlayer 
-                    url={post?.attachments[0].attachmentUrl || ""}
-                    thumbnail={post?.thumbnailUrl || ""}
-                  />
-                ) : post?.type === "images" && (
+                  
                   <SlideShow 
-                    attachments={post.attachments}
+                    attachments={post!.attachments}
                   />
-                )
-              }
+
+
             </div>
           </div>
 

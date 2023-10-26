@@ -135,7 +135,7 @@ export const useApi = () => ({
   },
 
   getUsersAndPostsByCategories: async (categoriesInUrl: string) => {
-    const response = await api.get(`/search=${categoriesInUrl}`);
+    const response = await api.get(`/search${categoriesInUrl}`);
 
     return response.data;
   },

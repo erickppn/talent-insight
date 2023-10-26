@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 import { Tag, WithContext as ReactTags } from "react-tag-input";
 
@@ -29,16 +29,19 @@ export function Search() {
     e.preventDefault();
 
     if (categories.length < 1) {
-      return navigate("/");
+      return navigate("/discover");
     }
 
-    const formatedTags = categories.map(tag => {
-      return tag.text;
+    const params = createSearchParams();
+
+    categories.map(tag => {
+      params.append('tag', tag.text);
     });
 
-    const categoriesUrl = formatedTags.join(";");
-
-    navigate(`search=${categoriesUrl}`);
+    navigate({
+      pathname: 'search',
+      search: `${createSearchParams(params)}`
+    });
   }
 
   function handleDelete(i: number) {
@@ -50,25 +53,15 @@ export function Search() {
 
     const text = { id: tag.id, text: formatedText };
     setCategories([...categories, text]);
-  };
-
-  function handleDrag(tag: Tag, currPos: number, newPos: number) {
-    const newCategoriesUrl = categories.slice();
-
-    newCategoriesUrl.splice(currPos, 1);
-    newCategoriesUrl.splice(newPos, 0, tag);
-
-    setCategories(newCategoriesUrl);
-  };
+  }
   
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 items-center max-w-2xl 2xl:max-w-4xl w-full pl-5 bg-gray-100 dark:bg-black rounded-lg">
+    <form onSubmit={handleSubmit} className="flex gap-2 items-center mx-auto max-w-2xl 2xl:max-w-4xl w-full pl-5 bg-gray-100 dark:bg-black rounded-lg">
       <div className="flex-1 overflow-x-auto scrollbar-none">
         <ReactTags
           tags={categories}
           handleDelete={handleDelete}
           handleAddition={handleAddition}
-          handleDrag={handleDrag} 
           delimiters={[
             KeyCodes.TAB,
             KeyCodes.ENTER,

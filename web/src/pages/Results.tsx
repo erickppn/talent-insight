@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { SmileyXEyes } from "phosphor-react";
 
 import { useApi } from "../hooks/useApi";
@@ -44,7 +44,7 @@ type postResponse = {
 
     profile: {
       artName: string,
-      avatarUrl: string,
+      avatarUrl: string,  
       bannerUrl: string,
     }
   }
@@ -56,15 +56,15 @@ export function Results() {
 
   const [isSearchingContent, setIsSearchingContent] = useState(true);
 
-  const { categoriesInUrl } = useParams();
+  const { search } = useLocation();
   const api = useApi();
 
   useEffect(() => {
     async function LoadResults() {
       setIsSearchingContent(true);
 
-      const response = await api.getUsersAndPostsByCategories(categoriesInUrl || "");
-
+      const response = await api.getUsersAndPostsByCategories(search || "");
+      
       if (response.error) return console.log(response.message);
 
       setUsers(response.users);
@@ -74,7 +74,7 @@ export function Results() {
     }
 
     LoadResults();
-  }, [categoriesInUrl]);
+  }, [search]);
 
   if (isSearchingContent) {
     return (
