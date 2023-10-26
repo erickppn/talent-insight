@@ -1,10 +1,10 @@
 import { FormEvent, useContext, useState } from "react"
 import classNames from "classnames";
 import { At, CalendarBlank, Key, User } from "phosphor-react";
-import { AuthContext } from "../../contexts/Auth/AuthContext";
-import { useApi } from "../../hooks/useApi";
+import { AuthContext } from "../../../contexts/Auth/AuthContext";
+import { useApi } from "../../../hooks/useApi";
 
-import { Loading } from "../../components/Loading";
+import { Loading } from "../../../components/Loading";
 
 export function EditAccount() {
   const { user, setUser } = useContext(AuthContext);

@@ -90,7 +90,7 @@ export function EditProfile() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full max-h-full py-6">
+    <div className="flex flex-col items-center w-full">
       <div>
         <h2 className="mb-6 p-3 text-xl font-medium bg-rose-400 rounded-md text-white">
           Perfil
@@ -123,8 +123,9 @@ export function EditProfile() {
                     </span>
 
                     <SelectCategories 
-                      categories={categories} 
-                      setCategories={setCategories}
+                      autofocus={false}
+                      tags={categories} 
+                      setTags={setCategories}
                       inputFieldPosition="top"
                       reactTagsClassNames={ReactTagsClassNames}
                     />

@@ -5,8 +5,9 @@ import { RequireAuth } from "./RequireAuth";
 import { Home } from "../pages/Home";
 import { Me } from "../pages/Me";
 import { Configurations } from "../pages/Configurations";
+import { General } from "../pages/Configurations/General/General";
 import { EditProfile } from "../pages/Configurations/EditProfile";
-import { EditAccount } from "../pages/Configurations/EditAccount";
+import { EditAccount } from "../pages/Configurations/EditAccount/EditAccount";
 import { DangerArea } from "../pages/Configurations/DangerArea";
 import { Post } from "../pages/Post";
 import { Results } from "../pages/Results";
@@ -16,14 +17,22 @@ export function Router() {
     <Routes>
       <Route path="/" element={<Home />}/>
 
-      <Route path="@me" element={
+      <Route path="users/@me" element={
         <RequireAuth>
           <Me />
         </RequireAuth>
       }/>
 
+      <Route path="users/:id" element={
+        <div>...</div>
+      }/>
+
       <Route path="configurations" element={<Configurations />}>
         <Route index element={
+          <General />
+        }/>
+
+        <Route element={
           <RequireAuth>
             <EditProfile />
           </RequireAuth>
@@ -41,14 +50,14 @@ export function Router() {
           </RequireAuth>
         }/>
 
-        <Route path="danger" element={
+        <Route path="password" element={
           <RequireAuth>
             <DangerArea />
           </RequireAuth>
         }/>
       </Route>
 
-      <Route path="search=:categoriesInUrl" element={<Results /> }/>
+      <Route path="search" element={<Results /> }/>
 
       <Route path="post/:id" element={<Post />} />
 
