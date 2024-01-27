@@ -164,7 +164,7 @@ export function PostBox() {
         <button
           className="flex gap-2 items-center justify-center min-w-[110px] h-fit py-1 px-3 border-[1px] rounded-md font-medium bg-blue-500 text-white border-blue-500 hover:bg-blue-400 hover:border-blue-400 disabled:opacity-60 disabled:hover:bg-blue-500 disabled:hover:border-blue-500 transition-all duration-400"
           type="submit"
-          disabled={!(attachments.length > 0 || getValues('description')) || isSendingPost}
+          disabled={!(attachments.length > 0 || getValues('description') && (getValues('description').trim())) || isSendingPost}
         >
           {
             isSendingPost

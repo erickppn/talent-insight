@@ -4,4 +4,5 @@
 
 body {
   @apply bg-slate-100;
+  @apply overflow-hidden;
 }
