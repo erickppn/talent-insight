@@ -87,7 +87,7 @@ export function ProfilePreview({ userId }: ProfilePreviewProps) {
             {userInfo.profile.categories.map((category, i) => (
               <Link 
                 key={userInfo.profile.categories[i].category.name}
-                to={`/search?tag=${category.category.name}`}
+                to={`explore/search?tag=${category.category.name}`}
                 className="flex justify-center items-center gap-1 px-3 bg-rose-400 rounded-sm text-white text-sm font-semibold uppercase hover:scale-105 transition-transform"
               >
                 <Tag weight="bold" />
@@ -98,7 +98,7 @@ export function ProfilePreview({ userId }: ProfilePreviewProps) {
         )}
         
         <Link
-          to={`/user/${userInfo.id}`} 
+          to={`explore/users/${userInfo.id}`} 
           className="flex justify-center items-center py-[6px] bg-blue-500 rounded-md text-white text-sm font-semibold uppercase hover:bg-blue-400 active:bg-blue-600 transition-colors"
         >
           Ver Perfil

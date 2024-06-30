@@ -23,10 +23,6 @@ export function Router() {
         </RequireAuth>
       }/>
 
-      <Route path="users/:id" element={
-        <div>...</div>
-      }/>
-
       <Route path="configurations" element={<Configurations />}>
         <Route index element={
           <General />
@@ -57,7 +53,15 @@ export function Router() {
         }/>
       </Route>
 
-      <Route path="search" element={<Results /> }/>
+      <Route path="explore" element={
+        <div>....</div>
+      } />
+
+      <Route path="explore/search" element={<Results /> }/>
+
+      <Route path="explore/users/:id" element={
+        <div>...</div>
+      }/>
 
       <Route path="post/:id" element={<Post />} />
 

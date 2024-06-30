@@ -12,11 +12,11 @@ const KeyCodes = {
 };
 
 const ReactTagsClassNames =  {
-  tagInput: "w-full h-full relative text-gray-600 dark:text-gray-200",
+  tagInput: "w-full h-full text-gray-600 dark:text-gray-200",
   tagInputField: "w-full bg-transparent focus:ring-0 focus:outline-none",
   selected: "flex gap-1 [&>*]:flex [&>*]:gap-2 [&>span>*]:font-bold [&>span]:text-gray-700",
   tag: "flex justify-between items-center w-fit px-2 bg-gray-300 rounded-md whitespace-nowrap font-medium",
-  suggestions: "flex min-w-[210px] absolute p-2 bg-white rounded-md mt-9 z-10 [&>ul]:w-full [&>ul>*]:py-2 [&>ul>*]:w-full [&>ul>*]:px-2 [&>ul>*]:rounded-md cursor-pointer before:w-4 before:h-4 before:bg-white dark:before:bg-zinc-800 before:transition-colors before:absolute before:rounded-sm before:rotate-45 before:-top-1 before:left-2",
+  suggestions: "flex min-w-[210px] absolute p-2 bg-white rounded-md mt-14 z-20 shadow-lg [&>ul]:w-full [&>ul>*]:py-2 [&>ul>*]:w-full [&>ul>*]:px-2 [&>ul>*]:rounded-md cursor-pointer before:w-4 before:h-4 before:bg-white dark:before:bg-zinc-800 before:transition-colors before:absolute before:rounded-sm before:rotate-45 before:-top-1 before:left-2",
   activeSuggestion: "bg-zinc-50"
 };
 
@@ -29,7 +29,7 @@ export function Search() {
     e.preventDefault();
 
     if (categories.length < 1) {
-      return navigate("/discover");
+      return navigate("/explore");
     }
 
     const params = createSearchParams();
@@ -39,7 +39,7 @@ export function Search() {
     });
 
     navigate({
-      pathname: 'search',
+      pathname: 'explore/search',
       search: `${createSearchParams(params)}`
     });
   }
