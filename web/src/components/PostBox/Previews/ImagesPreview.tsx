@@ -25,7 +25,10 @@ export function ImagesPreview({ onRemove, imagesList }: ImagesInputProps) {
             )}
           >
             <img
-              className="group-hover:scale-105 group-hover:opacity-50 transition duration-500 aspect-video object-center object-cover w-full h-full" 
+              className={classNames("group-hover:scale-105 group-hover:opacity-50 transition duration-500 object-center object-cover w-full h-full" , 
+                imagesList.length > 1 && "aspect-video"
+              )}
+
               src={URL.createObjectURL(attachment)}
               alt={attachment.name}
             />

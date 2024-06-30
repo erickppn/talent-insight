@@ -26,6 +26,7 @@
     "react-router-dom": "^6.3.0",
     "react-slideshow-image": "^4.0.5",
     "react-tag-input": "^6.8.1",
+    "tailwind-merge": "^2.2.1",
     "tailwind-scrollbar": "^2.0.1",
     "vidstack": "^0.6.13"
   },
