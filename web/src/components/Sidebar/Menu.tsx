@@ -5,25 +5,20 @@ import classNames from "classnames";
 import { House, Compass, ArrowLineLeft, List, UserCircle, GearSix } from "phosphor-react";
 
 import { AuthContext } from "../../contexts/Auth/AuthContext";
+import { SidebarContext } from "../../contexts/Sidebar/SidebarProvider";
 
-interface MenuProps {
-  sideBarStatus: boolean,
-  toggleSideBarStatus: (sideBarStatus: boolean) => void;
-}
-
-export function Menu(props: MenuProps) {
-  const { sideBarStatus, toggleSideBarStatus } = props;
-
+export function Menu() {
+  const { sidebarIsExpanded, toggleSidebarStatus } = useContext(SidebarContext);
   const { isSigned } = useContext(AuthContext);
 
   return (
     <header
       className={classNames("flex justify-between gap-2 mb-6 bg-white rounded-xl px-4 py-2 text-gray-500",
-        sideBarStatus ? "flex-row" : "flex-col-reverse py-4"
+      sidebarIsExpanded ? "flex-row" : "flex-col-reverse py-4"
       )}
     >
       <div className={classNames("flex-1 flex justify-between gap-2 overflow-x-hidden",
-        sideBarStatus ? "flex-row" : "flex-col"
+        sidebarIsExpanded ? "flex-row" : "flex-col"
       )}>
         <NavLink
           to="/"
@@ -41,7 +36,7 @@ export function Menu(props: MenuProps) {
         </NavLink>
 
         <NavLink
-          to="/discover" 
+          to="/explore" 
           className={({ isActive }) => classNames(
             "flex flex-1 justify-center items-center gap-2 min-w-[32px] min-h-[32px] h-8 rounded-md",
             isActive ? " font-semibold bg-rose-500 text-white" : "hover:bg-gray-100",
@@ -90,9 +85,9 @@ export function Menu(props: MenuProps) {
 
       <button
         className="flex items-center justify-center min-w-[32px] w-8 min-h-[32px] h-8 rounded-md hover:bg-gray-100 hover:text-whte transition-colors"
-        onClick={() => toggleSideBarStatus(!sideBarStatus)}
+        onClick={toggleSidebarStatus}
       >
-        {sideBarStatus 
+        {sidebarIsExpanded 
           ? <ArrowLineLeft size={24} />
           : <List size={26} />
         }

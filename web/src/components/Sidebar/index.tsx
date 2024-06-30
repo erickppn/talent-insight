@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react";
+
 import classNames from "classnames";
 import { PlugsConnected, SignIn, ThumbsUp, Trophy, Users } from "phosphor-react";
 
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { ModalContext } from "../../contexts/Modal/ModalContext";
+import { SidebarContext } from "../../contexts/Sidebar/SidebarProvider";
 
 import { Menu } from "./Menu";
-import { ListCard } from "./ListCard";
+import { Card } from "./Card";
 import { Profile } from "./Profile";
 
 import { useApi } from "../../hooks/useApi";
@@ -14,17 +16,13 @@ import { useApi } from "../../hooks/useApi";
 import { PublicUserInfo } from "../../types/User";
 
 export function Sidebar() {
-  const [isSidebarActive, setIsSidebarActive] = useState(JSON.parse(localStorage.getItem("tl-sidebar") || "true"));
   const [topRatedUsers, setTopRatedUsers] = useState<PublicUserInfo[]>([]);
 
   const { user, following } = useContext(AuthContext);
   const { toggleLoginModal } = useContext(ModalContext);
+  const { sidebarIsExpanded } = useContext(SidebarContext);
 
   const { getUsersByRating } = useApi();
-
-  useEffect(() => {
-    localStorage.setItem("tl-sidebar", JSON.stringify(isSidebarActive));
-  }, [isSidebarActive]);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -40,116 +38,101 @@ export function Sidebar() {
     fetchUsers();
   }, []);
 
-return (
-  <aside
-    className={classNames(
+  return (
+    <aside className={classNames(
       "flex flex-col p-6 overflow-y-auto scrollbar-none transition-all ease-out duration-500 overflow-hidden",
-      isSidebarActive ? "w-72" : "w-28"
-    )}
-  >
-    {/* Sidebar menu with useful links */}
-    <Menu sideBarStatus={isSidebarActive} toggleSideBarStatus={setIsSidebarActive} />
+      sidebarIsExpanded ? "w-72" : "w-28"
+    )}>
+      <Menu />
 
-    <main className="flex flex-col gap-6">
-      {/* Card of top users of current week */}
-      <ListCard
-        sideBarStatus={isSidebarActive}
-        cardTitle="Talentos conhecidos"
-        icon={
-          <Trophy
-            className="min-w-[24px] min-h-[24px] text-amber-500"
-            weight="fill"
-            size={24}
-          />
-        }
-      >
-        {topRatedUsers.map(user => (
-          <Profile
-            key={user.id}
-            sideBarStatus={isSidebarActive}
-            user={user}
-            likesInWeek={2134}
-            viewsInWeek={12321}
-          />
-        ))}
-      </ListCard>
+      <main className="flex flex-col gap-6">
+        <Card.Root>
+          <Card.Header>
+            <Card.Icon icon={Trophy} weight="fill" className="text-amber-500" />
+            <Card.Title title="Talentos conhecidos" />
+          </Card.Header>
 
-      {/* Followed users card */}
-      <ListCard
-        sideBarStatus={isSidebarActive}
-        cardTitle={user && following.length ? "Seguindo" : undefined}
-        icon={user && following.length ?
-          <Users
-            className="min-w-[24px] min-h-[24px m-auto] text-gray-400"
-            weight="regular"
-            size={24}
-          /> : undefined
-        }
-      >
-        {user && following.length ? (
-          <div className="flex flex-col gap-3">
-            {following.map(user => (
+          <Card.Content>
+            {topRatedUsers.map(user => (
               <Profile
                 key={user.id}
-                sideBarStatus={isSidebarActive}
                 user={user}
+                likesInWeek={2134}
+                viewsInWeek={12321}
               />
             ))}
-          </div>
+          </Card.Content>
+        </Card.Root>
+
+        {user && following.length ? (
+          <Card.Root>
+            <Card.Header>
+              <Card.Icon icon={Users} weight="regular" className="text-gray-400" />
+              <Card.Title title="Seguindo" />
+            </Card.Header>
+
+            <Card.Content>
+              {
+                following.map(user => (
+                  < Profile key={user.id} user={user} />
+                ))
+              }
+            </Card.Content>
+          </Card.Root>
         ) : (
-          <div>
+          <>
             {user ? (
-              <div
-                className="flex flex-col items-center gap-1 text-blue-900"
-              >
-                <PlugsConnected size={30} />
+              <Card.Root>
+                <Card.Content>
+                  <div className="flex flex-col items-center gap-1 text-blue-900">
+                    <PlugsConnected size={30} />
 
-                <p className={classNames("text-center text-sm font-medium leading-tight whitespace-nowrap",
-                  !isSidebarActive && "hidden"
-                )}>
-                  Comece a seguir outros <br /> usuários!
-                </p>
-              </div>
+                    <p className={classNames("text-center text-sm font-medium leading-tight whitespace-nowrap",
+                      !sidebarIsExpanded && "hidden"
+                    )}>
+                      Comece a seguir outros <br /> usuários!
+                    </p>
+                  </div>
+                </Card.Content>
+              </Card.Root>
             ) : (
-              <button
-                onClick={toggleLoginModal}
-                className="flex flex-col items-center gap-1 w-full text-blue-900"
-              >
-                <SignIn size={26} />
+              <Card.Root>
+                <Card.Content>
+                  <button
+                    onClick={toggleLoginModal}
+                    className="flex flex-col items-center gap-1 w-full text-blue-900"
+                  >
+                    <SignIn size={26} />
 
-                <p className={classNames("text-center text-sm font-medium leading-tight whitespace-nowrap",
-                  !isSidebarActive && "hidden"
-                )}>
-                  Entre para começar a seguir <br /> outros usuários!
-                </p>
-              </button>
+                    <p className={classNames("text-center text-sm font-medium leading-tight whitespace-nowrap",
+                      !sidebarIsExpanded && "hidden"
+                    )}>
+                      Entre para começar a seguir <br /> outros usuários!
+                    </p>
+                  </button>
+                </Card.Content>
+              </Card.Root>
             )}
-          </div>
+          </>
         )}
-      </ListCard>
 
-      {/* Card of recommended users */}
-      <ListCard
-        sideBarStatus={isSidebarActive}
-        cardTitle="Perfis recomendados"
-        icon={
-          <ThumbsUp
-            className = "min-w-[24px] min-h-[24px] text-gray-400"
-            weight = "bold"
-            size = { 24 }
-          />
-        }
-      >
-        {/* {recommendedUsers.map(user => (
-          <Profile
-            key={user.id}
-            sideBarStatus={isSidebarActive}
-            user={user}
-            likesInWeek={2134}
-          />
-        ))} */}
-      </ListCard>
-    </main>
-  </aside>
-)
+        <Card.Root>
+          <Card.Header>
+            <Card.Icon icon={ThumbsUp} weight="bold" className="text-gray-400" />
+            <Card.Title title="Perfis recomendados" />
+          </Card.Header>
+
+          <Card.Content>
+            {topRatedUsers.map(user => (
+            <Profile
+              key={user.id}
+              user={user}
+              likesInWeek={2134}
+            />
+          ))} 
+          </Card.Content>
+        </Card.Root>
+      </main>
+    </aside>
+  )
 }

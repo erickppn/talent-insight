@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
 import * as Popover from '@radix-ui/react-popover';
 import { Heart, Eye } from "phosphor-react";
 import classNames from "classnames";
+
+import { SidebarContext } from "../../contexts/Sidebar/SidebarProvider";
 
 import defaultAvatar from "../../assets/default-avatar.png";
 
@@ -9,14 +11,14 @@ import { PublicUserInfo } from "../../types/User";
 import { ProfilePreview } from "../ProfilePreview";
 
 interface ProfileProps {
-  sideBarStatus: boolean,
-
   user: PublicUserInfo,
   likesInWeek?: number,
   viewsInWeek?: number,
 }
 
-export function Profile({ sideBarStatus, user, likesInWeek, viewsInWeek }: ProfileProps) {
+export function Profile({ user, likesInWeek, viewsInWeek }: ProfileProps) {
+  const { sidebarIsExpanded } = useContext(SidebarContext);
+
   return (
     <Popover.Root>
       <Popover.Trigger className={classNames("flex items-center gap-3 w-full rounded-md hover:scale-105 transition-transform",
@@ -27,7 +29,7 @@ export function Profile({ sideBarStatus, user, likesInWeek, viewsInWeek }: Profi
         />
 
         <div className={classNames("flex-1 flex flex-col", 
-          !sideBarStatus && "hidden"
+          !sidebarIsExpanded && "hidden"
         )}>
           <span className="text-start font-medium text-sm text-blue-900 whitespace-nowrap">
             {user.profile.artName || user.name}
